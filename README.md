@@ -1,3 +1,20 @@
+# Allo SDK
+
+### Usage
+
+See demo app.
+
+### Components
+
+- DiscoverRounds
+- DiscoverProjects (round, sort, order, limit, columns, renderItem?)
+- ProjectDetails (projectId, comments)
+- Cart/Ballot
+- Wallet
+  - ConnectButton
+
+---
+
 # Turborepo starter
 
 This is an official starter Turborepo.

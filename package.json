@@ -1,5 +1,5 @@
 {
-  "name": "gs-sdk",
+  "name": "allo",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -8,8 +8,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@allo/eslint-config": "*",
+    "@allo/typescript-config": "*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
