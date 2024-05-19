@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { API, useAPI } from "..";
+import { API } from "../api/providers/types";
+import { useAPI } from "..";
 
 const defaultQuery = {
   where: {},
@@ -15,5 +16,18 @@ export function useApplications(
   return useQuery({
     queryKey: ["applications", query],
     queryFn: async () => api.applications(query),
+  });
+}
+
+type ApplicationByID = Parameters<API["applicationById"]>;
+export function useApplicationById(
+  id: ApplicationByID[0],
+  opts?: ApplicationByID[1]
+) {
+  const api = useAPI();
+  return useQuery({
+    queryKey: ["application", { id, opts }],
+    queryFn: async () => api.applicationById(id, opts),
+    enabled: Boolean(id),
   });
 }

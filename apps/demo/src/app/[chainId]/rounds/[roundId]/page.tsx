@@ -1,6 +1,5 @@
 "use client";
-import { DiscoverApplications } from "@allo/ui";
-import { RoundDetails } from "@allo/ui/round-details";
+import { DiscoverApplications, RoundDetails } from "@allo/ui";
 import Link from "next/link";
 
 export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {

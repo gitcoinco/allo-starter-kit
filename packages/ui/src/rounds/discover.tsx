@@ -1,14 +1,14 @@
 "use client";
 
-import { Round, RoundsQuery } from "./api/providers/types";
-import { useRounds } from "./hooks/useRounds";
-import { Grid, GridProps } from "./ui/grid";
+import { Round, RoundsQuery } from "../api/providers/types";
+import { useRounds } from "../hooks/useRounds";
+import { Grid, GridProps } from "../ui/grid";
 
 export function DiscoverRounds({
   query,
   ...props
 }: GridProps<Round> & { query?: RoundsQuery }) {
-  const rounds = useRounds(query);
+  const rounds = useRounds(query!);
   return <Grid component={RoundItem} {...rounds} {...props} />;
 }
 

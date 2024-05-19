@@ -12,20 +12,23 @@ export const providers = {
 };
 
 const defaultApi: API = {
-  rounds: (query: RoundsQuery) => [],
-  roundById: (id: string, opts?: QueryOpts) => undefined,
-  projects: (query: RoundsQuery) => [],
-  projectById: (id: string, opts?: QueryOpts) => undefined,
-  applications: (query: RoundsQuery) => [],
-  allocate: () => notImpleneted("allocate"),
-  distribute: () => notImpleneted("distribute"),
-  ballot: () => (notImpleneted("ballot"), {}),
-  saveBallot: () => (notImpleneted("saveBallot"), {}),
-  addToBallot: () => (notImpleneted("saveBallot"), {}),
+  rounds: async (query: RoundsQuery) => [],
+  roundById: async (id: string, opts?: QueryOpts) => undefined,
+  projects: async (query: RoundsQuery) => [],
+  projectById: async (id: string, opts?: QueryOpts) => undefined,
+  applications: async (query: RoundsQuery) => [],
+  applicationById: async (id: string, opts?: QueryOpts) => undefined,
+  allocate: async () => notImpleneted("allocate"),
+  distribute: async () => notImpleneted("distribute"),
+  ballot: async () => notImpleneted("ballot"),
+  saveBallot: async () => notImpleneted("saveBallot"),
+  addToBallot: async () => notImpleneted("saveBallot"),
 };
 
-const notImpleneted = (feature: string) =>
+const notImpleneted = async (feature: string) => {
   console.log(`not implemented: ${feature}`);
+  return {};
+};
 
 export function ApiProvider({
   children,

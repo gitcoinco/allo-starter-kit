@@ -1,14 +1,14 @@
 "use client";
 
-import { Project, RoundsQuery } from "./api/providers/types";
-import { useProjects } from "./hooks/useProjects";
-import { Grid, GridProps } from "./ui/grid";
+import { Project, RoundsQuery } from "../api/providers/types";
+import { useProjects } from "../hooks/useProjects";
+import { Grid, GridProps } from "../ui/grid";
 
 export function DiscoverProjects({
   query,
   ...props
 }: GridProps<Project> & { query?: RoundsQuery }) {
-  const projects = useProjects(query);
+  const projects = useProjects(query!);
   return <Grid component={ProjectItem} {...projects} {...props} />;
 }
 function ProjectItem({ name }: Project) {

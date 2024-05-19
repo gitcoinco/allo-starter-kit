@@ -31,14 +31,18 @@ export type Allocation = { id: string; amount?: number };
 export type Ballot = Record<string, Allocation>;
 
 export interface API {
-  rounds: (query: RoundsQuery) => Round[];
-  roundById: (id: string, opts?: QueryOpts) => Round | undefined;
-  projects: (query: RoundsQuery) => Project[];
-  projectById: (id: string, opts?: QueryOpts) => Project | undefined;
-  applications: (query: RoundsQuery) => Application[];
-  ballot: () => Ballot | undefined;
-  addToBallot: (ballot: Ballot) => Ballot;
-  saveBallot: (ballot: Ballot) => Ballot;
+  rounds: (query: RoundsQuery) => Promise<Round[]>;
+  roundById: (id: string, opts?: QueryOpts) => Promise<Round | undefined>;
+  projects: (query: RoundsQuery) => Promise<Project[]>;
+  projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
+  applications: (query: RoundsQuery) => Promise<Application[]>;
+  applicationById: (
+    id: string,
+    opts?: QueryOpts
+  ) => Promise<Project | undefined>;
+  ballot: () => Promise<Ballot | undefined>;
+  addToBallot: (ballot: Ballot) => Promise<Ballot>;
+  saveBallot: (ballot: Ballot) => Promise<Ballot>;
   allocate: () => void;
   distribute: () => void;
 }

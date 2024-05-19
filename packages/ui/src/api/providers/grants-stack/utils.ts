@@ -1,9 +1,9 @@
-import type { RoundQuery } from "../..";
+import { RoundsQuery } from "../types";
 
 export const ipfsGateway = (cid: string) =>
   `https://gateway.pinata.cloud/ipfs/${cid}`;
 
-export function queryToFilter(query: RoundQuery) {
+export function queryToFilter(query: RoundsQuery) {
   const orderBy = Object.entries(query.orderBy ?? {})[0]
     ?.map((v) => v.toUpperCase())
     .join("_");
@@ -19,9 +19,9 @@ export function queryToFilter(query: RoundQuery) {
 }
 
 function renameKeys(
-  query: RoundQuery,
+  query: RoundsQuery,
   keys: Record<string, string>
-): RoundQuery {
+): RoundsQuery {
   function rename(obj: any): any {
     if (Array.isArray(obj)) {
       return obj.map(rename);
@@ -36,5 +36,5 @@ function renameKeys(
     }
   }
 
-  return rename(query) as RoundQuery;
+  return rename(query) as RoundsQuery;
 }

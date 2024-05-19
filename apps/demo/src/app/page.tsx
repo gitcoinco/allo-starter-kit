@@ -1,5 +1,5 @@
 "use client";
-import { DiscoverRounds } from "@allo/ui/discover-rounds";
+import { DiscoverRounds } from "@allo/ui";
 import Link from "next/link";
 
 export default function Home() {

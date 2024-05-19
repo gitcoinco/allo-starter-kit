@@ -1,15 +1,15 @@
 "use client";
 
-import { Application, RoundsQuery } from "./api/providers/types";
-import { useApplications } from "./hooks/useApplications";
-import { BackgroundImage } from "./ui/background-image";
-import { Grid, GridProps } from "./ui/grid";
+import { Application, RoundsQuery } from "../api/providers/types";
+import { useApplications } from "../hooks/useApplications";
+import { BackgroundImage } from "../ui/background-image";
+import { Grid, GridProps } from "../ui/grid";
 
 export function DiscoverApplications({
   query,
   ...props
 }: GridProps<Application> & { query?: RoundsQuery }) {
-  const applications = useApplications(query);
+  const applications = useApplications(query!);
   return <Grid component={ApplicationItem} {...applications} {...props} />;
 }
 

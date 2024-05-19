@@ -17,7 +17,7 @@ export function Grid<T>({
   columns = [1, 1, 2, 3],
   data,
   component: Component,
-  renderItem = (item, Component) => <Component {...item} />,
+  renderItem = (item, Component: any) => <Component {...item} />,
 }: Props<T>) {
   return (
     <div className={cn("grid gap-4", gridClass(columns))}>

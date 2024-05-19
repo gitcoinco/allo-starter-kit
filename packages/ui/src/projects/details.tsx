@@ -1,8 +1,8 @@
 "use client";
-import { Markdown } from ".";
-import { QueryOpts } from "./api/providers/types";
-import { useProjectById } from "./hooks/useProjects";
-import { BackgroundImage } from "./ui/background-image";
+import { Markdown } from "..";
+import { QueryOpts } from "../api/providers/types";
+import { useProjectById } from "../hooks/useProjects";
+import { BackgroundImage } from "../ui/background-image";
 
 type ProjectDetailsProps = {
   id: string;

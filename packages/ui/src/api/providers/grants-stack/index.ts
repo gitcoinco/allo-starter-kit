@@ -13,52 +13,48 @@ import { GSRound, GSApplication, GSProject } from "./types";
 const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
 
 export const grantsStackAPI: Partial<API> = {
-  rounds: (query) => {
-    return request({
+  rounds: async (query) => {
+    return request<{ rounds: GSRound[] }>({
       url: apiURL,
       document: roundsQuery,
       variables: queryToFilter(query),
-    }).then((res: { rounds: GSRound[] }) =>
-      (res?.rounds ?? []).map(transformers.round)
-    );
+    }).then((res) => {
+      return (res?.rounds ?? []).map(transformers.round);
+    });
   },
   roundById: (id: string, opts) => {
-    return request({
+    return request<{ round: GSRound }>({
       url: apiURL,
       document: roundsByIdQuery,
       variables: {
         id,
         chainId: Number(opts?.chainId),
       },
-    }).then((res: { round: GSRound }) => transformers.round(res.round));
+    }).then((res) => transformers.round(res.round));
   },
   applications: (query) => {
-    return request({
+    return request<{ applications: GSApplication[] }>({
       url: apiURL,
       document: applicationsQuery,
       variables: queryToFilter(query),
-    }).then((res: { applications: GSApplication[] }) =>
-      (res?.applications ?? []).map(transformers.application)
-    );
+    }).then((res) => (res?.applications ?? []).map(transformers.application));
   },
   projects: (query) => {
-    return request({
+    return request<{ rounds: GSProject[] }>({
       url: apiURL,
       document: projectsQuery,
       variables: queryToFilter(query),
-    }).then((res: { rounds: GSProject[] }) =>
-      (res?.rounds ?? []).map(transformers.project)
-    );
+    }).then((res) => (res?.rounds ?? []).map(transformers.project));
   },
   projectById: (id: string, opts) => {
-    return request({
+    return request<{ project: GSProject }>({
       url: apiURL,
       document: projectsByIdQuery,
       variables: {
         id,
         chainId: Number(opts?.chainId),
       },
-    }).then((res: { project: GSProject }) => transformers.project(res.project));
+    }).then((res) => transformers.project(res.project));
   },
 };
 

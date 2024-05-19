@@ -9,11 +9,7 @@
     ".": "./src/index.tsx",
     "./styles.css": "./dist/index.css",
     "./provider": "./src/provider.tsx",
-    "./connect-button": "./src/connect-button.tsx",
-    "./discover-rounds": "./src/discover-rounds.tsx",
-    "./round-details": "./src/round-details.tsx",
-    "./discover-projects": "./src/discover-projects.tsx",
-    "./project-details": "./src/project-details.tsx"
+    "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",

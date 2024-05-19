@@ -2,11 +2,6 @@ import { API } from "../types";
 
 const apiURL = "https://easyretropgf.xyz/api/trpc";
 
-export const easyRpgfAPI: API = {
+export const easyRpgfAPI: Partial<API> = {
   projects: async (query) => [],
-  // ky(`${apiURL}/projects.search?input=`)
-  //   .json()
-  //   .then((res) => {
-  //     return [];
-  //   }),
 };
