@@ -12,6 +12,15 @@ See demo app.
 - Cart/Ballot
 - Wallet
   - ConnectButton
+- UI
+  - Button
+  - Pagination?
+  - Form
+    - Fieldset
+    - TextInput
+    - NumberInput
+    - Select
+    - Calendar?
 
 ---
 

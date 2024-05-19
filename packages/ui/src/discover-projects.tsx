@@ -1,39 +1,17 @@
 "use client";
-import { ComponentType, ReactNode } from "react";
-import { cn } from "./lib/cn";
-import { useProjects } from "./hooks/useProjects";
 
-type DiscoverRoundsProps = {
-  roundId: string;
-  columns?: number[];
-  filter?: {
-    limit?: number;
-  };
-  renderItem?: (
-    project: Project,
-    Component: ComponentType<Project>
-  ) => ReactNode;
-};
+import { Project, RoundsQuery } from "./api/providers/types";
+import { useProjects } from "./hooks/useProjects";
+import { Grid, GridProps } from "./ui/grid";
 
 export function DiscoverProjects({
-  roundId,
-  columns = [1, 1, 3, 4],
-  filter,
-  renderItem = (project, Component) => <Component {...project} />,
-}: DiscoverRoundsProps) {
-  const [xs, sm, md, lg, xl] = columns;
-
-  const { data } = useProjects({ roundId });
-
-  return (
-    <div className={cn("grid grid-cols-3 gap-4")}>
-      {data?.map((round) => renderItem(round, ProjectItem))}
-    </div>
-  );
+  query,
+  ...props
+}: GridProps<Project> & { query?: RoundsQuery }) {
+  const projects = useProjects(query);
+  return <Grid component={ProjectItem} {...projects} {...props} />;
 }
-
-type Project = { id: string; name: string };
-function ProjectItem({ id, name }: Project) {
+function ProjectItem({ name }: Project) {
   return (
     <div className="border rounded-xl overflow-hidden">
       <div className="bg-gray-100 h-24" />

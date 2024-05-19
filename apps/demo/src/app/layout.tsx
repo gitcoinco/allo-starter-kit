@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 import { Provider } from "@allo/ui/provider";
 import { Header } from "./header";
+import { ApiProvider } from "../../../../packages/ui/src/api/providers/provider";
 
 export const metadata: Metadata = {
   title: "Allo Demo App",
@@ -22,8 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <Header />
-          <main className="max-w-screen-lg mx-auto py-16">{children}</main>
+          <ApiProvider provider="grants-stack">
+            <Header />
+            <main className="max-w-screen-lg mx-auto py-16">{children}</main>
+          </ApiProvider>
         </Provider>
       </body>
     </html>

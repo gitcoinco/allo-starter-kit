@@ -4,14 +4,14 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    /*
+    <DiscoverRounds
+      /*
     DiscoverRounds is a pre-made component that does most of the heavy lifting
     in fething and displaying rounds.
     
     It fetches the rounds based on a provided query (with sane defaults) and
     renders it (as a grid by default but easy to customize with own components).
     */
-    <DiscoverRounds
       query={{
         /* 
       The query prop enables a powerful way to fetch data from the indexer. 
@@ -21,12 +21,21 @@ export default function Home() {
       - order by when they were created, newest first
       - with skip and take we can paginate the results and decide how many to show
       */
-        where: { strategy: { in: ["0x...a", "0x...b"] } },
-        orderBy: { createdAt: "desc" },
+        // where: { strategy: { in: ["0x...a", "0x...b"] } },
+        // orderBy: { createdAt: "desc" },
+        // skip: 0,
+        // take: 12,
+
+        where: {
+          chainId: { in: [10] },
+          // tags: { contains: ["allo-v2"] },
+          // donationsEndTime: { gte: new Date().toISOString() },
+        },
+        orderBy: { unique_donors_count: "desc" },
         skip: 0,
         take: 12,
       }}
-      /* 
+      /*
       The renderItem function lets us change what component is rendered.
       
       For example:
@@ -34,7 +43,7 @@ export default function Home() {
 
       */
       renderItem={(round, Component) => (
-        <Link href={`/rounds/${round.id}`} key={round.id}>
+        <Link href={`/${round.chainId}/rounds/${round.id}`} key={round.id}>
           <Component {...round} />
         </Link>
       )}

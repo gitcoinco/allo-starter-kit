@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
 
-const config: Pick<Config, "prefix" | "presets" | "content"> = {
+const config: Config = {
   content: ["./src/**/*.tsx"],
+  plugins: [require("@tailwindcss/typography")],
 };
 
 export default config;
