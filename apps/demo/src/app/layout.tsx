@@ -5,9 +5,9 @@ import "@allo/ui/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+import { ApiProvider } from "@allo/ui";
 import { Provider } from "@allo/ui/provider";
 import { Header } from "./header";
-import { ApiProvider } from "../../../../packages/ui/src/api/providers/provider";
 
 export const metadata: Metadata = {
   title: "Allo Demo App",
