@@ -2,8 +2,8 @@
 
 import { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet } from "viem/chains";
+import { Config, WagmiProvider, createConfig, http } from "wagmi";
+import { mainnet, optimism } from "viem/chains";
 import { injected } from "wagmi/connectors";
 
 function makeQueryClient() {
@@ -30,14 +30,18 @@ function getQueryClient() {
   }
 }
 
-const config = createConfig({
-  chains: [mainnet],
+const defaultConfig = createConfig({
+  chains: [mainnet, optimism],
   connectors: [injected()],
   transports: {
     [mainnet.id]: http(),
+    [optimism.id]: http(),
   },
 });
-export function Provider({ children }: PropsWithChildren) {
+export function Web3Provider({
+  children,
+  config = defaultConfig,
+}: PropsWithChildren<{ config: Config }>) {
   const queryClient = getQueryClient();
   return (
     <WagmiProvider config={config}>

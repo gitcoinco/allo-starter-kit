@@ -8,7 +8,6 @@
   "exports": {
     ".": "./src/index.tsx",
     "./styles.css": "./dist/index.css",
-    "./provider": "./src/provider.tsx",
     "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {

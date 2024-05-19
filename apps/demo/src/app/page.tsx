@@ -21,10 +21,6 @@ export default function Home() {
       - order by when they were created, newest first
       - with skip and take we can paginate the results and decide how many to show
       */
-        // where: { strategy: { in: ["0x...a", "0x...b"] } },
-        // orderBy: { createdAt: "desc" },
-        // skip: 0,
-        // take: 12,
 
         where: {
           chainId: { in: [10] },

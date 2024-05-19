@@ -61,6 +61,7 @@ export type Round = {
   description: string;
   strategy?: { name?: string; address: string };
   applications?: { id: string }[];
+  matching: { amount: bigint; token: string };
 };
 export type Application = {
   id: string;

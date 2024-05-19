@@ -6,11 +6,6 @@ import { API, RoundsQuery, QueryOpts } from "./types";
 
 const Context = createContext({} as API);
 
-export const providers = {
-  "grants-stack": grantsStackAPI,
-  "easy-rpgf": easyRpgfAPI,
-};
-
 const defaultApi: API = {
   rounds: async (query: RoundsQuery) => [],
   roundById: async (id: string, opts?: QueryOpts) => undefined,
@@ -30,11 +25,16 @@ const notImpleneted = async (feature: string) => {
   return {};
 };
 
+export const providers = {
+  grantsStackAPI,
+  easyRpgfAPI,
+};
+
 export function ApiProvider({
   children,
-  provider = "grants-stack",
-}: PropsWithChildren<{ provider: "grants-stack" }>) {
-  const api = { ...defaultApi, ...providers[provider] };
+  provider = grantsStackAPI,
+}: PropsWithChildren<{ provider: Partial<API> }>) {
+  const api = { ...defaultApi, ...provider };
   return <Context.Provider value={api}>{children}</Context.Provider>;
 }
 

@@ -56,6 +56,9 @@ export const grantsStackAPI: Partial<API> = {
       },
     }).then((res) => transformers.project(res.project));
   },
+  // TODO: Implement Allo2
+  allocate: () => {},
+  distribute: () => {},
 };
 
 const transformers: Transformers<GSRound, GSApplication, GSProject> = {
@@ -66,8 +69,17 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       name,
       eligibility: { description },
     },
+    matchAmount,
+    matchTokenAddress,
     applications,
-  }: GSRound): Round => ({ id, chainId, name, description, applications }),
+  }: GSRound): Round => ({
+    id,
+    chainId,
+    name,
+    description,
+    applications,
+    matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
+  }),
 
   application: ({ id, chainId, project }: GSApplication): Application => {
     return {
