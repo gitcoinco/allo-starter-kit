@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { useAPI } from "..";
-import { API, RoundsQuery } from "../api/providers/types";
+import { API, RoundsQuery } from "../api/types";
 
 const projects = Array.from({ length: 12 }).map((_, id) => ({
   id: id.toString(),

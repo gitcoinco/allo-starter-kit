@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "../api/providers/types";
+import { API } from "../api/types";
 import { useAPI } from "..";
 
 const defaultQuery = {

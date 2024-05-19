@@ -1,7 +1,7 @@
 "use client";
 import { PropsWithChildren, createContext, useContext } from "react";
-import { grantsStackAPI } from "./grants-stack";
-import { easyRpgfAPI } from "./easy-rpgf";
+import { grantsStackAPI } from "./providers/grants-stack";
+import { easyRpgfAPI } from "./providers/easy-rpgf";
 import { API, RoundsQuery, QueryOpts } from "./types";
 
 const Context = createContext({} as API);

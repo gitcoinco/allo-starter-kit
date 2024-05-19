@@ -1,6 +1,6 @@
 "use client";
 import { Markdown } from "..";
-import { QueryOpts } from "../api/providers/types";
+import { QueryOpts } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
 
 type RoundDetailsProps = {

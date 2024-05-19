@@ -41,7 +41,7 @@ const defaultConfig = createConfig({
 export function Web3Provider({
   children,
   config = defaultConfig,
-}: PropsWithChildren<{ config: Config }>) {
+}: PropsWithChildren<{ config?: Config }>) {
   const queryClient = getQueryClient();
   return (
     <WagmiProvider config={config}>

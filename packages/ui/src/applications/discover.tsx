@@ -1,6 +1,6 @@
 "use client";
 
-import { Application, RoundsQuery } from "../api/providers/types";
+import { Application, RoundsQuery } from "../api/types";
 import { useApplications } from "../hooks/useApplications";
 import { BackgroundImage } from "../ui/background-image";
 import { Grid, GridProps } from "../ui/grid";

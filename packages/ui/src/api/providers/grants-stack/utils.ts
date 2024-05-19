@@ -1,4 +1,4 @@
-import { RoundsQuery } from "../types";
+import { RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) =>
   `https://gateway.pinata.cloud/ipfs/${cid}`;

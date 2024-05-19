@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { API, Application, Project, Round, Transformers } from "../types";
+import { API, Application, Project, Round, Transformers } from "../../types";
 import {
   roundsQuery,
   applicationsQuery,
@@ -56,7 +56,7 @@ export const grantsStackAPI: Partial<API> = {
       },
     }).then((res) => transformers.project(res.project));
   },
-  // TODO: Implement Allo2
+  // TODO: Implement Allo2 (implement it as a seperate provider so both GS and ezRPGF can use)
   allocate: () => {},
   distribute: () => {},
 };

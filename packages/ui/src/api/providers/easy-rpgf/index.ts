@@ -1,4 +1,4 @@
-import { API } from "../types";
+import { API } from "../../types";
 
 const apiURL = "https://easyretropgf.xyz/api/trpc";
 

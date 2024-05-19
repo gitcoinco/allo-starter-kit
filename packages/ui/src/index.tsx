@@ -1,5 +1,5 @@
 export * from "./web3-provider";
-export * from "./api/providers/provider";
+export * from "./api/provider";
 export * from "./api/providers/grants-stack";
 export * from "./api/providers/easy-rpgf";
 export * from "./ui/markdown";

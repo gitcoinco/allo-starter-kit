@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { API, RoundsQuery } from "../api/providers/types";
+import { API, RoundsQuery } from "../api/types";
 import { useAPI } from "..";
 
 const defaultQuery = {

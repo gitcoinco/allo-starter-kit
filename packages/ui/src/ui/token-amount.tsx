@@ -3,7 +3,7 @@ import { erc20Abi, formatUnits, getAddress } from "viem";
 import { useReadContracts } from "wagmi";
 
 export function TokenAmount({
-  amount = 0n,
+  amount = BigInt(0),
   token,
   symbol = true,
 }: {

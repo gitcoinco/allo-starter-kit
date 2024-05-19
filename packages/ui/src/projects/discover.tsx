@@ -1,6 +1,6 @@
 "use client";
 
-import { Project, RoundsQuery } from "../api/providers/types";
+import { Project, RoundsQuery } from "../api/types";
 import { useProjects } from "../hooks/useProjects";
 import { Grid, GridProps } from "../ui/grid";
 

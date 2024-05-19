@@ -1,6 +1,6 @@
 "use client";
 
-import { Round, RoundsQuery } from "../api/providers/types";
+import { Round, RoundsQuery } from "../api/types";
 import { useRounds } from "../hooks/useRounds";
 import { Grid, GridProps } from "../ui/grid";
 import { TokenAmount } from "../ui/token-amount";
