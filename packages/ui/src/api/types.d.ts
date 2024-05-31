@@ -54,6 +54,15 @@ export interface Transformers<TRound, TApplication, TProject> {
   project: (project: TProject) => Project;
 }
 
+export type RoundStrategyType = "QuadraticFunding" | "DirectGrants";
+
+export type RoundPayoutType =
+  | "allov1.Direct"
+  | "allov1.QF"
+  | "allov2.DirectGrantsSimpleStrategy"
+  | "allov2.DonationVotingMerkleDistributionDirectTransferStrategy"
+  | ""; // This is to handle the cases where the strategyName is not set in a round, mostly spam rounds
+
 export type Round = {
   id: string;
   chainId: number;
@@ -62,6 +71,11 @@ export type Round = {
   strategy?: { name?: string; address: string };
   applications?: { id: string }[];
   matching: { amount: bigint; token: string };
+  strategyName: RoundPayoutType;
+  applicationsEndTime: string;
+  applicationsStartTime: string;
+  donationsEndTime: string;
+  donationsStartTime: string;
 };
 export type Application = {
   id: string;

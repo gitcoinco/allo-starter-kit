@@ -1,3 +1,5 @@
+import { RoundPayoutType } from "@/api/types";
+
 type GSRoundMetadata = {
   name: string;
   eligibility: {
@@ -27,7 +29,7 @@ export type GSRound = {
   matchAmount: string;
   matchTokenAddress: string;
   strategyId: string;
-  strategyName: string;
+  strategyName: RoundPayoutType;
   strategyAddress: string;
   applications: { id: string }[];
 };
