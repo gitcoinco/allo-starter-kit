@@ -54,7 +54,7 @@ export default function Home() {
         
         We could also set it to [1] to render as list on all screens
       */
-      columns={[1, 2, 3, 4]}
+      columns={[1, 2, 3]}
     />
   );
 }

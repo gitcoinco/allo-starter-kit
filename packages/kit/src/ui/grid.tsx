@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode } from "react";
-import { cn } from "../lib/cn";
+import { cn } from "../lib/utils";
 import { UseQueryResult } from "@tanstack/react-query";
 
 type ColumnValue = 0 | 1 | 2 | 3 | 4;
@@ -29,7 +29,7 @@ export function Grid<T>({
 function gridClass(columns: Columns): string {
   return columns.reduce<string>(
     (cols, col = 0, i) => cols.concat(columnMap?.[i]?.[col] ?? "") + " ",
-    ""
+    "",
   );
 }
 const columnMap = [

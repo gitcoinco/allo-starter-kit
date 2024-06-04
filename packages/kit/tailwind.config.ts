@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
+import colors from "tailwindcss/colors";
+
+const defaultGray = "stone";
 const config: Config = {
   darkMode: ["class"],
   content: ["./src/**/*.tsx", "app/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
@@ -24,8 +27,8 @@ const config: Config = {
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: colors[defaultGray][200],
+          foreground: colors[defaultGray][800],
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",

@@ -38,7 +38,7 @@ export interface API {
   applications: (query: RoundsQuery) => Promise<Application[]>;
   applicationById: (
     id: string,
-    opts?: QueryOpts
+    opts?: QueryOpts,
   ) => Promise<Project | undefined>;
   ballot: () => Promise<Ballot | undefined>;
   addToBallot: (ballot: Ballot) => Promise<Ballot>;
@@ -62,6 +62,7 @@ export type Round = {
   strategy?: { name?: string; address: string };
   applications?: { id: string }[];
   matching: { amount: bigint; token: string };
+  bannerUrl?: string;
 };
 export type Application = {
   id: string;
