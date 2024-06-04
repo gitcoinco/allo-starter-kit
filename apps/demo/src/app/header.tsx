@@ -1,5 +1,5 @@
 "use client";
-import { ConnectButton } from "@allo/ui/connect-button";
+import { ConnectButton } from "../../../../packages/kit/src/connect-button";
 import Link from "next/link";
 export function Header() {
   return (

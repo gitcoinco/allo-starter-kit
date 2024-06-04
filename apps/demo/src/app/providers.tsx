@@ -1,6 +1,10 @@
 "use client";
 
-import { ApiProvider, Web3Provider, grantsStackAPI } from "@allo/ui";
+import {
+  ApiProvider,
+  Web3Provider,
+  grantsStackAPI,
+} from "../../../../packages/kit/src";
 
 export function Providers({
   children,

@@ -1,5 +1,5 @@
 {
-  "name": "@allo/ui",
+  "name": "@allo/kit",
   "version": "0.0.0",
   "private": true,
   "sideEffects": [
@@ -39,6 +39,8 @@
     "graphql-request": "^7.0.1",
     "ky": "^1.2.4",
     "lucide-react": "^0.381.0",
+    "prettier": "^3.3.0",
+    "prettier-plugin-tailwindcss": "^0.6.1",
     "radix-ui": "^1.0.1",
     "react-markdown": "^9.0.1",
     "tailwind-merge": "^2.3.0",
