@@ -9,6 +9,7 @@ import {
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
 import { GSRound, GSApplication, GSProject } from "./types";
+import { isValid } from "date-fns";
 
 const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
 
@@ -18,9 +19,7 @@ export const grantsStackAPI: Partial<API> = {
       url: apiURL,
       document: roundsQuery,
       variables: queryToFilter(query),
-    }).then((res) => {
-      return (res?.rounds ?? []).map(transformers.round);
-    });
+    }).then((res) => (res?.rounds ?? []).map(transformers.round));
   },
   roundById: (id: string, opts) => {
     return request<{ round: GSRound }>({
@@ -61,17 +60,21 @@ export const grantsStackAPI: Partial<API> = {
   distribute: () => {},
 };
 
+function validateDate(date?: string) {
+  return date && isValid(new Date(date)) ? date : undefined;
+}
 const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   round: ({
     id,
     chainId,
-    roundMetadata: {
-      name,
-      eligibility: { description },
-    },
+    roundMetadata: { name, eligibility: { description } = { description: "" } },
     matchAmount,
     matchTokenAddress,
     applications,
+    applicationsStartTime,
+    applicationsEndTime,
+    donationsStartTime,
+    donationsEndTime,
   }: GSRound): Round => ({
     id,
     chainId,
@@ -79,6 +82,12 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     description,
     applications,
     matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
+    phases: {
+      roundStart: validateDate(applicationsStartTime),
+      allocateStart: validateDate(donationsStartTime),
+      distributeStart: validateDate(donationsEndTime),
+      roundEnd: validateDate(donationsEndTime),
+    },
   }),
 
   application: ({ id, chainId, project }: GSApplication): Application => {

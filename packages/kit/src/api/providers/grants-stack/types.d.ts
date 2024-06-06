@@ -2,7 +2,7 @@ type GSRoundMetadata = {
   name: string;
   eligibility: {
     description: string;
-    requirements: { requirement: string }[];
+    requirements?: { requirement: string }[];
   };
   quadraticFundingConfig: {
     matchingCap: true;

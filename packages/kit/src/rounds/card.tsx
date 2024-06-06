@@ -7,6 +7,37 @@ import { Badge } from "@/ui/badge";
 import { Separator } from "@/ui/separator";
 import { Card, CardContent } from "@/ui/card";
 
+import {
+  formatRelative,
+  isDate,
+  formatDistanceToNowStrict,
+  isAfter,
+  differenceInDays,
+  formatDistanceToNow,
+  isValid,
+} from "date-fns";
+import { Avatar, AvatarFallback } from "@/ui/avatar";
+
+export const endsIn = (date?: string) => {
+  if (!isDate(date)) return "";
+  return formatDistanceToNowStrict(date, { addSuffix: true });
+  const prefix = isAfter(date, new Date()) ? text?.[0] : text?.[1];
+  return `${prefix} ${formatDistanceToNowStrict(date, { addSuffix: true })}`;
+};
+
+const toNow = (date?: string) =>
+  date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
+
+const getRoundTime = (phases: Round["phases"]): string => {
+  const now = new Date();
+
+  if (isAfter(phases.roundStart!, now))
+    return `Starts ${toNow(phases.roundStart)}`;
+  if (isAfter(now, phases.roundEnd!)) return `Ended ${toNow(phases.roundEnd)}`;
+  if (isAfter(phases.roundEnd!, now)) return `Ends ${toNow(phases.roundEnd)}`;
+  return "";
+};
+
 export function RoundCard({
   name,
   description,
@@ -14,6 +45,7 @@ export function RoundCard({
   applications,
   matching,
   bannerUrl,
+  phases,
 }: Round) {
   return (
     <Card className="relative overflow-hidden rounded-3xl shadow-xl">
@@ -29,21 +61,25 @@ export function RoundCard({
         </div>
         <p className="line-clamp-4 text-base leading-6">{description}</p>
         <div className="flex items-center justify-between text-xs">
-          <div>5 days left in round</div>
+          <div className="font-mono">{getRoundTime(phases)}</div>
           <Badge>Quadratic</Badge>
         </div>
         <Separator className="my-2" />
         <div className="">
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <Badge variant={"secondary"}>
-                {applications?.length} projects
-              </Badge>
-              <Badge variant={"secondary"}>
-                <TokenAmount {...matching} />
-              </Badge>
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex gap-2">
+                <Badge variant={"secondary"}>
+                  {applications?.length} projects
+                </Badge>
+                <Badge variant={"secondary"}>
+                  <TokenAmount {...matching} />
+                </Badge>
+              </div>
             </div>
-            <div className="">Network: {chainId}</div>
+            <Avatar className="size-8">
+              <AvatarFallback>{chainId}</AvatarFallback>
+            </Avatar>
           </div>
         </div>
       </CardContent>
