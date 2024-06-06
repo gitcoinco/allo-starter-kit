@@ -7,23 +7,8 @@ import { Badge } from "@/ui/badge";
 import { Separator } from "@/ui/separator";
 import { Card, CardContent } from "@/ui/card";
 
-import {
-  formatRelative,
-  isDate,
-  formatDistanceToNowStrict,
-  isAfter,
-  differenceInDays,
-  formatDistanceToNow,
-  isValid,
-} from "date-fns";
+import { isAfter, formatDistanceToNow } from "date-fns";
 import { Avatar, AvatarFallback } from "@/ui/avatar";
-
-export const endsIn = (date?: string) => {
-  if (!isDate(date)) return "";
-  return formatDistanceToNowStrict(date, { addSuffix: true });
-  const prefix = isAfter(date, new Date()) ? text?.[0] : text?.[1];
-  return `${prefix} ${formatDistanceToNowStrict(date, { addSuffix: true })}`;
-};
 
 const toNow = (date?: string) =>
   date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
