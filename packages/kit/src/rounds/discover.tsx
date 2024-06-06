@@ -10,6 +10,5 @@ export function DiscoverRounds({
   ...props
 }: GridProps<Round> & { query?: RoundsQuery }) {
   const rounds = useRounds(query!);
-  console.log("rounds", rounds.data, rounds.error);
   return <Grid component={RoundCard} {...rounds} {...props} />;
 }
