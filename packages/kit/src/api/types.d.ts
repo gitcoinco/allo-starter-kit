@@ -63,6 +63,12 @@ export type Round = {
   applications?: { id: string }[];
   matching: { amount: bigint; token: string };
   bannerUrl?: string;
+  phases: {
+    roundStart?: string;
+    allocateStart?: string;
+    distributeStart?: string;
+    roundEnd?: string;
+  };
 };
 export type Application = {
   id: string;

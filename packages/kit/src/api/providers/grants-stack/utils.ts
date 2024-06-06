@@ -9,6 +9,7 @@ export function queryToFilter(query: RoundsQuery) {
     .join("_");
   return {
     filter: renameKeys(query, {
+      AND: "and",
       equals: "equalTo",
       gte: "greaterThanOrEqualTo",
     }).where,
@@ -20,7 +21,7 @@ export function queryToFilter(query: RoundsQuery) {
 
 function renameKeys(
   query: RoundsQuery,
-  keys: Record<string, string>
+  keys: Record<string, string>,
 ): RoundsQuery {
   function rename(obj: any): any {
     if (Array.isArray(obj)) {
