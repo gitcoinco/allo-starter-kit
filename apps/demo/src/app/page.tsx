@@ -25,17 +25,7 @@ export default function Home() {
         where: {
           chainId: { in: [10] },
           // tags: { contains: ["allo-v2"] },
-          // AND: [
-          //   {
-          //     applicationsStartTime: {
-          //       gte: new Date("2024-01-01").toISOString(),
-          //     },
-          //     donationsEndTime: {
-          //       gte: new Date("2024-07-01").toISOString(),
-          //     },
-          //   },
-          // ],
-          // donationsStartTime: { gte: new Date("2024-06-06").toISOString() },
+          // donationsEndTime: { gte: new Date().toISOString() },
         },
         orderBy: { unique_donors_count: "desc" },
         skip: 0,

@@ -23,7 +23,6 @@ function renameKeys(
   query: RoundsQuery,
   keys: Record<string, string>,
 ): RoundsQuery {
-  console.log("renameKeys", query.where);
   function rename(obj: any): any {
     if (Array.isArray(obj)) {
       return obj.map(rename);
