@@ -7,7 +7,7 @@ export default function Home() {
     <DiscoverRounds
       /*
     DiscoverRounds is a pre-made component that does most of the heavy lifting
-    in fething and displaying rounds.
+    in fetching and displaying rounds.
     
     It fetches the rounds based on a provided query (with sane defaults) and
     renders it (as a grid by default but easy to customize with own components).
