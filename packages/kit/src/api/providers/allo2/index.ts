@@ -36,15 +36,11 @@ export const allo2API: Partial<API> = {
       // Annoying that a profile must be created to deploy a pool
       const profileId = await getOrCreateProfile(signer);
 
-      console.log({ profileId });
+      // TODO: handle other strategies - check the strategy type from strategyAddress to gitcoin-chain-data
       const initStrategyData = encoders.directGrants(data.initStrategyData);
-      console.log({ initStrategyData });
-      // TODO: upload metadata
+      const { name, description } = data;
       const pointer =
-        (await this.uploadMetadata?.({
-          name: data.name,
-          description: data.description,
-        })) ?? "";
+        (await this.uploadMetadata?.({ name, description })) ?? "";
 
       const tx = allo.createPool({
         profileId,
@@ -56,7 +52,6 @@ export const allo2API: Partial<API> = {
         // TODO: add data.initialFunding
         amount: 0n,
         metadata: { protocol: 1n, pointer },
-        // TODO: add data.initialStrategyData
         initStrategyData,
       });
 
