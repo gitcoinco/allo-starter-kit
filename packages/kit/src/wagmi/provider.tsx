@@ -3,7 +3,7 @@
 import { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Config, WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet, optimism } from "viem/chains";
+import { mainnet, optimism, optimismSepolia, sepolia } from "viem/chains";
 import { injected } from "wagmi/connectors";
 
 function makeQueryClient() {
@@ -31,11 +31,13 @@ function getQueryClient() {
 }
 
 const defaultConfig = createConfig({
-  chains: [mainnet, optimism],
+  chains: [mainnet, sepolia, optimism, optimismSepolia],
   connectors: [injected()],
   transports: {
     [mainnet.id]: http(),
+    [sepolia.id]: http(),
     [optimism.id]: http(),
+    [optimismSepolia.id]: http(),
   },
 });
 export function Web3Provider({

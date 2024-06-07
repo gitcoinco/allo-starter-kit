@@ -203,3 +203,7 @@ Apply to a round with a project
 - ballot editor (budget)
 - submit ballot
 - ballot confirmation
+
+### ContributorStats
+
+Should the impact created by a contributor.

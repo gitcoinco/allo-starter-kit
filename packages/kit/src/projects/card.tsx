@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Round } from "../api/types";
 import { TokenAmount } from "../ui/token-amount";
 import { BackgroundImage } from "@/ui/background-image";
+import { Card, CardContent } from "@/ui/card";
+import { Separator } from "@/ui/separator";
 
 export function ProjectCard({
   name,
@@ -15,21 +17,20 @@ export function ProjectCard({
   bannerUrl,
 }: Round) {
   return (
-    <div className="relative h-64 overflow-hidden rounded-3xl border shadow-xl">
-      <BackgroundImage className="h-28 bg-gray-100" src={bannerUrl} />
-      {/* <Avatar className="absolute -mt-6 border-2 border-white">
-        <AvatarImage src={avatarUrl} alt={name} />
-        <AvatarFallback></AvatarFallback>
-      </Avatar> */}
-      <div className="p-4">
-        <h3 className="text-base font-medium text-gray-800">{name}</h3>
-        <p className="text-xs leading-6">{description}</p>
-        <div className="">
-          <TokenAmount {...matching} />
-        </div>
-        <div className="">{applications?.length} projects</div>
-        <div className="">Network: {chainId}</div>
+    <Card className="relative overflow-hidden rounded-3xl shadow-xl">
+      <div className="">
+        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
       </div>
-    </div>
+      <div className="-mt-12 ml-2 inline-flex rounded-full bg-white p-0.5">
+        <Avatar className="size-8">
+          <AvatarImage src={avatarUrl} alt={name} />
+          <AvatarFallback></AvatarFallback>
+        </Avatar>
+      </div>
+      <CardContent className="space-y-2 p-4">
+        <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
+        <p className="line-clamp-3 text-xs leading-6">{description}</p>
+      </CardContent>
+    </Card>
   );
 }

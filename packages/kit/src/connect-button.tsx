@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useAccount, useConnect, useDisconnect, useReconnect } from "wagmi";
+import { Button } from "./ui/button";
 
 export function ConnectButton() {
   const ref = useRef(null);
@@ -15,21 +16,21 @@ export function ConnectButton() {
   }, []);
 
   if (address) {
-    return <button onClick={() => disconnect()}>Disconnect</button>;
+    return <Button onClick={() => disconnect()}>Disconnect</Button>;
   }
   return (
     <div>
-      <button onClick={() => setOpen(true)}>Connect</button>
+      <Button onClick={() => setOpen(true)}>Connect</Button>
 
-      <dialog ref={ref} open={isOpen} className="border p-4 space-y-2">
+      <dialog ref={ref} open={isOpen} className="space-y-2 border p-4">
         {connectors.map((connector) => (
-          <button
+          <Button
             key={connector.uid}
             className="block"
             onClick={() => (connect({ connector }), setOpen(false))}
           >
             {connector.name}
-          </button>
+          </Button>
         ))}
       </dialog>
     </div>

@@ -1,7 +1,8 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
-import { API, RoundsQuery } from "../api/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { API, RoundInput, RoundsQuery } from "../api/types";
 import { useAPI } from "..";
+import { useWalletClient } from "wagmi";
 
 const defaultQuery = {
   where: {},
@@ -25,5 +26,15 @@ export function useRoundById(id: RoundParams[0], opts?: RoundParams[1]) {
     queryKey: ["round", { id, opts }],
     queryFn: async () => api.roundById(id, opts),
     enabled: Boolean(id),
+  });
+}
+
+export function useCreateRound() {
+  const api = useAPI();
+  const { data: client } = useWalletClient();
+  return useMutation({
+    mutationFn: (data: RoundInput) => api.createRound(data, client!),
+    onSuccess: () => {}, // TODO: add toast
+    onError: () => {},
   });
 }

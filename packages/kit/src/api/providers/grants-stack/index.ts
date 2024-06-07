@@ -21,7 +21,7 @@ export const grantsStackAPI: Partial<API> = {
       variables: queryToFilter(query),
     }).then((res) => (res?.rounds ?? []).map(transformers.round));
   },
-  roundById: (id: string, opts) => {
+  roundById: (id, opts) => {
     return request<{ round: GSRound }>({
       url: apiURL,
       document: roundsByIdQuery,
@@ -45,7 +45,7 @@ export const grantsStackAPI: Partial<API> = {
       variables: queryToFilter(query),
     }).then((res) => (res?.rounds ?? []).map(transformers.project));
   },
-  projectById: (id: string, opts) => {
+  projectById: (id, opts) => {
     return request<{ project: GSProject }>({
       url: apiURL,
       document: projectsByIdQuery,
@@ -55,9 +55,6 @@ export const grantsStackAPI: Partial<API> = {
       },
     }).then((res) => transformers.project(res.project));
   },
-  // TODO: Implement Allo2 (implement it as a seperate provider so both GS and ezRPGF can use)
-  allocate: () => {},
-  distribute: () => {},
 };
 
 function validateDate(date?: string) {
@@ -97,7 +94,8 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       name: project?.metadata?.title,
       description: project?.metadata?.description,
       projectId: project?.id,
-      coverImageUrl: ipfsGateway(project?.metadata.bannerImg),
+      avatarUrl: ipfsGateway(project?.metadata.logoImg),
+      bannerUrl: ipfsGateway(project?.metadata.bannerImg),
     };
   },
 
@@ -106,6 +104,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     chainId,
     name,
     description: metadata?.description,
-    coverImageUrl: ipfsGateway(metadata?.bannerImg),
+    avatarUrl: ipfsGateway(metadata.logoImg),
+    bannerUrl: ipfsGateway(metadata?.bannerImg),
   }),
 };

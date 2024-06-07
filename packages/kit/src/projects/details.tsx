@@ -13,12 +13,12 @@ export function ProjectDetails({ id, opts }: ProjectDetailsProps) {
   const { data, isPending } = useProjectById(id, opts);
   return (
     <div className={"space-y-4"}>
+      <h1 className="text-2xl font-semibold">{data?.name}</h1>
       <BackgroundImage
-        className="bg-gray-100 h-64"
+        className="h-64 rounded-xl bg-gray-100"
         isLoading={isPending}
-        src={data?.coverImageUrl}
+        src={data?.bannerUrl}
       />
-      <h1 className="text-2xl font-medium">{data?.name}</h1>
       <Markdown>{data?.description}</Markdown>
     </div>
   );

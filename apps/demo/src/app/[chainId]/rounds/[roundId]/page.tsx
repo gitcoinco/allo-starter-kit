@@ -12,6 +12,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
 
       <h3 className="text-lg font-semibold">Approved Projects</h3>
       <DiscoverApplications
+        columns={[1, 3]}
         query={{
           take: 12,
           where: {
