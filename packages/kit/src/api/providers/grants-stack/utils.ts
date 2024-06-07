@@ -10,8 +10,14 @@ export function queryToFilter(query: RoundsQuery) {
   return {
     filter: renameKeys(query, {
       AND: "and",
+      OR: "or",
+      NOT: "not",
       equals: "equalTo",
       gte: "greaterThanOrEqualTo",
+      roundStart: "applicationsStartTime",
+      allocateStart: "donationsStartTime",
+      distributeStart: "donationsEndTime",
+      roundEnd: "donationsEndTime",
     }).where,
     offset: query.skip,
     first: query.take,

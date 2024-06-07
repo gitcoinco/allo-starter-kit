@@ -1,3 +1,5 @@
+import { Address, WalletClient } from "viem";
+
 type OrderBy = "asc" | "desc";
 
 interface Query {
@@ -22,6 +24,10 @@ type RoundQueryWhere = {
   roundId?: Compare;
   status?: Compare;
   createdAt?: Compare;
+  roundStart?: Compare;
+  allocateStart?: Compare;
+  distributeStart?: Compare;
+  roundEnd?: Compare;
   AND?: RoundQueryWhere[];
 };
 
@@ -33,6 +39,10 @@ export type Ballot = Record<string, Allocation>;
 export interface API {
   rounds: (query: RoundsQuery) => Promise<Round[]>;
   roundById: (id: string, opts?: QueryOpts) => Promise<Round | undefined>;
+  createRound: (
+    data: RoundInput,
+    signer: WalletClient,
+  ) => Promise<RoundCreated>;
   projects: (query: RoundsQuery) => Promise<Project[]>;
   projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
   applications: (query: RoundsQuery) => Promise<Application[]>;
@@ -40,11 +50,12 @@ export interface API {
     id: string,
     opts?: QueryOpts,
   ) => Promise<Project | undefined>;
-  ballot: () => Promise<Ballot | undefined>;
-  addToBallot: (ballot: Ballot) => Promise<Ballot>;
-  saveBallot: (ballot: Ballot) => Promise<Ballot>;
+  ballot: () => Promise<Ballot | Error>;
+  addToBallot: (ballot: Ballot) => Promise<Ballot | Error>;
+  saveBallot: (ballot: Ballot) => Promise<Ballot | Error>;
   allocate: () => void;
   distribute: () => void;
+  uploadMetadata: (data: unknown) => Promise<string>;
 }
 // Transforms data from API into a common shape
 
@@ -62,6 +73,7 @@ export type Round = {
   strategy?: { name?: string; address: string };
   applications?: { id: string }[];
   matching: { amount: bigint; token: string };
+  avatarUrl?: string;
   bannerUrl?: string;
   phases: {
     roundStart?: string;
@@ -70,18 +82,32 @@ export type Round = {
     roundEnd?: string;
   };
 };
+
+export type RoundInput = {
+  name: string;
+  description?: string;
+  strategyAddress: Address;
+  tokenAddress?: Address;
+  bannerUrl?: string;
+  chainId: number;
+  managers?: Address[];
+  initStrategyData: Record<string, unknown>;
+};
+export type RoundCreated = { id: string; chainId: number };
 export type Application = {
   id: string;
   chainId: number;
   projectId: string;
   name: string;
   description?: string;
-  coverImageUrl?: string;
+  avatarUrl?: string;
+  bannerUrl?: string;
 };
 export type Project = {
   id: string;
   name: string;
   chainId: number;
   description?: string;
-  coverImageUrl?: string;
+  avatarUrl?: string;
+  bannerUrl?: string;
 };

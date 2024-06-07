@@ -37,14 +37,14 @@ export function RoundCard({
       <div className="">
         <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
         <h3 className="-mt-8 truncate pl-1 text-2xl font-medium text-gray-100">
-          {name}
+          {name ?? "?"}
         </h3>
       </div>
       <CardContent className="space-y-2 p-4">
         <div className="">
           by <Badge variant={"secondary"}>ORG</Badge>
         </div>
-        <p className="line-clamp-4 text-base leading-6">{description}</p>
+        <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
         <div className="flex items-center justify-between text-xs">
           <div className="font-mono">{getRoundTime(phases)}</div>
           <Badge>Quadratic</Badge>

@@ -23,11 +23,12 @@ export default function Home() {
       */
 
         where: {
-          chainId: { in: [10] },
+          chainId: { in: [11155111] },
           // tags: { contains: ["allo-v2"] },
-          // donationsEndTime: { gte: new Date().toISOString() },
+          // roundStart: { gte: new Date().toISOString() },
         },
-        orderBy: { unique_donors_count: "desc" },
+        orderBy: { created_at_block: "desc" },
+        // orderBy: { unique_donors_count: "desc" },
         skip: 0,
         take: 12,
       }}

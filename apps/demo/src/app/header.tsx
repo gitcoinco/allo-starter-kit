@@ -10,6 +10,10 @@ export function Header() {
         <span className="text-xs">demo</span>
       </Link>
 
+      <nav>
+        <Link href={"/admin/round/create"}>Create Round</Link>
+      </nav>
+
       <ConnectButton />
     </header>
   );
