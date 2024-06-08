@@ -25,6 +25,7 @@ function getProfileId(address: Address): Address {
 
 export const alloNativeToken: Address =
   "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+
 export const allo2API: Partial<API> = {
   createRound: async function (data, signer) {
     try {
@@ -36,22 +37,21 @@ export const allo2API: Partial<API> = {
       // Annoying that a profile must be created to deploy a pool
       const profileId = await getOrCreateProfile(signer);
 
-      // TODO: handle other strategies - check the strategy type from strategyAddress to gitcoin-chain-data
-      const initStrategyData = encoders.directGrants(data.initStrategyData);
-      const { name, description } = data;
-      const pointer =
-        (await this.uploadMetadata?.({ name, description })) ?? "";
+      const { name, description, strategy, token, managers, initStrategyData } =
+        data;
 
+      const pointer = await this.uploadMetadata?.({ name, description });
+      const metadata = { protocol: 1n, pointer: pointer || "" };
       const tx = allo.createPool({
         profileId,
-        strategy: data.strategyAddress,
-        token: data.tokenAddress || alloNativeToken,
-        managers: [signer.account?.address!, ...(data.managers ?? [])].map(
+        strategy,
+        token: token || alloNativeToken,
+        managers: [signer.account?.address!, ...(managers ?? [])].map(
           getAddress,
         ),
         // TODO: add data.initialFunding
         amount: 0n,
-        metadata: { protocol: 1n, pointer },
+        metadata,
         initStrategyData,
       });
 
@@ -156,6 +156,6 @@ function encodeDirectGrantsLiteData(data: {
   );
 }
 
-function dateToUint64(date: Date) {
+export function dateToUint64(date: Date) {
   return BigInt(Math.round(Number(date) / 1000));
 }

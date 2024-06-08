@@ -64,7 +64,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   round: ({
     id,
     chainId,
-    roundMetadata: { name, eligibility: { description } = { description: "" } },
+    roundMetadata: { name, title, description, eligibility },
     matchAmount,
     matchTokenAddress,
     applications,
@@ -75,8 +75,8 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   }: GSRound): Round => ({
     id,
     chainId,
-    name,
-    description,
+    name: name || title || "?",
+    description: description || eligibility?.description,
     applications,
     matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
     phases: {

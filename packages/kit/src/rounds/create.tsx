@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
   Form,
@@ -18,62 +18,36 @@ import { Textarea } from "@/ui/textarea";
 import { useCreateRound } from "@/hooks/useRounds";
 import { Address, getAddress, isAddress } from "viem";
 import { RoundCreated } from "@/api/types";
+import {
+  schema as directGrantsSchema,
+  defaultValues as directGrantsDefaultValues,
+  DirectGrantsForm,
+} from "./strategies/direct-grants";
+import { createElement } from "react";
 
+// TODO: move this to /schemas.ts
 export const EthAddressSchema = z.custom<Address>(
   (val) => isAddress(val as Address),
   "Invalid address",
 );
 
-const formSchema = z.object({
+const strategyAddons = {
+  directGrants: {
+    schema: directGrantsSchema,
+    defaultValues: directGrantsDefaultValues,
+    component: DirectGrantsForm,
+  },
+};
+
+const baseRoundSchema = z.object({
   name: z.string().min(2, {
     message: "Round name must be at least 2 characters.",
   }),
   description: z.string().optional(),
-  strategyAddress: EthAddressSchema,
+  strategy: EthAddressSchema,
+  token: EthAddressSchema.optional(),
   chainId: z.number(),
 });
-
-const contractSchemas = {
-  directGrants: z.object({
-    initStrategyData: z.object({
-      registrationStartTime: z.string(),
-      registrationEndTime: z.string(),
-    }),
-  }),
-};
-function DirectGrantsForm() {
-  const { control } = useFormContext();
-  return (
-    <>
-      <FormField
-        control={control}
-        name="initStrategyData.registrationStartTime"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Registration starts</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={control}
-        name="initStrategyData.registrationEndTime"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Registration ends</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
-  );
-}
 
 export function CreateRound({
   strategies,
@@ -82,33 +56,39 @@ export function CreateRound({
   strategies: Address[];
   onCreated: (round: RoundCreated) => void;
 }) {
-  const schema = formSchema.merge(contractSchemas.directGrants);
-  const create = useCreateRound();
+  // TODO: Make this dynamic when user selects one of the schemas in the dropdown
+  const strategy = "directGrants";
+  const {
+    schema: schemaAddon,
+    component,
+    defaultValues,
+  } = strategyAddons[strategy];
+  // Merge strategy schema into base round schema
+  const schema = baseRoundSchema.merge(
+    z.object({ initStrategyData: schemaAddon }),
+  );
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       description: "",
+      strategy: getAddress(strategies[0]!),
+      initStrategyData: defaultValues as Address,
+      // TODO: should be dropdowns
       chainId: 11155111,
-      strategyAddress: getAddress(strategies[0]!),
-
-      initStrategyData: {
-        registrationStartTime: new Date().toISOString(),
-        registrationEndTime: new Date(
-          Date.now() + 1000 * 3600 * 24 * 30,
-        ).toISOString(),
-      },
+      token: undefined,
     },
   });
 
+  const create = useCreateRound();
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit((values) => {
-          console.log(values);
+          console.log("create round", values);
           create.mutate(values, { onSuccess: onCreated });
         })}
-        className="space-y-4"
+        className="mx-auto max-w-screen-sm space-y-4"
       >
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-semibold">Create round</h3>
@@ -144,7 +124,7 @@ export function CreateRound({
         />
         <FormField
           control={form.control}
-          name="strategyAddress"
+          name="strategy"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Strategy address</FormLabel>
@@ -173,7 +153,8 @@ export function CreateRound({
             </FormItem>
           )}
         />
-        <DirectGrantsForm />
+        {/* Render Strategy-specific form elements */}
+        {createElement(component)}
       </form>
     </Form>
   );
