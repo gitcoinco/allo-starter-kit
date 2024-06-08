@@ -86,12 +86,12 @@ export type Round = {
 export type RoundInput = {
   name: string;
   description?: string;
-  strategyAddress: Address;
-  tokenAddress?: Address;
+  strategy: Address;
+  token?: Address;
   bannerUrl?: string;
   chainId: number;
   managers?: Address[];
-  initStrategyData: Record<string, unknown>;
+  initStrategyData: Address;
 };
 export type RoundCreated = { id: string; chainId: number };
 export type Application = {

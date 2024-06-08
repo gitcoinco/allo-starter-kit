@@ -1,5 +1,7 @@
 type GSRoundMetadata = {
   name: string;
+  title?: string;
+  description?: string;
   eligibility: {
     description: string;
     requirements?: { requirement: string }[];
