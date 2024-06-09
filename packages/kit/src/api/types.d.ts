@@ -45,17 +45,25 @@ export interface API {
   ) => Promise<RoundCreated>;
   projects: (query: RoundsQuery) => Promise<Project[]>;
   projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
+  createProject: (
+    data: ProjectInput,
+    signer: WalletClient,
+  ) => Promise<ProjectCreated>;
   applications: (query: RoundsQuery) => Promise<Application[]>;
   applicationById: (
     id: string,
     opts?: QueryOpts,
   ) => Promise<Project | undefined>;
+  createApplication: (
+    data: ApplicationInput,
+    signer: WalletClient,
+  ) => Promise<ApplicationCreated>;
   ballot: () => Promise<Ballot | Error>;
   addToBallot: (ballot: Ballot) => Promise<Ballot | Error>;
   saveBallot: (ballot: Ballot) => Promise<Ballot | Error>;
   allocate: () => void;
   distribute: () => void;
-  uploadMetadata: (data: unknown) => Promise<string>;
+  upload: (data: FormData) => Promise<string>;
 }
 // Transforms data from API into a common shape
 
@@ -65,12 +73,17 @@ export interface Transformers<TRound, TApplication, TProject> {
   project: (project: TProject) => Project;
 }
 
-export type Round = {
+type BaseRound = {
+  token?: Address;
+  strategy: Address;
+  managers?: Address[];
+};
+export type Round = BaseRound & {
   id: string;
-  chainId: number;
   name: string;
   description: string;
-  strategy?: { name?: string; address: string };
+  bannerUrl?: string;
+  chainId: number;
   applications?: { id: string }[];
   matching: { amount: bigint; token: string };
   avatarUrl?: string;
@@ -83,31 +96,41 @@ export type Round = {
   };
 };
 
-export type RoundInput = {
-  name: string;
-  description?: string;
-  strategy: Address;
-  token?: Address;
-  bannerUrl?: string;
-  chainId: number;
-  managers?: Address[];
+export type RoundInput = BaseRound & {
+  metadata: { protocol: bigint; pointer: string };
   initStrategyData: Address;
 };
 export type RoundCreated = { id: string; chainId: number };
-export type Application = {
+
+type BaseApplication = {
+  // name: string;
+  // description?: string;
+  // avatarUrl?: string;
+  // bannerUrl?: string;
+};
+export type Application = BaseApplication & {
   id: string;
   chainId: number;
   projectId: string;
+};
+
+export type ApplicationInput = BaseApplication & {
+  roundId: string;
+  strategyData: Address;
+};
+
+export type ApplicationCreated = { id: string; chainId: number };
+
+type BaseProject = {
   name: string;
   description?: string;
   avatarUrl?: string;
   bannerUrl?: string;
 };
-export type Project = {
+export type Project = BaseProject & {
   id: string;
-  name: string;
   chainId: number;
-  description?: string;
-  avatarUrl?: string;
-  bannerUrl?: string;
 };
+export type ProjectInput = BaseProject & {};
+
+export type ProjectCreated = { id: string; chainId: number };

@@ -24,7 +24,7 @@ const defaultApi: API = {
   ballot: async () => new Error("Not Implemented: Ballot"),
   saveBallot: async () => new Error("Not Implemented: Ballot Save"),
   addToBallot: async () => new Error("Not Implemented: Ballot Add"),
-  uploadMetadata: async () => new Error("Not Implemented: Upload Metadata"),
+  upload: async () => new Error("Not Implemented: Upload Metadata"),
   ...grantsStackAPI,
   ...allo2API,
 };

@@ -37,18 +37,15 @@ export const allo2API: Partial<API> = {
       // Annoying that a profile must be created to deploy a pool
       const profileId = await getOrCreateProfile(signer);
 
-      const { name, description, strategy, token, managers, initStrategyData } =
-        data;
+      const { metadata, strategy, token, managers, initStrategyData } = data;
 
-      const pointer = await this.uploadMetadata?.({ name, description });
-      const metadata = { protocol: 1n, pointer: pointer || "" };
+      // const pointer = await this.uploadMetadata?.({ name, description });
+      // const metadata = { protocol: 1n, pointer: pointer || "" };
       const tx = allo.createPool({
         profileId,
         strategy,
         token: token || alloNativeToken,
-        managers: [signer.account?.address!, ...(managers ?? [])].map(
-          getAddress,
-        ),
+        managers: [address, ...(managers ?? [])].map(getAddress),
         // TODO: add data.initialFunding
         amount: 0n,
         metadata,
@@ -70,6 +67,50 @@ export const allo2API: Partial<API> = {
           return { id, chainId: signer.chain?.id };
         },
       );
+    } catch (error) {
+      console.log(error);
+      throw error as Error;
+    }
+  },
+  createApplication: async function (data, signer) {
+    try {
+      if (!signer?.account) throw new Error("Signer missing");
+      const address = getAddress(signer.account?.address);
+      const allo = new Allo(createAlloOpts(signer.chain!));
+
+      const client = signer.extend(publicActions);
+
+      const { roundId, strategyData } = data;
+      // const pointer = await this.uploadMetadata?.({ name, description });
+
+      const tx = allo.registerRecipient(roundId, strategyData);
+
+      const hash = await signer.sendTransaction({
+        ...tx,
+        account: address,
+        chain: signer.chain,
+      });
+
+      const chainId = signer.chain?.id;
+      return { id: "id", chainId };
+    } catch (error) {
+      console.log(error);
+      throw error as Error;
+    }
+  },
+  createProject: async function (data, signer) {
+    try {
+      if (!signer?.account) throw new Error("Signer missing");
+      const address = getAddress(signer.account?.address);
+      const allo = new Allo(createAlloOpts(signer.chain!));
+
+      const client = signer.extend(publicActions);
+
+      const { name, description } = data;
+      // const pointer = await this.uploadMetadata?.({ name, description });
+
+      const chainId = signer.chain?.id;
+      return { id: "id", chainId };
     } catch (error) {
       console.log(error);
       throw error as Error;
