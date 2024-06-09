@@ -16,12 +16,8 @@ export function Providers({
       <ApiProvider
         provider={grantsStackAPI}
         api={{
-          uploadMetadata: async (data: unknown) =>
-            fetch(`/api/ipfs`, {
-              method: "POST",
-              body: JSON.stringify(data),
-              headers: { "content-type": "application/json" },
-            })
+          upload: async (data) =>
+            fetch(`/api/ipfs`, { method: "POST", body: data })
               .then((r) => r.json())
               .then((r) => r.url),
         }}

@@ -19,7 +19,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
           </Link>
         }
         primaryAction={
-          <Link href={`/${chainId}/rounds/${roundId}/apply`}>
+          <Link href={`/${chainId}/applications/create`}>
             <Button>Apply to Round</Button>
           </Link>
         }

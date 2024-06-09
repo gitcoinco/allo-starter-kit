@@ -10,8 +10,9 @@ export function Header() {
         <span className="text-xs">demo</span>
       </Link>
 
-      <nav>
+      <nav className="flex gap-8">
         <Link href={"/admin/round/create"}>Create Round</Link>
+        <Link href={"/11155111/projects/create"}>Create Project</Link>
       </nav>
 
       <ConnectButton />
