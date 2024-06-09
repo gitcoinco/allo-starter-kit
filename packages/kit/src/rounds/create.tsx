@@ -49,6 +49,7 @@ const baseRoundSchema = z.object({
   bannerUrl: z.string().optional(),
   strategy: EthAddressSchema,
   token: EthAddressSchema.optional(),
+  amount: z.coerce.bigint().optional(),
   chainId: z.number(),
   managers: z.string().transform((v) =>
     v
@@ -79,6 +80,7 @@ export function CreateRound({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
+      amount: 0n,
       name: "",
       description: "",
       strategy: getAddress(strategies[0]!),
@@ -178,6 +180,35 @@ export function CreateRound({
                 <FormLabel>Strategy address</FormLabel>
                 <FormControl>
                   <Input disabled {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="gap-2 sm:flex">
+          <FormField
+            control={form.control}
+            name="token"
+            render={({ field }) => (
+              <FormItem className="">
+                {/* TODO: Dropdown with token names */}
+                <FormLabel>Token</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Initial funding amount</FormLabel>
+                <FormControl>
+                  <Input {...field} value={Number(field.value)} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -99,6 +99,7 @@ export type Round = BaseRound & {
 export type RoundInput = BaseRound & {
   metadata: { protocol: bigint; pointer: string };
   initStrategyData: Address;
+  amount?: bigint;
 };
 export type RoundCreated = { id: string; chainId: number };
 

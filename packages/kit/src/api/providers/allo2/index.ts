@@ -37,17 +37,21 @@ export const allo2API: Partial<API> = {
       // Annoying that a profile must be created to deploy a pool
       const profileId = await getOrCreateProfile(signer);
 
-      const { metadata, strategy, token, managers, initStrategyData } = data;
+      const {
+        amount,
+        metadata,
+        strategy,
+        token = alloNativeToken,
+        managers = [],
+        initStrategyData,
+      } = data;
 
-      // const pointer = await this.uploadMetadata?.({ name, description });
-      // const metadata = { protocol: 1n, pointer: pointer || "" };
       const tx = allo.createPool({
         profileId,
         strategy,
-        token: token || alloNativeToken,
-        managers: [address, ...(managers ?? [])].map(getAddress),
-        // TODO: add data.initialFunding
-        amount: 0n,
+        token,
+        managers,
+        amount,
         metadata,
         initStrategyData,
       });
