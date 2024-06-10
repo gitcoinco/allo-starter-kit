@@ -21,9 +21,10 @@ export default function Home() {
       - order by when they were created, newest first
       - with skip and take we can paginate the results and decide how many to show
       */
-
         where: {
           chainId: { in: [11155111] },
+          // Approved applications
+          application: { status: { in: ["APPROVED"] } },
           // tags: { contains: ["allo-v2"] },
           // roundStart: { gte: new Date().toISOString() },
         },

@@ -18,10 +18,15 @@ strategyName
 strategyAddress
 `;
 export const roundsQuery = gql`
-  query Rounds($first: Int, $offset: Int, $orderBy: [RoundsOrderBy!], $filter: RoundFilter) {
+  query Rounds($first: Int, $offset: Int, $orderBy: [RoundsOrderBy!], $filter: RoundFilter, $application_filter: ApplicationFilter, $roles_filter: RoundRoleFilter) {
     rounds(first: $first, offset: $offset, orderBy: $orderBy, filter: $filter) {
       ${ROUND_FRAGMENT}
-      applications(first: 1000, filter: { status: { equalTo: APPROVED } }) {
+      roles(first: 1000, filter: $roles_filter) {
+        address
+        role
+      }
+      applications(first: 1000, filter: $application_filter) {
+      # applications(first: 1000, filter: { status: { equalTo: APPROVED } }) {
         id
       }
     }

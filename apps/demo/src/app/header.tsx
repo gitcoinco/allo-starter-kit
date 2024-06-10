@@ -11,7 +11,8 @@ export function Header() {
       </Link>
 
       <nav className="flex gap-8">
-        <Link href={"/admin/round/create"}>Create Round</Link>
+        <Link href={"/admin/rounds"}>My Rounds</Link>
+        <Link href={"/admin/rounds/create"}>Create Round</Link>
         <Link href={"/11155111/projects/create"}>Create Project</Link>
       </nav>
 

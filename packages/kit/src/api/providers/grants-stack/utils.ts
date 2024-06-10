@@ -7,18 +7,24 @@ export function queryToFilter(query: RoundsQuery) {
   const orderBy = Object.entries(query.orderBy ?? {})[0]
     ?.map((v) => v.toUpperCase())
     .join("_");
+
+  const filter = renameKeys(query, {
+    AND: "and",
+    OR: "or",
+    NOT: "not",
+    equals: "equalTo",
+    gte: "greaterThanOrEqualTo",
+    createdBy: "createdByAddress",
+    roundStart: "applicationsStartTime",
+    allocateStart: "donationsStartTime",
+    distributeStart: "donationsEndTime",
+    roundEnd: "donationsEndTime",
+  }).where;
+
   return {
-    filter: renameKeys(query, {
-      AND: "and",
-      OR: "or",
-      NOT: "not",
-      equals: "equalTo",
-      gte: "greaterThanOrEqualTo",
-      roundStart: "applicationsStartTime",
-      allocateStart: "donationsStartTime",
-      distributeStart: "donationsEndTime",
-      roundEnd: "donationsEndTime",
-    }).where,
+    filter: removeEmpty(omit(filter, ["application", "roles"])),
+    application_filter: pick(filter, ["application"])?.application,
+    roles_filter: pick(filter, ["roles"])?.roles,
     offset: query.skip,
     first: query.take,
     orderBy,
@@ -44,4 +50,17 @@ function renameKeys(
   }
 
   return rename(query) as RoundsQuery;
+}
+function removeEmpty(obj: unknown) {
+  return Object.keys(obj as {}).length ? obj : undefined;
+}
+function omit(obj: unknown, keys: string[]) {
+  return Object.fromEntries(
+    Object.entries(obj as {}).filter(([key]) => !keys.includes(key)),
+  );
+}
+function pick(obj: unknown, keys: string[]) {
+  return Object.fromEntries(
+    Object.entries(obj as {}).filter(([key]) => keys.includes(key)),
+  );
 }
