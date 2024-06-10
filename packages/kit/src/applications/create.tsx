@@ -3,49 +3,43 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/ui/form";
-import { Input } from "@/ui/input";
+import { Form } from "@/ui/form";
 import { Button } from "@/ui/button";
-import { Textarea } from "@/ui/textarea";
-import { useCreateRound, useRoundById } from "@/hooks/useRounds";
+
+import { useRoundById } from "@/hooks/useRounds";
 import { ApplicationCreated, Round } from "@/api/types";
-import { Separator } from "@/ui/separator";
+
 import { useCreateApplication } from "@/hooks/useApplications";
+import { getStrategyAddon } from "@/strategies";
+import { createElement } from "react";
 
 const baseApplicationSchema = z.object({
-  roundId: z.bigint(),
-  strategyData: z.string(),
-  // name: z.string().min(2, {
-  //   message: "Name must be at least 2 characters.",
-  // }),
-  // description: z.string().optional(),
-  // project: z.string().optional(),
+  roundId: z.coerce.bigint(),
 });
 
 function ApplicationForm({
   defaultValues,
   round,
+  onCreated,
 }: {
   round: Round;
   defaultValues: z.infer<typeof baseApplicationSchema>;
+  onCreated: (application: ApplicationCreated) => void;
 }) {
-  const schema = baseApplicationSchema;
+  const {
+    schema: schemaAddon,
+    component,
+    defaultValues: registerRecipientDefaultValues,
+  } = getStrategyAddon("directGrants", "registerRecipient");
+
+  // Merge strategy schema into base round schema
+  const schema = baseApplicationSchema.merge(
+    z.object({ strategyData: schemaAddon }),
+  );
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      ...defaultValues,
-      // roundId: "",
-      // description: "",
-      // project: "",
-    },
+    defaultValues,
   });
 
   const create = useCreateApplication();
@@ -66,41 +60,8 @@ function ApplicationForm({
             Create
           </Button>
         </div>
-
-        <div className="flex items-end gap-4">
-          <FormField
-            control={form.control}
-            name="project"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Project address</FormLabel>
-                <FormControl>
-                  <Input placeholder="0x..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <span className="pb-2 text-muted-foreground">or</span>
-          <div className="flex items-end gap-4">
-            <Button
-              variant={"outline"}
-              onClick={() => alert("Open Select Project dropdown")}
-            >
-              Select project
-            </Button>
-            <span className="pb-2 text-muted-foreground">or</span>
-            <Button
-              variant={"outline"}
-              onClick={() => alert("Open Create Project dialog")}
-            >
-              Create new project
-            </Button>
-          </div>
-        </div>
-        <div>
-          <Separator className="my-8" />
-        </div>
+        {/* Render Strategy-specific form elements */}
+        {createElement(component)}
       </form>
     </Form>
   );
@@ -116,14 +77,14 @@ export function CreateApplication({
 }) {
   const { data: round, isPending } = useRoundById(roundId, { chainId });
 
-  console.log("round", round);
   if (isPending) return <div>loading round...</div>;
   if (!round) return <div>Round not found</div>;
   return (
     <ApplicationForm
       round={round}
+      onCreated={onCreated}
       defaultValues={{
-        roundId,
+        roundId: BigInt(roundId),
       }}
     />
   );

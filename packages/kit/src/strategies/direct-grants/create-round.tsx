@@ -36,7 +36,7 @@ export const schema = z
     });
   });
 
-export function DirectGrantsForm() {
+export function CreateRoundForm() {
   const { control } = useFormContext();
   return (
     <>

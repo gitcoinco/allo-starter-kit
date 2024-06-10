@@ -1,7 +1,7 @@
 import { RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) =>
-  `https://gateway.pinata.cloud/ipfs/${cid}`;
+  cid?.includes("http") ? cid : `https://gateway.pinata.cloud/ipfs/${cid}`;
 
 export function queryToFilter(query: RoundsQuery) {
   const orderBy = Object.entries(query.orderBy ?? {})[0]

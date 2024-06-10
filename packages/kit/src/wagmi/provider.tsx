@@ -3,8 +3,13 @@
 import { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Config, WagmiProvider, createConfig, http } from "wagmi";
-import { mainnet, optimism, optimismSepolia, sepolia } from "viem/chains";
+import type { Chain } from "viem/chains";
+import * as wagmiChains from "viem/chains";
 import { injected } from "wagmi/connectors";
+
+import { getChains } from "@grants-labs/gitcoin-chain-data";
+
+export const supportedChains = getChains();
 
 function makeQueryClient() {
   return new QueryClient({
@@ -30,15 +35,14 @@ function getQueryClient() {
   }
 }
 
+export const chains: Chain[] = Object.values(wagmiChains).filter((chain) =>
+  supportedChains.map((c) => c.id).includes(chain.id),
+);
 const defaultConfig = createConfig({
-  chains: [mainnet, sepolia, optimism, optimismSepolia],
+  // Why is typings not working correctly here?
+  chains,
   connectors: [injected()],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [optimism.id]: http(),
-    [optimismSepolia.id]: http(),
-  },
+  transports: Object.fromEntries(chains.map((chain) => [chain.id, http()])),
 });
 export function Web3Provider({
   children,

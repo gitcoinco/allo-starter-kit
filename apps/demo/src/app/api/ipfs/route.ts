@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
     });
     const { IpfsHash } = await res.json();
     return NextResponse.json(
-      { url: `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${IpfsHash}` },
+      {
+        url: `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${IpfsHash}`,
+        cid: IpfsHash,
+      },
       { status: 200 }
     );
   } catch (e) {

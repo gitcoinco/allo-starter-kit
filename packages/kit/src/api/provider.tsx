@@ -5,10 +5,6 @@ import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
 import { API, RoundsQuery, QueryOpts, RoundInput } from "./types";
 
-import { getChains } from "@grants-labs/gitcoin-chain-data";
-
-const supportedChains = getChains();
-console.log(supportedChains);
 const Context = createContext({} as API);
 const defaultApi: API = {
   rounds: async (query: RoundsQuery) => [],
