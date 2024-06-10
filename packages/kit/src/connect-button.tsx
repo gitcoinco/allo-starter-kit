@@ -1,38 +1,52 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { useAccount, useConnect, useDisconnect, useReconnect } from "wagmi";
-import { Button } from "./ui/button";
+import { Button } from "@/ui/button";
+import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 
 export function ConnectButton() {
-  const ref = useRef(null);
-  const { address } = useAccount();
-  const { connectors, connect } = useConnect();
-  const { disconnect } = useDisconnect();
-  const [isOpen, setOpen] = useState(false);
-  const { reconnect } = useReconnect();
-
-  useEffect(() => {
-    reconnect();
-  }, []);
-
-  if (address) {
-    return <Button onClick={() => disconnect()}>Disconnect</Button>;
-  }
   return (
-    <div>
-      <Button onClick={() => setOpen(true)}>Connect</Button>
+    <RainbowConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        mounted,
+      }) => {
+        const connected = mounted && account && chain;
 
-      <dialog ref={ref} open={isOpen} className="space-y-2 border p-4">
-        {connectors.map((connector) => (
-          <Button
-            key={connector.uid}
-            className="block"
-            onClick={() => (connect({ connector }), setOpen(false))}
+        return (
+          <div
+            {...(!mounted && {
+              "aria-hidden": true,
+              style: {
+                opacity: 0,
+                pointerEvents: "none",
+                userSelect: "none",
+              },
+            })}
           >
-            {connector.name}
-          </Button>
-        ))}
-      </dialog>
-    </div>
+            {(() => {
+              if (!connected) {
+                return (
+                  <Button onClick={openConnectModal}>Connect Wallet</Button>
+                );
+              }
+
+              if (chain.unsupported) {
+                return <Button onClick={openChainModal}>Wrong network</Button>;
+              }
+
+              return (
+                <Button onClick={openAccountModal}>
+                  {account.displayName}
+                  {account.displayBalance ? ` (${account.displayBalance})` : ""}
+                </Button>
+              );
+            })()}
+          </div>
+        );
+      }}
+    </RainbowConnectButton.Custom>
   );
 }
