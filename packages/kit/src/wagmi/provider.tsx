@@ -1,8 +1,10 @@
 "use client";
+import "@rainbow-me/rainbowkit/styles.css";
 
 import { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Config, WagmiProvider, createConfig, http } from "wagmi";
+import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { Chain } from "viem/chains";
 import * as wagmiChains from "viem/chains";
 import { injected } from "wagmi/connectors";
@@ -38,12 +40,19 @@ function getQueryClient() {
 export const chains: Chain[] = Object.values(wagmiChains).filter((chain) =>
   supportedChains.map((c) => c.id).includes(chain.id),
 );
-const defaultConfig = createConfig({
-  // Why is typings not working correctly here?
+const defaultConfig = getDefaultConfig({
+  appName: "Allo Starter Kit",
+  projectId: "ffa6468a2accec2f1e59502fae10c166",
   chains,
-  connectors: [injected()],
-  transports: Object.fromEntries(chains.map((chain) => [chain.id, http()])),
+  ssr: true, // If your dApp uses server side rendering (SSR)
 });
+
+// const defaultConfig = createConfig({
+//   // Why is typings not working correctly here?
+//   chains,
+//   connectors: [injected()],
+//   transports: Object.fromEntries(chains.map((chain) => [chain.id, http()])),
+// });
 export function Web3Provider({
   children,
   config = defaultConfig,
@@ -51,7 +60,9 @@ export function Web3Provider({
   const queryClient = getQueryClient();
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>{children}</RainbowKitProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }
