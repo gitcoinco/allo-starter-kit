@@ -38,7 +38,7 @@ export const allo2API: Partial<API> = {
       const profileId = await getOrCreateProfile(signer);
 
       const {
-        amount,
+        amount = 0n,
         metadata,
         strategy,
         token = alloNativeToken,
@@ -91,12 +91,20 @@ export const allo2API: Partial<API> = {
 
       const hash = await signer.sendTransaction({
         ...tx,
+        value: 0n,
         account: address,
         chain: signer.chain,
       });
 
-      const chainId = signer.chain?.id;
-      return { id: "id", chainId };
+      // Wait for PoolCreated event and return poolId
+      return createLogDecoder(AlloABI, client)(hash, [
+        "UpdatedRegistration",
+      ]).then((logs) => {
+        const id = String(
+          (logs?.[0]?.args as { recipientId: Address }).recipientId,
+        );
+        return { id, chainId: signer.chain?.id };
+      });
     } catch (error) {
       console.log(error);
       throw error as Error;
@@ -111,7 +119,6 @@ export const allo2API: Partial<API> = {
       const client = signer.extend(publicActions);
 
       const { name, description } = data;
-      // const pointer = await this.uploadMetadata?.({ name, description });
 
       const chainId = signer.chain?.id;
       return { id: "id", chainId };
@@ -147,7 +154,7 @@ async function getOrCreateProfile(signer: WalletClient) {
         return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
           "ProfileCreated",
         ]).then(
-          (logs) => (logs?.[0]?.args as { profileId: Address }).profileId,
+          (logs) => (logs?.[0]?.args as { profileId: Address })?.profileId,
         );
       }
       return profile.id;

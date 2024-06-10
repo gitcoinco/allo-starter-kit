@@ -19,7 +19,7 @@ export function Providers({
           upload: async (data) =>
             fetch(`/api/ipfs`, { method: "POST", body: data })
               .then((r) => r.json())
-              .then((r) => r.url),
+              .then((r) => r.cid),
         }}
       >
         {children}

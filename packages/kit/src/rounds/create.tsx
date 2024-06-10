@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
   Form,
@@ -16,30 +16,15 @@ import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { useCreateRound } from "@/hooks/useRounds";
-import { Address, getAddress, isAddress } from "viem";
+import { Address, getAddress } from "viem";
 import { RoundCreated } from "@/api/types";
-import {
-  schema as directGrantsSchema,
-  defaultValues as directGrantsDefaultValues,
-  DirectGrantsForm,
-} from "./strategies/direct-grants";
-import { createElement } from "react";
+
+import { PropsWithChildren, createElement } from "react";
 import { ImageUpload } from "@/ui/image-upload";
 import { useUpload } from "@/hooks/useUpload";
-
-// TODO: move this to /schemas.ts
-export const EthAddressSchema = z.custom<Address>(
-  (val) => isAddress(val as Address),
-  "Invalid address",
-);
-
-const strategyAddons = {
-  directGrants: {
-    schema: directGrantsSchema,
-    defaultValues: directGrantsDefaultValues,
-    component: DirectGrantsForm,
-  },
-};
+import { EthAddressSchema } from "@/schemas";
+import { getStrategyAddon } from "@/strategies";
+import { EnsureCorrectNetwork } from "@/ui/correct-network";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -51,14 +36,30 @@ const baseRoundSchema = z.object({
   token: EthAddressSchema.optional(),
   amount: z.coerce.bigint().optional(),
   chainId: z.number(),
-  managers: z.string().transform((v) =>
-    v
-      .split(",")
-      .map((v) => v.trim())
-      .map(getAddress),
-  ),
+  managers: z
+    .string()
+    .optional()
+    .transform((v) =>
+      v
+        ?.split(",")
+        .map((v) => v.trim())
+        .map(getAddress),
+    ),
 });
 
+function CreateButton({
+  isLoading,
+  children,
+}: PropsWithChildren<{ isLoading: boolean }>) {
+  const chainId = useFormContext().watch("chainId");
+  return (
+    <EnsureCorrectNetwork chainId={chainId}>
+      <Button type="submit" isLoading={isLoading}>
+        {children}
+      </Button>
+    </EnsureCorrectNetwork>
+  );
+}
 export function CreateRound({
   strategies,
   onCreated,
@@ -72,7 +73,8 @@ export function CreateRound({
     schema: schemaAddon,
     component,
     defaultValues,
-  } = strategyAddons[strategy];
+  } = getStrategyAddon(strategy, "createRound");
+
   // Merge strategy schema into base round schema
   const schema = baseRoundSchema.merge(
     z.object({ initStrategyData: schemaAddon }),
@@ -119,16 +121,13 @@ export function CreateRound({
       >
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-semibold">Create round</h3>
-          <Button
-            type="submit"
-            isLoading={upload.isPending || create.isPending}
-          >
+          <CreateButton isLoading={upload.isPending || create.isPending}>
             {upload.isPending
               ? "Uploading metadata..."
               : create.isPending
                 ? "Signing transaction..."
                 : "Create"}
-          </Button>
+          </CreateButton>
         </div>
         <FormField
           control={form.control}

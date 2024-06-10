@@ -116,7 +116,7 @@ export type Application = BaseApplication & {
 };
 
 export type ApplicationInput = BaseApplication & {
-  roundId: string;
+  roundId: bigint;
   strategyData: Address;
 };
 

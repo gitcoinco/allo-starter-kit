@@ -10,6 +10,7 @@ import {
 import { ipfsGateway, queryToFilter } from "./utils";
 import { GSRound, GSApplication, GSProject } from "./types";
 import { isValid } from "date-fns";
+import { getAddress } from "viem";
 
 const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
 
@@ -72,6 +73,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     applicationsEndTime,
     donationsStartTime,
     donationsEndTime,
+    strategyAddress,
   }: GSRound): Round => ({
     id,
     chainId,
@@ -79,6 +81,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     description: description || eligibility?.description,
     applications,
     matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
+    strategy: getAddress(strategyAddress),
     phases: {
       roundStart: validateDate(applicationsStartTime),
       allocateStart: validateDate(donationsStartTime),

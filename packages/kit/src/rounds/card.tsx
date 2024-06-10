@@ -8,7 +8,9 @@ import { Separator } from "@/ui/separator";
 import { Card, CardContent } from "@/ui/card";
 
 import { isAfter, formatDistanceToNow } from "date-fns";
-import { Avatar, AvatarFallback } from "@/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
+import { useMemo } from "react";
+import { supportedChains } from "..";
 
 const toNow = (date?: string) =>
   date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
@@ -23,6 +25,9 @@ const getRoundTime = (phases: Round["phases"]): string => {
   return "";
 };
 
+const getNetwork = (chainId: number) =>
+  supportedChains?.find((chain) => chain.id === chainId);
+
 export function RoundCard({
   name,
   description,
@@ -32,6 +37,7 @@ export function RoundCard({
   bannerUrl,
   phases,
 }: Round) {
+  const network = useMemo(() => getNetwork(chainId), [chainId]);
   return (
     <Card className="relative overflow-hidden rounded-3xl shadow-xl">
       <div className="">
@@ -47,7 +53,7 @@ export function RoundCard({
         <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
         <div className="flex items-center justify-between text-xs">
           <div className="font-mono">{getRoundTime(phases)}</div>
-          <Badge>Quadratic</Badge>
+          <Badge>StrategyType</Badge>
         </div>
         <Separator className="my-2" />
         <div className="">
@@ -63,6 +69,7 @@ export function RoundCard({
               </div>
             </div>
             <Avatar className="size-8">
+              <AvatarImage src={network?.icon!} />
               <AvatarFallback>{chainId}</AvatarFallback>
             </Avatar>
           </div>
