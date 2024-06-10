@@ -1,3 +1,4 @@
+export * from "wagmi";
 export * from "./wagmi/provider";
 export * from "./api/provider";
 export * from "./api/providers/grants-stack";

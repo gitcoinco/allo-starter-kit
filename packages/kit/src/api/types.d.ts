@@ -16,6 +16,13 @@ type Compare = {
   contains?: (string | number)[];
   gte?: number;
 };
+type RoundQueryRolesWhere = {
+  address?: Compare;
+  role?: Compare;
+};
+type RoundQueryApplicationsWhere = {
+  status?: Compare;
+};
 type RoundQueryWhere = {
   id?: Compare;
   strategy?: Compare;
@@ -24,10 +31,13 @@ type RoundQueryWhere = {
   roundId?: Compare;
   status?: Compare;
   createdAt?: Compare;
+  createdBy?: Compare;
   roundStart?: Compare;
   allocateStart?: Compare;
   distributeStart?: Compare;
   roundEnd?: Compare;
+  application?: RoundQueryApplicationsWhere;
+  roles?: RoundQueryRolesWhere;
   AND?: RoundQueryWhere[];
 };
 

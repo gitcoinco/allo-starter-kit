@@ -1,6 +1,9 @@
 import { ComponentType, ReactNode } from "react";
 import { cn } from "../lib/utils";
 import { UseQueryResult } from "@tanstack/react-query";
+import { ErrorMessage } from "./error-message";
+import { Alert, AlertDescription, AlertTitle } from "./alert";
+import { Info } from "lucide-react";
 
 type ColumnValue = 0 | 1 | 2 | 3 | 4;
 type Columns = [ColumnValue?, ColumnValue?, ColumnValue?, ColumnValue?];
@@ -16,9 +19,14 @@ type Props<T> = UseQueryResult<T[], unknown> &
 export function Grid<T>({
   columns = [1, 1, 2, 3],
   data,
+  error,
+  isPending,
   component: Component,
   renderItem = (item, Component: any) => <Component {...item} />,
 }: Props<T>) {
+  if (error) return <ErrorMessage error={error} />;
+  if (!isPending && !data?.length) return <EmptyState />;
+
   return (
     <div className={cn("grid gap-4", gridClass(columns))}>
       {data?.map((item) => renderItem(item, Component))}
@@ -62,3 +70,15 @@ const columnMap = [
     4: "xl:grid-cols-4",
   },
 ] as const;
+
+function EmptyState() {
+  return (
+    <Alert>
+      <Info className="size-4" />
+      <AlertTitle>No results found!</AlertTitle>
+      <AlertDescription>
+        Couldn&apos;t find any results matching your query
+      </AlertDescription>
+    </Alert>
+  );
+}
