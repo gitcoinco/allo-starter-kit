@@ -25,6 +25,14 @@ import { useUpload } from "@/hooks/useUpload";
 import { EthAddressSchema } from "@/schemas";
 import { getStrategyAddon } from "@/strategies";
 import { EnsureCorrectNetwork } from "@/ui/correct-network";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/ui/select";
+import { supportedChains } from "..";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -35,7 +43,7 @@ const baseRoundSchema = z.object({
   strategy: EthAddressSchema,
   token: EthAddressSchema.optional(),
   amount: z.coerce.bigint().optional(),
-  chainId: z.number(),
+  chainId: z.coerce.number(),
   managers: z
     .string()
     .optional()
@@ -51,7 +59,8 @@ function CreateButton({
   isLoading,
   children,
 }: PropsWithChildren<{ isLoading: boolean }>) {
-  const chainId = useFormContext().watch("chainId");
+  const chainId = Number(useFormContext().watch("chainId"));
+
   return (
     <EnsureCorrectNetwork chainId={chainId}>
       <Button type="submit" isLoading={isLoading}>
@@ -98,6 +107,7 @@ export function CreateRound({
 
   const create = useCreateRound();
   const upload = useUpload();
+
   return (
     <Form {...form}>
       <form
@@ -160,12 +170,29 @@ export function CreateRound({
             control={form.control}
             name="chainId"
             render={({ field }) => (
-              <FormItem className="">
-                {/* TODO: Dropdown with network names */}
+              <FormItem className="min-w-48">
                 <FormLabel>Network</FormLabel>
-                <FormControl>
-                  <Input disabled {...field} />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={String(field.value)}
+                >
+                  <FormControl>
+                    <SelectTrigger className="capitalize">
+                      <SelectValue placeholder="Select a network" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {supportedChains.map((network) => (
+                      <SelectItem
+                        key={network.id}
+                        value={String(network.id)}
+                        className="capitalize"
+                      >
+                        {network.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
