@@ -11,6 +11,7 @@ export function EnsureCorrectNetwork({
   const connectedNetwork = useChainId();
   const { isConnecting } = useAccount();
   const { switchChain } = useSwitchChain();
+
   if (connectedNetwork !== chainId)
     return (
       <Button isLoading={isConnecting} onClick={() => switchChain({ chainId })}>

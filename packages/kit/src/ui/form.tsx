@@ -7,6 +7,7 @@ import {
   FieldPath,
   FieldValues,
   FormProvider,
+  useForm,
   useFormContext,
 } from "react-hook-form";
 
@@ -174,4 +175,6 @@ export {
   FormDescription,
   FormMessage,
   FormField,
+  useForm,
+  useFormContext,
 };

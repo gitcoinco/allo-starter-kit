@@ -10,7 +10,7 @@ import { useRoundById } from "@/hooks/useRounds";
 import { ApplicationCreated, Round } from "@/api/types";
 
 import { useCreateApplication } from "@/hooks/useApplications";
-import { getStrategyAddon } from "@/strategies";
+import { StrategyAddon, useStrategyAddon } from "@/strategies";
 import { createElement } from "react";
 
 const baseApplicationSchema = z.object({
@@ -20,22 +20,18 @@ const baseApplicationSchema = z.object({
 function ApplicationForm({
   defaultValues,
   round,
+  addon,
   onCreated,
 }: {
   round: Round;
+  addon?: StrategyAddon;
   defaultValues: z.infer<typeof baseApplicationSchema>;
   onCreated: (application: ApplicationCreated) => void;
 }) {
-  const {
-    schema: schemaAddon,
-    component,
-    defaultValues: registerRecipientDefaultValues,
-  } = getStrategyAddon("directGrants", "registerRecipient");
-
   // Merge strategy schema into base round schema
-  const schema = baseApplicationSchema.merge(
-    z.object({ strategyData: schemaAddon }),
-  );
+  const schema = addon
+    ? baseApplicationSchema.merge(z.object({ strategyData: addon.schema }))
+    : baseApplicationSchema;
 
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -61,11 +57,12 @@ function ApplicationForm({
           </Button>
         </div>
         {/* Render Strategy-specific form elements */}
-        {createElement(component)}
+        {addon && createElement(addon.component)}
       </form>
     </Form>
   );
 }
+
 export function CreateApplication({
   chainId,
   roundId,
@@ -79,9 +76,12 @@ export function CreateApplication({
 
   if (isPending) return <div>loading round...</div>;
   if (!round) return <div>Round not found</div>;
+
+  const addon = useStrategyAddon("registerRecipient", round);
   return (
     <ApplicationForm
       round={round}
+      addon={addon}
       onCreated={onCreated}
       defaultValues={{
         roundId: BigInt(roundId),

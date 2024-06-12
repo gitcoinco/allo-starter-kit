@@ -41,7 +41,7 @@ export const allo2API: Partial<API> = {
         amount = 0n,
         metadata,
         strategy,
-        token = alloNativeToken,
+        token,
         managers = [],
         initStrategyData,
       } = data;
@@ -49,7 +49,8 @@ export const allo2API: Partial<API> = {
       const tx = allo.createPool({
         profileId,
         strategy,
-        token,
+        // Set token address to native token if empty or zero address
+        token: !token || token === zeroAddress ? alloNativeToken : token,
         managers,
         amount,
         metadata,

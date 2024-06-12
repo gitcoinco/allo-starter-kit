@@ -90,13 +90,19 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     },
   }),
 
-  application: ({ id, chainId, project }: GSApplication): Application => {
+  application: ({
+    id,
+    chainId,
+    status,
+    project,
+  }: GSApplication): Application => {
     return {
       id,
       chainId,
       name: project?.metadata?.title,
       description: project?.metadata?.description,
       projectId: project?.id,
+      status,
       avatarUrl: ipfsGateway(project?.metadata.logoImg),
       bannerUrl: ipfsGateway(project?.metadata.bannerImg),
     };

@@ -7,11 +7,22 @@ import { Config, WagmiProvider, createConfig, http } from "wagmi";
 import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { Chain } from "viem/chains";
 import * as wagmiChains from "viem/chains";
-import { injected } from "wagmi/connectors";
 
 import { getChains } from "@grants-labs/gitcoin-chain-data";
 
-export const supportedChains = getChains();
+export const supportedChains = getChains().map((chain) => ({
+  ...chain,
+  // Temp: npm doesn't include the contracts data so this is just to test
+  contracts:
+    chain.id === 11155111
+      ? {
+          multiRoundCheckout: "0xa54A0c7Bcd37745f7F5817e06b07E2563a07E309",
+          quadraticFunding: "0x787eC93Dd71a90563979417879F5a3298389227f",
+          directGrants: "0xDC5c7873899118A927B2Df256bf8068cd056aeD2",
+          // directGrants: "0x79A5EEc2C87Cd2116195E71af7A38647f89C8Ffa",
+        }
+      : undefined,
+}));
 
 function makeQueryClient() {
   return new QueryClient({

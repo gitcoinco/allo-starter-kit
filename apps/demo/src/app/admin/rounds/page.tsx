@@ -9,7 +9,8 @@ export default function AdminRounds() {
     <DiscoverRounds
       query={{
         where: {
-          createdBy: { in: [address!] },
+          chainId: { in: [11155111] },
+          // createdBy: { in: [address!] },
           // Only rounds where we are admin or manager
           roles: {
             address: { in: [String(address)] },
@@ -21,7 +22,7 @@ export default function AdminRounds() {
       }}
       renderItem={(round, Component) => (
         <Link
-          href={`/admin/rounds/${round.id}?chainId=${round.chainId}/`}
+          href={`/admin/rounds/${round.chainId}/${round.id}`}
           key={round.id}
         >
           <Component {...round} />

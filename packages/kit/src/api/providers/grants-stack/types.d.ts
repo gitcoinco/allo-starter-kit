@@ -61,7 +61,7 @@ export type GSApplication = {
   chainId: number;
   roundId: string;
   projectId: string;
-  status: "APPROVED";
+  status: "APPROVED" | "PENDING";
   totalAmountDonatedInUsd: number;
   uniqueDonorsCount: number;
   totalDonationsCount: number;

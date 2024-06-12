@@ -114,15 +114,16 @@ export type RoundInput = BaseRound & {
 export type RoundCreated = { id: string; chainId: number };
 
 type BaseApplication = {
-  // name: string;
-  // description?: string;
-  // avatarUrl?: string;
-  // bannerUrl?: string;
+  name: string;
+  description?: string;
+  avatarUrl?: string;
+  bannerUrl?: string;
 };
 export type Application = BaseApplication & {
   id: string;
   chainId: number;
   projectId: string;
+  status: "APPROVED" | "PENDING" | "REJECTED";
 };
 
 export type ApplicationInput = BaseApplication & {

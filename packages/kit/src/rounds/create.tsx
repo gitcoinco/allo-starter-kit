@@ -16,14 +16,14 @@ import { Input } from "@/ui/input";
 import { Button } from "@/ui/button";
 import { Textarea } from "@/ui/textarea";
 import { useCreateRound } from "@/hooks/useRounds";
-import { Address, getAddress } from "viem";
+import { Address, getAddress, zeroAddress } from "viem";
 import { RoundCreated } from "@/api/types";
 
 import { PropsWithChildren, createElement } from "react";
 import { ImageUpload } from "@/ui/image-upload";
 import { useUpload } from "@/hooks/useUpload";
 import { EthAddressSchema } from "@/schemas";
-import { getStrategyAddon } from "@/strategies";
+import { StrategyType, getStrategyAddon } from "@/strategies";
 import { EnsureCorrectNetwork } from "@/ui/correct-network";
 import {
   Select,
@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "@/ui/select";
 import { supportedChains } from "..";
+import { useNetwork } from "@/hooks/useNetwork";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -71,23 +72,20 @@ function CreateButton({
 }
 export function CreateRound({
   strategies,
+  strategy,
   onCreated,
 }: {
+  strategy: StrategyType;
   strategies: Address[];
   onCreated: (round: RoundCreated) => void;
 }) {
   // TODO: Make this dynamic when user selects one of the schemas in the dropdown
-  const strategy = "directGrants";
-  const {
-    schema: schemaAddon,
-    component,
-    defaultValues,
-  } = getStrategyAddon(strategy, "createRound");
-
+  const addon = getStrategyAddon(strategy, "createRound");
   // Merge strategy schema into base round schema
-  const schema = baseRoundSchema.merge(
-    z.object({ initStrategyData: schemaAddon }),
-  );
+  const schema = addon
+    ? baseRoundSchema.merge(z.object({ initStrategyData: addon.schema }))
+    : baseRoundSchema;
+
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -95,18 +93,20 @@ export function CreateRound({
       name: "",
       description: "",
       strategy: getAddress(strategies[0]!),
-      initStrategyData: defaultValues as Address,
       // TODO: should be dropdowns
       chainId: 11155111,
-      token: undefined,
+      token: zeroAddress,
       managers: undefined,
+      ...(addon?.defaultValues
+        ? { initStrategyData: addon?.defaultValues as Address }
+        : undefined),
     },
   });
 
-  // TODO: Check connected network
-
   const create = useCreateRound();
   const upload = useUpload();
+
+  const network = useNetwork();
 
   return (
     <Form {...form}>
@@ -116,8 +116,22 @@ export function CreateRound({
             console.log("create round", values);
             const metadata = {
               protocol: 1n,
-              pointer: await upload.mutateAsync({ name, description }),
+              pointer: await upload.mutateAsync({
+                // TODO: This is GrantsStack-specific
+                // Do we want to move this to the provider to build the metadata shape?
+                // Could also use a transformer - api.transformers.roundMetadata({ name, description })
+                round: {
+                  name,
+                  description,
+                  roundType: "public",
+                  quadraticFundingConfig: {
+                    matchingFundsAvailable: 0,
+                  },
+                },
+              }),
             };
+
+            console.log(metadata);
             create.mutate(
               { ...values, metadata },
               {
@@ -203,10 +217,24 @@ export function CreateRound({
             render={({ field }) => (
               <FormItem className="flex-1">
                 {/* TODO: Dropdown with strategy names */}
-                <FormLabel>Strategy address</FormLabel>
-                <FormControl>
-                  <Input disabled {...field} />
-                </FormControl>
+                <FormLabel>Strategy (TODO: Render Strategy name)</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a strategy" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {strategies.map((strategy) => (
+                      <SelectItem key={strategy} value={strategy}>
+                        {strategy}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -217,12 +245,26 @@ export function CreateRound({
             control={form.control}
             name="token"
             render={({ field }) => (
-              <FormItem className="">
+              <FormItem className="flex-1">
                 {/* TODO: Dropdown with token names */}
                 <FormLabel>Token</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a token" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {(network?.tokens ?? []).map((token) => (
+                      <SelectItem key={token.address} value={token.address}>
+                        {token.code}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -234,7 +276,7 @@ export function CreateRound({
               <FormItem className="flex-1">
                 <FormLabel>Initial funding amount</FormLabel>
                 <FormControl>
-                  <Input {...field} value={Number(field.value)} />
+                  <Input {...field} type="number" value={Number(field.value)} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -279,7 +321,7 @@ export function CreateRound({
           )}
         />
         {/* Render Strategy-specific form elements */}
-        {createElement(component)}
+        {addon && createElement(addon.component)}
       </form>
     </Form>
   );
