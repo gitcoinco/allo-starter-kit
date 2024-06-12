@@ -6,7 +6,7 @@
     "lint": "next lint",
     "dev": "npx storybook dev -p 6006",
     "start": "npx storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build": "npx storybook build"
   },
   "dependencies": {
     "next": "14.2.4",
