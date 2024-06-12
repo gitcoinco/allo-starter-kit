@@ -1,12 +1,13 @@
 "use client";
 
 import { Application } from "../api/types";
-import { BackgroundImage } from "@/ui/background-image";
-import { Badge } from "@/ui/badge";
-import { cn } from "@/lib/utils";
-import { Checkbox } from "@/ui/checkbox";
+import { BackgroundImage } from "../ui/background-image";
+import { Badge } from "../ui/badge";
+import { cn } from "../lib/utils";
+import { Checkbox } from "../ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { ReactNode } from "react";
+import { ApplicationStatusBadge } from "./status-badge";
 
 export function ApplicationApprovalItem({
   id,
@@ -44,18 +45,10 @@ export function ApplicationApprovalItem({
       </label>
       <div className="flex items-center gap-2">
         <div>
-          <Badge variant={statusMap[status]} className={cn("capitalize")}>
-            {status.toLowerCase()}
-          </Badge>
+          <ApplicationStatusBadge status={status} />
         </div>
         {action}
       </div>
     </div>
   );
 }
-
-const statusMap = {
-  APPROVED: "green",
-  PENDING: "yellow",
-  REJECTED: "red",
-} as const;

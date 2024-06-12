@@ -1,17 +1,15 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Form } from "@/ui/form";
-import { Button } from "@/ui/button";
-
-import { useRoundById } from "@/hooks/useRounds";
-import { ApplicationCreated, Round } from "@/api/types";
-
-import { useCreateApplication } from "@/hooks/useApplications";
-import { StrategyAddon, useStrategyAddon } from "@/strategies";
 import { createElement } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form } from "../ui/form";
+import { Button } from "../ui/button";
+import { useRoundById } from "../hooks/useRounds";
+import { ApplicationCreated, Round } from "../api/types";
+import { useCreateApplication } from "../hooks/useApplications";
+import { StrategyAddon, useStrategyAddon } from "../strategies";
 
 const baseApplicationSchema = z.object({
   roundId: z.coerce.bigint(),

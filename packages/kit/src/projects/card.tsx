@@ -3,9 +3,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Round } from "../api/types";
 import { TokenAmount } from "../ui/token-amount";
-import { BackgroundImage } from "@/ui/background-image";
-import { Card, CardContent } from "@/ui/card";
-import { Separator } from "@/ui/separator";
+import { BackgroundImage } from "../ui/background-image";
+import { Card, CardContent } from "../ui/card";
+import { Separator } from "../ui/separator";
 
 export function ProjectCard({
   name,

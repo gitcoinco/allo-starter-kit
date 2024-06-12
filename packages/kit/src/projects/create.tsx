@@ -11,12 +11,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/ui/form";
-import { Input } from "@/ui/input";
-import { Button } from "@/ui/button";
-import { Textarea } from "@/ui/textarea";
-import { useCreateRound } from "@/hooks/useRounds";
-import { ProjectCreated } from "@/api/types";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
+import { useCreateRound } from "../hooks/useRounds";
+import { ProjectCreated } from "../api/types";
 
 const baseProjectSchema = z.object({
   name: z.string().min(2, {

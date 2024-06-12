@@ -13,6 +13,7 @@ const defaultQuery = {
 
 export function useRounds(query: RoundsQuery = defaultQuery) {
   const api = useAPI();
+  console.log("use rounds", query);
   return useQuery({
     queryKey: ["rounds", query],
     queryFn: async () => api.rounds(query),

@@ -4,7 +4,7 @@ import { ImageIcon } from "lucide-react";
 import { type ComponentProps, useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Button } from "..";
-import { useUpload } from "@/hooks/useUpload";
+import { useUpload } from "../hooks/useUpload";
 
 type Props = { name: string; maxSize?: number } & ComponentProps<"img">;
 

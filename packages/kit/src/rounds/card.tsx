@@ -1,15 +1,14 @@
 "use client";
 
+import { useMemo } from "react";
+import { isAfter, formatDistanceToNow } from "date-fns";
 import { Round } from "../api/types";
 import { TokenAmount } from "../ui/token-amount";
-import { BackgroundImage } from "@/ui/background-image";
-import { Badge } from "@/ui/badge";
-import { Separator } from "@/ui/separator";
-import { Card, CardContent } from "@/ui/card";
-
-import { isAfter, formatDistanceToNow } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
-import { useMemo } from "react";
+import { BackgroundImage } from "../ui/background-image";
+import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
+import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { supportedChains } from "..";
 
 const toNow = (date?: string) =>
@@ -69,8 +68,7 @@ export function RoundCard({
               </div>
             </div>
             <Avatar className="size-8">
-              <AvatarImage src={network?.icon!} />
-              <AvatarFallback>{chainId}</AvatarFallback>
+              <div dangerouslySetInnerHTML={{ __html: network?.icon! }} />
             </Avatar>
           </div>
         </div>
