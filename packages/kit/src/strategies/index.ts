@@ -1,17 +1,17 @@
 import { Address } from "viem";
-import React, { FunctionComponent, ReactNode, useMemo } from "react";
+import { FunctionComponent, useMemo } from "react";
 import {
   schema as directGrantsRoundSchema,
   defaultValues as directGrantsRoundDefaultValues,
   CreateRoundForm as DirectGrantsCreateRoundForm,
-} from "@/strategies/direct-grants/create-round";
+} from "../strategies/direct-grants/create-round";
 import {
   schema as directGrantsRegisterSchema,
   defaultValues as directGrantsRecipientDefaultValues,
   RegisterRecipientForm as DirectGrantsRegisterRecipientForm,
-} from "@/strategies/direct-grants/register-recipient";
-import { supportedChains } from "..";
-import { Round } from "@/api/types";
+} from "../strategies/direct-grants/register-recipient";
+import { supportedChains } from "../wagmi";
+import { Round } from "../api/types";
 
 export type StrategyAddonType =
   | "createRound"
@@ -50,7 +50,7 @@ export function getStrategyAddon(
 }
 
 export function getStrategyType(strategy: Address, chainId: number) {
-  return supportedChains.reduce((match, chain) => {
+  return supportedChains?.reduce((match, chain) => {
     // Find the key matching the strategy address
     const type = Object.entries(chain.contracts ?? {}).find(
       ([key, address]) => address === strategy,

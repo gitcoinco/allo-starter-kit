@@ -11,29 +11,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/ui/form";
-import { Input } from "@/ui/input";
-import { Button } from "@/ui/button";
-import { Textarea } from "@/ui/textarea";
-import { useCreateRound } from "@/hooks/useRounds";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
+import { useCreateRound } from "../hooks/useRounds";
 import { Address, getAddress, zeroAddress } from "viem";
-import { RoundCreated } from "@/api/types";
+import { RoundCreated } from "../api/types";
 
 import { PropsWithChildren, createElement } from "react";
-import { ImageUpload } from "@/ui/image-upload";
-import { useUpload } from "@/hooks/useUpload";
-import { EthAddressSchema } from "@/schemas";
-import { StrategyType, getStrategyAddon } from "@/strategies";
-import { EnsureCorrectNetwork } from "@/ui/correct-network";
+import { ImageUpload } from "../ui/image-upload";
+import { useUpload } from "../hooks/useUpload";
+import { EthAddressSchema } from "../schemas";
+import { getStrategyAddon } from "../strategies";
+import { EnsureCorrectNetwork } from "../ui/correct-network";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/ui/select";
+} from "../ui/select";
 import { supportedChains } from "..";
-import { useNetwork } from "@/hooks/useNetwork";
+import { useNetwork } from "../hooks/useNetwork";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -72,13 +72,12 @@ function CreateButton({
 }
 export function CreateRound({
   strategies,
-  strategy,
   onCreated,
 }: {
-  strategy: StrategyType;
   strategies: Address[];
-  onCreated: (round: RoundCreated) => void;
+  onCreated?: (round: RoundCreated) => void;
 }) {
+  const strategy = "directGrants";
   // TODO: Make this dynamic when user selects one of the schemas in the dropdown
   const addon = getStrategyAddon(strategy, "createRound");
   // Merge strategy schema into base round schema
@@ -92,7 +91,7 @@ export function CreateRound({
       amount: 0n,
       name: "",
       description: "",
-      strategy: getAddress(strategies[0]!),
+      strategy: strategies?.length ? getAddress(strategies[0]!) : undefined,
       // TODO: should be dropdowns
       chainId: 11155111,
       token: zeroAddress,
@@ -196,7 +195,7 @@ export function CreateRound({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {supportedChains.map((network) => (
+                    {supportedChains?.map((network) => (
                       <SelectItem
                         key={network.id}
                         value={String(network.id)}
@@ -228,7 +227,7 @@ export function CreateRound({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {strategies.map((strategy) => (
+                    {strategies?.map((strategy) => (
                       <SelectItem key={strategy} value={strategy}>
                         {strategy}
                       </SelectItem>

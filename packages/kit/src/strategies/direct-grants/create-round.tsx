@@ -2,8 +2,9 @@
 
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
-import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk/";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk/";
 import {
   FormControl,
   FormDescription,
@@ -11,13 +12,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/ui/form";
-import { Button } from "@/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/ui/calendar";
-import { cn } from "@/lib/utils";
-import { dateToUint64 } from "@/api/providers/allo2";
+} from "../../ui/form";
+import { Button } from "../../ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { Calendar } from "../../ui/calendar";
+import { cn } from "../../lib/utils";
+import { dateToUint64 } from "../../api/providers/allo2";
 
 export const defaultValues = "0x";
 export const schema = z

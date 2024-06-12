@@ -22,14 +22,14 @@ export default function Home() {
       - with skip and take we can paginate the results and decide how many to show
       */
         where: {
-          chainId: { in: [11155111] },
+          chainId: { in: [10] },
           // Approved applications
           application: { status: { in: ["APPROVED"] } },
           // tags: { contains: ["allo-v2"] },
           // roundStart: { gte: new Date().toISOString() },
         },
-        orderBy: { created_at_block: "desc" },
-        // orderBy: { unique_donors_count: "desc" },
+        // orderBy: { created_at_block: "desc" },
+        orderBy: { unique_donors_count: "desc" },
         skip: 0,
         take: 12,
       }}
@@ -40,11 +40,14 @@ export default function Home() {
         - Wrap the default RoundItem component in a link 
 
       */
-      renderItem={(round, Component) => (
-        <Link href={`/${round.chainId}/rounds/${round.id}`} key={round.id}>
-          <Component {...round} />
-        </Link>
-      )}
+      renderItem={(round, Component) => {
+        console.log(round);
+        return (
+          <Link href={`/${round.chainId}/rounds/${round.id}`} key={round.id}>
+            <Component {...round} />
+          </Link>
+        );
+      }}
       /*
         Columns let us choose how to render the rounds.
 

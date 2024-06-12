@@ -9,10 +9,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/ui/form";
+} from "../../ui/form";
 
-import { EthAddressSchema } from "@/schemas";
-import { Input } from "@/ui/input";
+import { EthAddressSchema } from "../../schemas";
+import { Input } from "../../ui/input";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { encodeAbiParameters, parseAbiParameters } from "viem";

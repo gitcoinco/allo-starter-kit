@@ -63,7 +63,7 @@ export interface API {
   applicationById: (
     id: string,
     opts?: QueryOpts,
-  ) => Promise<Project | undefined>;
+  ) => Promise<Application | undefined>;
   createApplication: (
     data: ApplicationInput,
     signer: WalletClient,

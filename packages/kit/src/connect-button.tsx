@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/ui/button";
+import { Button } from "./ui/button";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 
 export function ConnectButton() {

@@ -8,6 +8,13 @@
   "exports": {
     ".": "./src/index.tsx",
     "./styles.css": "./dist/index.css",
+    "./button": "./src/ui/button.tsx",
+    "./icons": "./src/icons.ts",
+    "./applications": "./src/applications/index.ts",
+    "./projects": "./src/projects/index.ts",
+    "./rounds": "./src/rounds/index.ts",
+    "./api": "./src/api/index.ts",
+    "./wagmi": "./src/wagmi/index.ts",
     "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {
@@ -30,7 +37,7 @@
   },
   "dependencies": {
     "@allo-team/allo-v2-sdk": "^1.0.76",
-    "@grants-labs/gitcoin-chain-data": "1.0.41",
+    "@grants-labs/gitcoin-chain-data": "gitcoinco/gitcoin-chain-data",
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-checkbox": "^1.0.4",

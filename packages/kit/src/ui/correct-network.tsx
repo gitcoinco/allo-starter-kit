@@ -2,7 +2,7 @@
 
 import { type PropsWithChildren } from "react";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
-import { Button } from "@/ui/button";
+import { Button } from "../ui/button";
 
 export function EnsureCorrectNetwork({
   children,

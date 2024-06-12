@@ -43,6 +43,34 @@ export const roundsByIdQuery = gql`
   }
 `;
 
+const APPLICATION_FRAGMENT = `
+id
+chainId
+roundId
+projectId
+status
+totalAmountDonatedInUsd
+uniqueDonorsCount
+totalDonationsCount
+anchorAddress
+round {
+  strategyName
+  donationsStartTime
+  donationsEndTime
+  applicationsStartTime
+  applicationsEndTime
+  matchTokenAddress
+  roundMetadata
+}
+metadata
+project: canonicalProject {
+  tags
+  id
+  metadata
+  anchorAddress
+}
+`;
+
 export const applicationsQuery = gql`
   query Applications(
     $first: Int
@@ -56,31 +84,15 @@ export const applicationsQuery = gql`
       orderBy: $orderBy
       filter: $filter
     ) {
-      id
-      chainId
-      roundId
-      projectId
-      status
-      totalAmountDonatedInUsd
-      uniqueDonorsCount
-      totalDonationsCount
-      anchorAddress
-      round {
-        strategyName
-        donationsStartTime
-        donationsEndTime
-        applicationsStartTime
-        applicationsEndTime
-        matchTokenAddress
-        roundMetadata
-      }
-      metadata
-      project: canonicalProject {
-        tags
-        id
-        metadata
-        anchorAddress
-      }
+      ${APPLICATION_FRAGMENT}
+    }
+  }
+`;
+
+export const applicationsByIdQuery = gql`
+  query Application($id: String!, $chainId: Int!, $roundId: String!) {
+    application(id: $id, chainId: $chainId, roundId: $roundId) {
+      ${APPLICATION_FRAGMENT}
     }
   }
 `;

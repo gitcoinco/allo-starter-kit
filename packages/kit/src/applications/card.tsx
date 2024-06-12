@@ -2,8 +2,8 @@
 
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Application } from "../api/types";
-import { BackgroundImage } from "@/ui/background-image";
-import { Card, CardContent } from "@/ui/card";
+import { BackgroundImage } from "../ui/background-image";
+import { Card, CardContent } from "../ui/card";
 
 export function ApplicationCard({
   name,

@@ -6,6 +6,7 @@ import {
   roundsByIdQuery,
   projectsQuery,
   projectsByIdQuery,
+  applicationsByIdQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
 import { GSRound, GSApplication, GSProject } from "./types";
@@ -38,6 +39,17 @@ export const grantsStackAPI: Partial<API> = {
       document: applicationsQuery,
       variables: queryToFilter(query),
     }).then((res) => (res?.applications ?? []).map(transformers.application));
+  },
+  applicationById: (id, opts) => {
+    return request<{ application: GSApplication }>({
+      url: apiURL,
+      document: applicationsByIdQuery,
+      variables: {
+        id,
+        chainId: Number(opts?.chainId),
+        roundId: opts?.roundId,
+      },
+    }).then((res) => transformers.application(res.application));
   },
   projects: (query) => {
     return request<{ rounds: GSProject[] }>({
