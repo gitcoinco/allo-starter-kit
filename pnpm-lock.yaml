@@ -200,8 +200,8 @@ importers:
         specifier: ^2.1.2
         version: 2.1.2(@tanstack/react-query@5.45.0)(@types/react@18.3.3)(react-dom@18.3.1)(react@18.3.1)(viem@2.13.10)(wagmi@2.10.2)
       '@tailwindcss/typography':
-        specifier: tailwindcss/typography
-        version: git@github.com+tailwindcss/typography/2745585cda4518b347c407dfcc4cc1a8a9f2c2d4(tailwindcss@3.4.4)
+        specifier: ^0.5.13
+        version: 0.5.13(tailwindcss@3.4.4)
       '@tanstack/react-query':
         specifier: ^5.32.0
         version: 5.45.0(react@18.3.1)
@@ -3681,6 +3681,7 @@ packages:
     dependencies:
       is-glob: 4.0.3
       micromatch: 4.0.7
+      napi-wasm: 1.1.0
     dev: false
     bundledDependencies:
       - napi-wasm
@@ -6470,6 +6471,18 @@ packages:
     dependencies:
       '@swc/counter': 0.1.3
       tslib: 2.6.3
+
+  /@tailwindcss/typography@0.5.13(tailwindcss@3.4.4):
+    resolution: {integrity: sha512-ADGcJ8dX21dVVHIwTRgzrcunY6YY9uSlAHHGVKvkA+vLc5qLwEszvKts40lx7z0qc4clpjclwLeK5rVCV2P/uw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.4.4
+    dev: false
 
   /@tanstack/query-core@5.45.0:
     resolution: {integrity: sha512-RVfIZQmFUTdjhSAAblvueimfngYyfN6HlwaJUPK71PKd7yi43Vs1S/rdimmZedPWX/WGppcq/U1HOj7O7FwYxw==}
@@ -14362,6 +14375,10 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  /napi-wasm@1.1.0:
+    resolution: {integrity: sha512-lHwIAJbmLSjF9VDRm9GoVOy9AGp3aIvkjv+Kvz9h16QR3uSVYH78PNQUnT2U4X53mhlnV2M7wrhibQ3GHicDmg==}
+    dev: false
+
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
@@ -18871,19 +18888,4 @@ packages:
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
-    dev: false
-
-  git@github.com+tailwindcss/typography/2745585cda4518b347c407dfcc4cc1a8a9f2c2d4(tailwindcss@3.4.4):
-    resolution: {commit: 2745585cda4518b347c407dfcc4cc1a8a9f2c2d4, repo: git@github.com:tailwindcss/typography.git, type: git}
-    id: git@github.com+tailwindcss/typography/2745585cda4518b347c407dfcc4cc1a8a9f2c2d4
-    name: '@tailwindcss/typography'
-    version: 0.5.13
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
-    dependencies:
-      lodash.castarray: 4.4.0
-      lodash.isplainobject: 4.0.6
-      lodash.merge: 4.6.2
-      postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.4
     dev: false
