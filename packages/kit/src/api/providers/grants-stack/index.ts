@@ -1,3 +1,4 @@
+"use client";
 import { request } from "graphql-request";
 import { API, Application, Project, Round, Transformers } from "../../types";
 import {

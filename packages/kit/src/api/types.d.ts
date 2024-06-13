@@ -52,13 +52,13 @@ export interface API {
   createRound: (
     data: RoundInput,
     signer: WalletClient,
-  ) => Promise<RoundCreated>;
+  ) => Promise<RoundCreated | Error>;
   projects: (query: RoundsQuery) => Promise<Project[]>;
   projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
   createProject: (
     data: ProjectInput,
     signer: WalletClient,
-  ) => Promise<ProjectCreated>;
+  ) => Promise<ProjectCreated | Error>;
   applications: (query: RoundsQuery) => Promise<Application[]>;
   applicationById: (
     id: string,
@@ -67,13 +67,13 @@ export interface API {
   createApplication: (
     data: ApplicationInput,
     signer: WalletClient,
-  ) => Promise<ApplicationCreated>;
+  ) => Promise<ApplicationCreated | Error>;
   ballot: () => Promise<Ballot | Error>;
   addToBallot: (ballot: Ballot) => Promise<Ballot | Error>;
   saveBallot: (ballot: Ballot) => Promise<Ballot | Error>;
   allocate: () => void;
   distribute: () => void;
-  upload: (data: FormData) => Promise<string>;
+  upload: (data: FormData) => Promise<string | Error>;
 }
 // Transforms data from API into a common shape
 

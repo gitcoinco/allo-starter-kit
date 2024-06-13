@@ -17,6 +17,9 @@ const defaultApi: API = {
   applications: async (query: RoundsQuery) => [],
   applicationById: async (id: string, opts?: QueryOpts) => undefined,
   allocate: async () => new Error("Not Implemented: Allocate"),
+  createProject: async () => new Error("Not Implemented: createProject"),
+  createApplication: async () =>
+    new Error("Not Implemented: createApplication"),
   distribute: async () => new Error("Not Implemented: Distribute"),
   ballot: async () => new Error("Not Implemented: Ballot"),
   saveBallot: async () => new Error("Not Implemented: Ballot Save"),
