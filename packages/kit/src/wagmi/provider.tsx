@@ -7,7 +7,7 @@ import { getDefaultConfig, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { Chain } from "viem/chains";
 import * as wagmiChains from "viem/chains";
 
-import { getChains } from "@grants-labs/gitcoin-chain-data";
+import { getChains } from "@gitcoin/gitcoin-chain-data";
 
 export const supportedChains = getChains().map((chain) => ({
   ...chain,

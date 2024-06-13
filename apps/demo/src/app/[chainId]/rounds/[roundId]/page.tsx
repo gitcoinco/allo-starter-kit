@@ -14,7 +14,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         id={roundId}
         opts={{ chainId }}
         backAction={
-          <Link href={`/`}>
+          <Link href={`/${chainId}`}>
             <BackButton />
           </Link>
         }
