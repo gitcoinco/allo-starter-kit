@@ -17,7 +17,7 @@ export function ApplicationReviewTable({
 }: {
   roundId: string;
   chainId: number;
-  initialTab: Application["status"];
+  initialTab?: Application["status"];
 }) {
   const { data: round } = useRoundById(roundId, { chainId });
   const { data: applications, isPending } = useApplications({

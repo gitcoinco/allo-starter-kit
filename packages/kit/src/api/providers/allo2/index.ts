@@ -20,7 +20,7 @@ const createAlloOpts = (chain: Chain) => ({
   rpc: chain.rpcUrls.default.http[0],
 });
 function getProfileId(address: Address): Address {
-  return keccak256(encodePacked(["uint256", "address"], [0n, address]));
+  return keccak256(encodePacked(["uint256", "address"], [BigInt(0), address]));
 }
 
 export const alloNativeToken: Address =
@@ -38,7 +38,7 @@ export const allo2API: Partial<API> = {
       const profileId = await getOrCreateProfile(signer);
 
       const {
-        amount = 0n,
+        amount = BigInt(0),
         metadata,
         strategy,
         token,
@@ -92,7 +92,7 @@ export const allo2API: Partial<API> = {
 
       const hash = await signer.sendTransaction({
         ...tx,
-        value: 0n,
+        value: BigInt(0),
         account: address,
         chain: signer.chain,
       });
@@ -140,7 +140,7 @@ async function getOrCreateProfile(signer: WalletClient) {
     .then(async (profile) => {
       if (profile?.anchor === zeroAddress) {
         const { to, data } = registry.createProfile({
-          nonce: 0n,
+          nonce: BigInt(0),
           members: [address],
           owner: address,
           metadata: { protocol: 1n, pointer: "" },

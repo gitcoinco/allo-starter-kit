@@ -17,34 +17,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }
       />
 
-      <ApplicationReviewTable
-        roundId={roundId}
-        chainId={chainId}
-        tabs={[
-          {
-            key: "APPROVED",
-            label: "Approved",
-          },
-          {
-            key: "PENDING",
-            label: "Pending",
-          },
-          {
-            key: "REJECTED",
-            label: "Rejected",
-          },
-        ]}
-        renderItem={({ status }) => (
-          <ApplicationItem
-            action={(() => {
-              switch (status) {
-                case "APPROVED":
-                  return null;
-              }
-            })()}
-          />
-        )}
-      />
+      <ApplicationReviewTable roundId={roundId} chainId={chainId} />
     </section>
   );
 }
