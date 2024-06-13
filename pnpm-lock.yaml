@@ -218,7 +218,7 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
       graphql:
-        specifier: ^16.8.1
+        specifier: ^16.8.2
         version: 16.8.2
       graphql-request:
         specifier: ^7.0.1
