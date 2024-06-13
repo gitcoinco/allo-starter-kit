@@ -143,7 +143,7 @@ async function getOrCreateProfile(signer: WalletClient) {
           nonce: BigInt(0),
           members: [address],
           owner: address,
-          metadata: { protocol: 1n, pointer: "" },
+          metadata: { protocol: BigInt(1), pointer: "" },
           name: "",
         });
         const hash = await signer.sendTransaction({
