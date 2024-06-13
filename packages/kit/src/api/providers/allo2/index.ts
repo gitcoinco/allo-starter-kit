@@ -69,7 +69,7 @@ export const allo2API: Partial<API> = {
       return createLogDecoder(AlloABI, client)(hash, ["PoolCreated"]).then(
         (logs) => {
           const id = String((logs?.[0]?.args as { poolId: bigint }).poolId);
-          return { id, chainId: signer.chain?.id };
+          return { id, chainId: signer.chain?.id as number };
         },
       );
     } catch (error) {
@@ -104,7 +104,7 @@ export const allo2API: Partial<API> = {
         const id = String(
           (logs?.[0]?.args as { recipientId: Address }).recipientId,
         );
-        return { id, chainId: signer.chain?.id };
+        return { id, chainId: signer.chain?.id as number };
       });
     } catch (error) {
       console.log(error);
@@ -121,7 +121,7 @@ export const allo2API: Partial<API> = {
 
       const { name, description } = data;
 
-      const chainId = signer.chain?.id;
+      const chainId = signer.chain?.id as number;
       return { id: "id", chainId };
     } catch (error) {
       console.log(error);

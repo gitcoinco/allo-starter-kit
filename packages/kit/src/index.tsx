@@ -5,6 +5,7 @@ export * from "./wagmi/provider";
 export * from "./ui/markdown";
 export * from "./ui/token-amount";
 export * from "./ui/back-button";
+export * from "./connect-button";
 export * from "./ui/button";
 export * from "./ui/avatar";
 export * from "./ui/form";

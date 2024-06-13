@@ -1,4 +1,4 @@
-import { ProjectDetails } from "../../../../../../../packages/kit/src";
+import { ProjectDetails } from "@allo/kit";
 
 export default function ProjectPage({
   params: { chainId = 0, projectId = "" },
