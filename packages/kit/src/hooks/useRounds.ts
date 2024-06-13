@@ -8,7 +8,7 @@ const defaultQuery = {
   where: {},
   skip: 0,
   take: 12,
-  orderBy: { createdAt: "asc" } as const,
+  // orderBy: { createdAt: "asc" } as const,
 };
 
 export function useRounds(query: RoundsQuery = defaultQuery) {

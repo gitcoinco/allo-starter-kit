@@ -7,7 +7,7 @@
   ],
   "exports": {
     ".": "./src/index.tsx",
-    "./styles.css": "./dist/index.css",
+    "./dist/index.css": "./dist/index.css",
     "./button": "./src/ui/button.tsx",
     "./icons": "./src/icons.ts",
     "./applications": "./src/applications/index.ts",

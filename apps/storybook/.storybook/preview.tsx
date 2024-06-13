@@ -38,11 +38,11 @@ const preview: Preview = {
   decorators: [
     (Story, { parameters: { theme = "light" } }) => {
       return (
-        <Web3Provider>
-          <ApiProvider>
+        <ApiProvider>
+          <Web3Provider>
             <Story />
-          </ApiProvider>
-        </Web3Provider>
+          </Web3Provider>
+        </ApiProvider>
       );
     },
   ],

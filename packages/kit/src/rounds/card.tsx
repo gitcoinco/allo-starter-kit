@@ -68,7 +68,10 @@ export function RoundCard({
               </div>
             </div>
             <Avatar className="size-8">
-              <div dangerouslySetInnerHTML={{ __html: network?.icon! }} />
+              <div
+                className="size-8"
+                dangerouslySetInnerHTML={{ __html: network?.icon! }}
+              />
             </Avatar>
           </div>
         </div>

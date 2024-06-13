@@ -4,6 +4,7 @@ import { grantsStackAPI } from "./providers/grants-stack";
 import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
 import { API, RoundsQuery, QueryOpts, RoundInput } from "./types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const Context = createContext({} as API);
 const defaultApi: API = {
@@ -31,13 +32,42 @@ export const providers = {
   allo2API,
 };
 
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: 0,
+        // With SSR, we usually want to set some default staleTime
+        // above 0 to avoid refetching immediately on the client
+        staleTime: 60 * 1000,
+      },
+    },
+  });
+}
+
+let browserQueryClient: QueryClient | undefined = undefined;
+
+function getQueryClient() {
+  if (typeof window === "undefined") {
+    // Server: always make a new query client
+    return makeQueryClient();
+  } else {
+    if (!browserQueryClient) browserQueryClient = makeQueryClient();
+    return browserQueryClient;
+  }
+}
+
 export function ApiProvider({
   children,
-  api,
   provider = grantsStackAPI,
-}: PropsWithChildren<{ provider: Partial<API>; api: Partial<API> }>) {
-  const value = { ...defaultApi, ...provider, ...api };
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+}: PropsWithChildren<{ provider?: Partial<API> }>) {
+  const queryClient = getQueryClient();
+  const value = { ...defaultApi, ...provider };
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Context.Provider value={value}>{children}</Context.Provider>
+    </QueryClientProvider>
+  );
 }
 
 export function useAPI() {
