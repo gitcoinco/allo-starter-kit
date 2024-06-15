@@ -1,6 +1,6 @@
 import React from "react";
 import type { Preview } from "@storybook/react";
-import "@allo/kit/dist/index.css";
+import "@allo/kit/styles.css";
 // import { graphql, HttpResponse } from "msw";
 // import { initialize, mswLoader } from "msw-storybook-addon";
 

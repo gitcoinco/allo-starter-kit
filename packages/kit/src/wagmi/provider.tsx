@@ -20,7 +20,7 @@ export const chains = Object.values(wagmiChains).filter((chain) =>
 const defaultConfig = getDefaultConfig({
   appName: "Allo Starter Kit",
   projectId: "ffa6468a2accec2f1e59502fae10c166",
-  chains: [...chains],
+  chains,
   ssr: true,
 });
 
