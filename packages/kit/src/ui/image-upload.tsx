@@ -70,7 +70,7 @@ export function ImageUpload({
               accept="image/png, image/jpeg"
               // value={value?.[name]}
               onChange={(event) => {
-                const [file] = event.target.files ?? [];
+                const file = event.target.files?.[0];
                 if (file) {
                   select.mutate(file, {
                     onSuccess: () => {

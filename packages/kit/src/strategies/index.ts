@@ -12,6 +12,7 @@ import {
 } from "../strategies/direct-grants/register-recipient";
 import { supportedChains } from "../wagmi";
 import { Round } from "../api/types";
+import z from "zod";
 
 export type StrategyAddonType =
   | "createRound"
@@ -21,7 +22,7 @@ export type StrategyType = "directGrants";
 export type StrategyAddon = {
   schema: any;
   defaultValues: unknown;
-  component: FunctionComponent;
+  component: FunctionComponent | null;
 };
 export const strategyAddons: Record<
   StrategyType,
@@ -38,7 +39,11 @@ export const strategyAddons: Record<
       defaultValues: directGrantsRecipientDefaultValues,
       component: DirectGrantsRegisterRecipientForm,
     },
-    reviewRecipients: {},
+    reviewRecipients: {
+      schema: z.any(),
+      defaultValues: null,
+      component: null,
+    },
   },
 };
 

@@ -11,20 +11,25 @@ const defaultApi: API = {
   rounds: async (query: RoundsQuery) => [],
   roundById: async (id: string, opts?: QueryOpts) => undefined,
   createRound: async (data: RoundInput) =>
-    new Error("Not Implemented: Create Round"),
+    Promise.reject(new Error("Not Implemented: Create Round")),
   projects: async (query: RoundsQuery) => [],
   projectById: async (id: string, opts?: QueryOpts) => undefined,
   applications: async (query: RoundsQuery) => [],
   applicationById: async (id: string, opts?: QueryOpts) => undefined,
-  allocate: async () => new Error("Not Implemented: Allocate"),
-  createProject: async () => new Error("Not Implemented: createProject"),
+  allocate: async () => Promise.reject(new Error("Not Implemented: Allocate")),
+  createProject: async () =>
+    Promise.reject(new Error("Not Implemented: createProject")),
   createApplication: async () =>
-    new Error("Not Implemented: createApplication"),
-  distribute: async () => new Error("Not Implemented: Distribute"),
-  ballot: async () => new Error("Not Implemented: Ballot"),
-  saveBallot: async () => new Error("Not Implemented: Ballot Save"),
-  addToBallot: async () => new Error("Not Implemented: Ballot Add"),
-  upload: async () => new Error("Not Implemented: Upload Metadata"),
+    Promise.reject(new Error("Not Implemented: createApplication")),
+  distribute: async () =>
+    Promise.reject(new Error("Not Implemented: Distribute")),
+  ballot: async () => Promise.reject(new Error("Not Implemented: Ballot")),
+  saveBallot: async () =>
+    Promise.reject(new Error("Not Implemented: Ballot Save")),
+  addToBallot: async () =>
+    Promise.reject(new Error("Not Implemented: Ballot Add")),
+  upload: async () =>
+    Promise.reject(new Error("Not Implemented: Upload Metadata")),
   ...grantsStackAPI,
   ...allo2API,
 };

@@ -15,8 +15,8 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { useCreateRound } from "../hooks/useRounds";
 import { ProjectCreated } from "../api/types";
+import { useCreateProject } from "../hooks/useProjects";
 
 const baseProjectSchema = z.object({
   name: z.string().min(2, {
@@ -39,7 +39,7 @@ export function CreateProject({
     },
   });
 
-  const create = useCreateRound();
+  const create = useCreateProject();
   return (
     <Form {...form}>
       <form

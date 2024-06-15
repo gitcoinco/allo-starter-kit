@@ -35,7 +35,7 @@ export function useCreateRound() {
   const { data: client } = useWalletClient();
   return useMutation({
     mutationFn: (data: RoundInput) => api.createRound(data, client!),
-    onSuccess: () => {}, // TODO: add toast
-    onError: () => {},
+    // onSuccess: () => {}, // TODO: add toast
+    // onError: () => {},
   });
 }

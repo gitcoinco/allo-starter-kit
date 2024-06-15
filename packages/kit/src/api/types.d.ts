@@ -52,13 +52,13 @@ export interface API {
   createRound: (
     data: RoundInput,
     signer: WalletClient,
-  ) => Promise<RoundCreated | Error>;
+  ) => Promise<RoundCreated>;
   projects: (query: RoundsQuery) => Promise<Project[]>;
   projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
   createProject: (
     data: ProjectInput,
     signer: WalletClient,
-  ) => Promise<ProjectCreated | Error>;
+  ) => Promise<ProjectCreated>;
   applications: (query: RoundsQuery) => Promise<Application[]>;
   applicationById: (
     id: string,
@@ -67,13 +67,13 @@ export interface API {
   createApplication: (
     data: ApplicationInput,
     signer: WalletClient,
-  ) => Promise<ApplicationCreated | Error>;
-  ballot: () => Promise<Ballot | Error>;
-  addToBallot: (ballot: Ballot) => Promise<Ballot | Error>;
-  saveBallot: (ballot: Ballot) => Promise<Ballot | Error>;
+  ) => Promise<ApplicationCreated>;
+  ballot: () => Promise<Ballot>;
+  addToBallot: (ballot: Ballot) => Promise<Ballot>;
+  saveBallot: (ballot: Ballot) => Promise<Ballot>;
   allocate: () => void;
   distribute: () => void;
-  upload: (data: FormData) => Promise<string | Error>;
+  upload: (data: FormData) => Promise<string>;
 }
 // Transforms data from API into a common shape
 
@@ -108,19 +108,18 @@ export type Round = BaseRound & {
 
 export type RoundInput = BaseRound & {
   metadata: { protocol: bigint; pointer: string };
-  initStrategyData: Address;
+  initStrategyData?: Address;
   amount?: bigint;
 };
 export type RoundCreated = { id: string; chainId: number };
 
-type BaseApplication = {
+type BaseApplication = {};
+export type Application = BaseApplication & {
+  id: string;
   name: string;
   description?: string;
   avatarUrl?: string;
   bannerUrl?: string;
-};
-export type Application = BaseApplication & {
-  id: string;
   chainId: number;
   projectId: string;
   status: "APPROVED" | "PENDING" | "REJECTED";
@@ -128,7 +127,7 @@ export type Application = BaseApplication & {
 
 export type ApplicationInput = BaseApplication & {
   roundId: bigint;
-  strategyData: Address;
+  strategyData?: Address;
 };
 
 export type ApplicationCreated = { id: string; chainId: number };

@@ -4,6 +4,7 @@
     "lib": ["dom", "ES2020"],
     "sourceMap": true,
     "inlineSources": true,
+    "moduleResolution": "NodeNext",
     "outDir": "dist",
     "baseUrl": ".",
     "rootDir": "."

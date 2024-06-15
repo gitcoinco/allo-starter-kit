@@ -43,7 +43,7 @@ export const allo2API: Partial<API> = {
         strategy,
         token,
         managers = [],
-        initStrategyData,
+        initStrategyData = "0x",
       } = data;
 
       const tx = allo.createPool({
@@ -74,7 +74,7 @@ export const allo2API: Partial<API> = {
       );
     } catch (error) {
       console.log(error);
-      throw error as Error;
+      throw error;
     }
   },
   createApplication: async function (data, signer) {
@@ -85,7 +85,7 @@ export const allo2API: Partial<API> = {
 
       const client = signer.extend(publicActions);
 
-      const { roundId, strategyData } = data;
+      const { roundId, strategyData = "0x" } = data;
       // const pointer = await this.uploadMetadata?.({ name, description });
 
       const tx = allo.registerRecipient(roundId, strategyData);
@@ -108,7 +108,7 @@ export const allo2API: Partial<API> = {
       });
     } catch (error) {
       console.log(error);
-      throw error as Error;
+      throw error;
     }
   },
   createProject: async function (data, signer) {
@@ -125,7 +125,7 @@ export const allo2API: Partial<API> = {
       return { id: "id", chainId };
     } catch (error) {
       console.log(error);
-      throw error as Error;
+      throw error;
     }
   },
   allocate: () => {},

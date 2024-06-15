@@ -88,11 +88,10 @@ export function CreateRound({
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      amount: 0n,
+      amount: BigInt(0),
       name: "",
       description: "",
       strategy: strategies?.length ? getAddress(strategies[0]!) : undefined,
-      // TODO: should be dropdowns
       chainId: 11155111,
       token: zeroAddress,
       managers: undefined,
@@ -113,21 +112,22 @@ export function CreateRound({
         onSubmit={form.handleSubmit(
           async ({ name, description, ...values }) => {
             console.log("create round", values);
-            const metadata = {
-              protocol: 1n,
-              pointer: await upload.mutateAsync({
-                // TODO: This is GrantsStack-specific
-                // Do we want to move this to the provider to build the metadata shape?
-                // Could also use a transformer - api.transformers.roundMetadata({ name, description })
-                round: {
-                  name,
-                  description,
-                  roundType: "public",
-                  quadraticFundingConfig: {
-                    matchingFundsAvailable: 0,
-                  },
+            const pointer = await upload.mutateAsync({
+              // TODO: This is GrantsStack-specific
+              // Do we want to move this to the provider to build the metadata shape?
+              // Could also use a transformer - api.transformers.roundMetadata({ name, description })
+              round: {
+                name,
+                description,
+                roundType: "public",
+                quadraticFundingConfig: {
+                  matchingFundsAvailable: 0,
                 },
-              }),
+              },
+            });
+            const metadata = {
+              protocol: BigInt(1),
+              pointer: pointer as string,
             };
 
             console.log(metadata);
@@ -320,7 +320,7 @@ export function CreateRound({
           )}
         />
         {/* Render Strategy-specific form elements */}
-        {addon && createElement(addon.component)}
+        {addon?.component && createElement(addon.component)}
       </form>
     </Form>
   );

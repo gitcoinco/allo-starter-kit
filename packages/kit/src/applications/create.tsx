@@ -55,7 +55,7 @@ function ApplicationForm({
           </Button>
         </div>
         {/* Render Strategy-specific form elements */}
-        {addon && createElement(addon.component)}
+        {addon?.component && createElement(addon.component)}
       </form>
     </Form>
   );

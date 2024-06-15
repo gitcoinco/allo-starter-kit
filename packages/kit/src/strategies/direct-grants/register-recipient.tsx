@@ -30,7 +30,7 @@ export const schema = z
     const { recipientAddress } = val.__internal__;
 
     // TODO: add application metadata
-    const metadata = { protocol: 1n, pointer: "" };
+    const metadata = { protocol: BigInt(1), pointer: "" };
     return encodeAbiParameters(
       parseAbiParameters("address, address, (uint256, string)"),
       [
