@@ -52,7 +52,7 @@ export function ApplicationReviewTable({
             applications,
             selected,
             round?.strategy,
-            BigInt(2),
+            BigInt(2), // TODO: map to approved, pending, rejected
           ]);
         })}
       >

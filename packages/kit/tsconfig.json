@@ -6,8 +6,8 @@
     "inlineSources": true,
     "moduleResolution": "NodeNext",
     "outDir": "dist",
-    "baseUrl": ".",
-    "rootDir": "."
+    "baseUrl": "."
+    // "rootDir": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]

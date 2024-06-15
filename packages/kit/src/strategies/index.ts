@@ -14,7 +14,7 @@ import { supportedChains, useWalletClient } from "../wagmi";
 import { Round } from "../api/types";
 import z from "zod";
 import { useAPI } from "..";
-import { useMutation } from "@tanstack/react-query";
+import { UseMutationResult, useMutation } from "@tanstack/react-query";
 
 export type StrategyAddonType =
   | "createRound"

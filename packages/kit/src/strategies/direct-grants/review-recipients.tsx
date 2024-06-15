@@ -1,7 +1,7 @@
 import { Address, WalletClient } from "viem";
 
 import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk/";
-import { API, Application } from "src/api/types";
+import { API, Application } from "../../api/types";
 
 export const call = (
   applications: Application[],

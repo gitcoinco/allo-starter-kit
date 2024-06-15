@@ -26,6 +26,7 @@ type RoundQueryApplicationsWhere = {
 type RoundQueryWhere = {
   id?: Compare;
   strategy?: Compare;
+  strategyName?: Compare;
   chainId?: Compare;
   tags?: Compare; // GrantsStack only (create a type in gs to extend)
   roundId?: Compare;
