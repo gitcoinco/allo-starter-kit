@@ -87,6 +87,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     donationsStartTime,
     donationsEndTime,
     strategyAddress,
+    strategyName,
   }: GSRound): Round => ({
     id,
     chainId,
@@ -95,6 +96,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     applications,
     matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
     strategy: getAddress(strategyAddress),
+    strategyName,
     phases: {
       roundStart: validateDate(applicationsStartTime),
       allocateStart: validateDate(donationsStartTime),

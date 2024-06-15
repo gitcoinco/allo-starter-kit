@@ -5,6 +5,7 @@ import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
 import { API, RoundsQuery, QueryOpts, RoundInput } from "./types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WalletClient, getAddress } from "viem";
 
 const Context = createContext({} as API);
 const defaultApi: API = {
@@ -30,9 +31,25 @@ const defaultApi: API = {
     Promise.reject(new Error("Not Implemented: Ballot Add")),
   upload: async () =>
     Promise.reject(new Error("Not Implemented: Upload Metadata")),
+  sendTransaction,
   ...grantsStackAPI,
   ...allo2API,
 };
+
+export async function sendTransaction(
+  tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
+  signer: WalletClient,
+) {
+  if (!signer?.account) throw new Error("Signer missing");
+  const address = getAddress(signer.account?.address);
+
+  return signer.sendTransaction({
+    ...tx,
+    value: tx.value ? BigInt(tx.value) : undefined,
+    account: address,
+    chain: signer.chain,
+  });
+}
 
 export const providers = {
   grantsStackAPI,

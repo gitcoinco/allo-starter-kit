@@ -10,8 +10,11 @@ export default function AdminRounds() {
     <DiscoverRounds
       query={{
         where: {
-          chainId: { in: [11155111] },
-          createdBy: { in: [address!] },
+          strategyName: {
+            in: ["allov2.DirectGrantsLiteStrategy"],
+          },
+          // chainId: { in: [11155111] },
+          // createdBy: { in: [address!] },
           // Only rounds where we are admin or manager
           // roles: {
           //   address: { in: [String(address)] },

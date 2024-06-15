@@ -7,13 +7,13 @@ import { useApplications } from "../hooks/useApplications";
 import { Application } from "../api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useRoundById } from "../hooks/useRounds";
-import { useStrategyType } from "../strategies";
+import { useStrategyAddon, useStrategyType } from "../strategies";
 import { EmptyState } from "../ui/empty-state";
 
 export function ApplicationReviewTable({
   roundId,
   chainId,
-  initialTab,
+  initialTab = "PENDING",
 }: {
   roundId: string;
   chainId: number;
@@ -27,8 +27,7 @@ export function ApplicationReviewTable({
   const form = useForm();
 
   const strategyType = useStrategyType(round);
-  console.log(strategyType, applications);
-
+  const strategyAddon = useStrategyAddon("reviewRecipients", round);
   const applicationByStatus = useMemo(() => {
     const initialState = {
       APPROVED: [],
@@ -44,12 +43,17 @@ export function ApplicationReviewTable({
     );
   }, [applications]);
 
-  console.log(applicationByStatus);
+  const isApproving = strategyAddon?.call?.isPending;
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((selected) => {
-          console.log("selected", selected);
+        onSubmit={form.handleSubmit(({ selected }) => {
+          strategyAddon?.call?.mutate([
+            applications,
+            selected,
+            round?.strategy,
+            BigInt(2),
+          ]);
         })}
       >
         <Tabs
@@ -65,7 +69,7 @@ export function ApplicationReviewTable({
           <TabsContent value="PENDING">
             <div className="-mt-12 flex justify-end gap-4">
               <SelectAllButton applications={applicationByStatus.PENDING} />
-              <ApproveButton label="Approve" />
+              <ApproveButton label="Approve" isLoading={isApproving} />
             </div>
             <ApplicationsList
               isLoading={isPending}
@@ -101,10 +105,15 @@ export function ApplicationReviewTable({
   );
 }
 
-function ApproveButton({ label = "" }) {
+function ApproveButton({ label = "", isLoading = false }) {
   const selected = useFormContext().watch("selected")?.length ?? 0;
   return (
-    <Button type="submit" icon={Check} disabled={!selected}>
+    <Button
+      type="submit"
+      icon={Check}
+      isLoading={isLoading}
+      disabled={!selected}
+    >
       {label} {selected} applications
     </Button>
   );

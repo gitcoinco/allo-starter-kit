@@ -8,9 +8,11 @@ import {
   WalletClient,
   encodeAbiParameters,
   parseAbiParameters,
+  TransactionBase,
+  TransactionRequestBase,
 } from "viem";
 import { API } from "../../types";
-import { Allo, Registry } from "@allo-team/allo-v2-sdk/";
+import { Allo, Registry, TransactionData } from "@allo-team/allo-v2-sdk/";
 import { abi as AlloABI } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
 
 import { decodeEventLog, type Address, type Chain } from "viem";
@@ -30,7 +32,7 @@ export const allo2API: Partial<API> = {
   createRound: async function (data, signer) {
     try {
       if (!signer?.account) throw new Error("Signer missing");
-      const address = getAddress(signer.account?.address);
+
       const allo = new Allo(createAlloOpts(signer.chain!));
 
       const client = signer.extend(publicActions);
@@ -57,16 +59,10 @@ export const allo2API: Partial<API> = {
         initStrategyData,
       });
 
-      const value = BigInt(tx.value);
-      const hash = await signer.sendTransaction({
-        ...tx,
-        value,
-        account: address,
-        chain: signer.chain,
-      });
+      const hash = await this.sendTransaction?.(tx, signer);
 
       // Wait for PoolCreated event and return poolId
-      return createLogDecoder(AlloABI, client)(hash, ["PoolCreated"]).then(
+      return createLogDecoder(AlloABI, client)(hash!, ["PoolCreated"]).then(
         (logs) => {
           const id = String((logs?.[0]?.args as { poolId: bigint }).poolId);
           return { id, chainId: signer.chain?.id as number };
@@ -90,15 +86,10 @@ export const allo2API: Partial<API> = {
 
       const tx = allo.registerRecipient(roundId, strategyData);
 
-      const hash = await signer.sendTransaction({
-        ...tx,
-        value: BigInt(0),
-        account: address,
-        chain: signer.chain,
-      });
+      const hash = await this.sendTransaction?.(tx, signer);
 
       // Wait for PoolCreated event and return poolId
-      return createLogDecoder(AlloABI, client)(hash, [
+      return createLogDecoder(AlloABI, client)(hash!, [
         "UpdatedRegistration",
       ]).then((logs) => {
         const id = String(
