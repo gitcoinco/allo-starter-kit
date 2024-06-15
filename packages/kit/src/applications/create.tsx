@@ -22,7 +22,7 @@ function ApplicationForm({
 }: {
   round: Round;
   defaultValues: z.infer<typeof baseApplicationSchema>;
-  onCreated: (application: ApplicationCreated) => void;
+  onCreated?: (application: ApplicationCreated) => void;
 }) {
   const addon = useStrategyAddon("registerRecipient", round);
   // Merge strategy schema into base round schema
@@ -67,7 +67,7 @@ export function CreateApplication({
 }: {
   chainId: string;
   roundId: string;
-  onCreated: (application: ApplicationCreated) => void;
+  onCreated?: (application: ApplicationCreated) => void;
 }) {
   const { data: round, isPending } = useRoundById(roundId, { chainId });
 

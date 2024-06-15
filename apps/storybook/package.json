@@ -8,6 +8,7 @@
     "build": "npx storybook build"
   },
   "dependencies": {
+    "@swc/helpers": "^0.5.11",
     "react": "^18",
     "react-dom": "^18"
   },
