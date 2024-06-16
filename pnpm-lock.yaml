@@ -281,6 +281,9 @@ importers:
       '@allo/typescript-config':
         specifier: '*'
         version: link:../typescript-config
+      '@swc/helpers':
+        specifier: ^0.5.11
+        version: 0.5.11
       '@turbo/gen':
         specifier: ^1.12.4
         version: 1.13.4(@types/node@20.14.2)(typescript@5.4.5)
