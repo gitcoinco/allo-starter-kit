@@ -58,7 +58,7 @@ https://allo-starter-kit-storybook.vercel.app
 
 See `apps/demo`
 
-### Demo App
+#### Demo App
 
 The Demo App shows most of the basic usage.
 
