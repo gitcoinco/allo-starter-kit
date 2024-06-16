@@ -1,6 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useAccount, useBalance } from "wagmi";
+import { NATIVE } from "@allo-team/allo-v2-sdk";
+import { TToken } from "@gitcoin/gitcoin-chain-data";
 import { QueryOpts, Round } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
 import {
@@ -14,12 +17,8 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { TokenAmount } from "../ui/token-amount";
 import { supportedChains } from "../wagmi/provider";
 import { Address, formatUnits, getAddress, zeroAddress } from "viem";
-import { TToken } from "@gitcoin/gitcoin-chain-data";
-import { useAccount, useBalance, useReadContract } from "wagmi";
-import { NATIVE } from "@allo-team/allo-v2-sdk";
 import { useToken } from "../hooks/useToken";
 
 type RoundFundProps = {
@@ -103,8 +102,6 @@ function TokenBalance({
   );
 }
 
-function TokenSymbol() {}
-
 function FundForm({ funded, token }: { funded?: bigint; token?: Address }) {
   const { address } = useAccount();
   const form = useForm();
@@ -129,9 +126,7 @@ function FundForm({ funded, token }: { funded?: bigint; token?: Address }) {
               <FormControl>
                 <div className="relative flex items-center">
                   <Input placeholder="0" {...field} />
-                  <div className="absolute right-2 p-2 text-muted-foreground">
-                    {token?.code}
-                  </div>
+                  <div className="absolute right-2 p-2 text-muted-foreground"></div>
                 </div>
               </FormControl>
               <FormDescription>
