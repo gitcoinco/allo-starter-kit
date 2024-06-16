@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DiscoverApplications } from "@allo/kit/applications";
+import { DiscoverApplications } from "@allo/kit";
 
 const meta = {
   title: "Applications/Discover",

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ApplicationDetails } from "@allo/kit/applications";
+import { ApplicationDetails } from "@allo/kit";
 import { application } from "@/data/applications";
 import { fn } from "@storybook/test";
 import { Button } from "@allo/kit";
