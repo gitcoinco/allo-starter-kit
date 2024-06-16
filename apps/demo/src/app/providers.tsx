@@ -2,7 +2,7 @@
 
 import { ApiProvider, Web3Provider } from "@allo/kit";
 
-export function Providers({
+export function AlloKitProviders({
   children,
 }: Readonly<{
   children: React.ReactNode;

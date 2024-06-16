@@ -21,8 +21,7 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
         For example:
         - only rounds with these strategies (deployed contract address)
         - order by when they were created, newest first
-        - with skip and take we can paginate the results and decide how many to show
-      */
+        - with skip and take we can paginate the results and decide how many to show */
           where: {
             chainId: { in: [Number(chainId)] },
             // Approved applications
@@ -36,18 +35,18 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
           take: 12,
         }}
         /*
+
       The renderItem function lets us change what component is rendered.
       
       For example:
-        - Wrap the default RoundItem component in a link 
-
-        */
+        - Wrap the default RoundItem component in a link  */
         renderItem={(round, Component) => (
           <Link href={`/${round.chainId}/rounds/${round.id}`} key={round.id}>
             <Component {...round} />
           </Link>
         )}
         /*
+
       Columns let us choose how to render the rounds.
       
       For example:

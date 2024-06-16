@@ -6,7 +6,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 import { Header } from "./header";
-import { Providers } from "./providers";
+import { AlloKitProviders } from "./providers";
 
 export const metadata: Metadata = {
   title: "Allo Starter Kit Demo App",
@@ -21,10 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <AlloKitProviders>
           <Header />
           <main className="max-w-screen-lg mx-auto py-16">{children}</main>
-        </Providers>
+        </AlloKitProviders>
       </body>
     </html>
   );

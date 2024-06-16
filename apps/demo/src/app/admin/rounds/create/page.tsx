@@ -11,7 +11,7 @@ export default function CreateRoundPage({}) {
         strategies={["0x79A5EEc2C87Cd2116195E71af7A38647f89C8Ffa"]}
         onCreated={({ id, chainId }) => {
           console.log("Round created", { id, chainId });
-          router.push(`/${chainId}/rounds/${id}`);
+          router.push(`/admin/rounds/${chainId}/${id}`);
         }}
       />
     </section>
