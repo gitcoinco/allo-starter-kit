@@ -23,7 +23,7 @@ export function TokenAmount({
 
 // TODO: use a http api instead of wagmi so user doesn't need to be connected with wallet?
 export function useToken(tokenAddress: string) {
-  const address = getAddress(tokenAddress);
+  const address = tokenAddress ? getAddress(tokenAddress) : undefined;
   const tokenContract = { address, abi: erc20Abi };
 
   const token = useReadContracts({

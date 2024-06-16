@@ -22,5 +22,6 @@ export * from "./rounds/card";
 export * from "./rounds/create";
 export * from "./rounds/details";
 export * from "./rounds/discover";
+export * from "./rounds/fund";
 
 export * from "./checkout/add-to-checkout";
