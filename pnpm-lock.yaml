@@ -66,9 +66,6 @@ importers:
 
   apps/storybook:
     dependencies:
-      '@swc/helpers':
-        specifier: ^0.5.11
-        version: 0.5.11
       react:
         specifier: ^18
         version: 18.3.1
@@ -109,6 +106,9 @@ importers:
       '@storybook/test':
         specifier: ^8.1.6
         version: 8.1.8
+      '@swc/helpers':
+        specifier: ^0.5.11
+        version: 0.5.11
       '@types/node':
         specifier: ^20
         version: 20.14.2
@@ -6735,7 +6735,7 @@ packages:
     resolution: {integrity: sha512-YNlnKRWF2sVojTpIyzwou9XoTNbzbzONwRhOoniEioF1AtaitTvVZblaQRrAzChWQ1bLYyYSWzM18y4WwgzJ+A==}
     dependencies:
       tslib: 2.6.3
-    dev: false
+    dev: true
 
   /@swc/helpers@0.5.5:
     resolution: {integrity: sha512-KGYxvIOXcceOAbEk4bi/dVLEK9z8sZ0uBB3Il5b1rhfClSpcX0yfRO0KmTkqR2cnQDymwLB+25ZyMzICg/cm/A==}
