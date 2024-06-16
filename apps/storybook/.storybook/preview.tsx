@@ -7,8 +7,8 @@ import "@allo/kit/styles.css";
 // Initialize MSW
 // initialize();
 
-import { ApiProvider } from "@allo/kit/api";
-import { Web3Provider } from "@allo/kit/wagmi";
+import { ApiProvider } from "@allo/kit";
+import { Web3Provider } from "@allo/kit";
 const preview: Preview = {
   parameters: {
     controls: {
