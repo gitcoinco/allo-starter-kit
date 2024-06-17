@@ -238,6 +238,9 @@ importers:
       lucide-react:
         specifier: ^0.381.0
         version: 0.381.0(react@18.3.1)
+      posthog-js:
+        specifier: ^1.139.2
+        version: 1.139.2
       prettier:
         specifier: ^3.3.0
         version: 3.3.2
@@ -11692,6 +11695,10 @@ packages:
       bser: 2.1.1
     dev: false
 
+  /fflate@0.4.8:
+    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
+    dev: false
+
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -15716,6 +15723,13 @@ packages:
       nanoid: 3.3.7
       picocolors: 1.0.1
       source-map-js: 1.2.0
+
+  /posthog-js@1.139.2:
+    resolution: {integrity: sha512-myyuOADqZvYwgqmriwlKDEUDwLhscivFLh67UWBj4Wt9kOlmklvJb36W0ES2GAS6IdojbnGZGH5lF3heqreLWQ==}
+    dependencies:
+      fflate: 0.4.8
+      preact: 10.22.0
+    dev: false
 
   /preact@10.22.0:
     resolution: {integrity: sha512-RRurnSjJPj4rp5K6XoP45Ui33ncb7e4H7WiOHVpjbkvqvA3U+N8Z6Qbo0AE6leGYBV66n8EhEaFixvIu3SkxFw==}
