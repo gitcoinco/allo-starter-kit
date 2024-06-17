@@ -10,7 +10,6 @@ export function RoundStrategyBadge({
       .map(([key, label], index) => [key, label, colors[index]])
       .find(([key]) => key === strategyName) ?? [];
 
-  console.log(strategy, color);
   if (!strategy) return null;
   return (
     <Badge
@@ -34,7 +33,7 @@ const strategyMap = {
   "allov2.RFPCommitteeStrategy": "RFP",
 };
 
-// Color of the badge
+// Color of the badge (maps to order of strategyMap)
 const colors = [
   "blue",
   "yellow",
