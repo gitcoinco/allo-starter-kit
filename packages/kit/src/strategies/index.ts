@@ -1,3 +1,11 @@
+/*
+TODO:
+
+If we move this to the ApiProvider developers can add their own strategy extensions.
+
+
+*/
+
 import { FunctionComponent, useMemo } from "react";
 import z from "zod";
 import { useMutation } from "@tanstack/react-query";
@@ -15,6 +23,7 @@ import {
 import { call as reviewRecipientsCall } from "../strategies/direct-grants/review-recipients";
 import { Round } from "../api/types";
 import { useAPI } from "..";
+import { Address } from "viem";
 
 export type StrategyAddonType =
   | "createRound"
@@ -72,23 +81,40 @@ export function getStrategyAddon(
   return strategyAddons[strategy]?.[component] as StrategyAddon | undefined;
 }
 
-export function getStrategyType(strategyName: string, chainId: number) {
+// Helper function to find matching contract from name or address
+function reduceSupportedChains(
+  chainId: number,
+  compare: (args: [key: string, address: Address]) => boolean,
+) {
   return supportedChains?.reduce((match, chain) => {
-    // Find the key matching the strategy address
-    const type = Object.entries(chain.contracts ?? {}).find(([key]) => {
-      return (
-        chainId === chain.id &&
-        key === strategyMap[strategyName as keyof typeof strategyMap]
-      );
-    });
+    const type = Object.entries(chain.contracts ?? {}).find(
+      ([key, address]) => chain.id === chainId && compare([key, address]),
+    );
 
     return type?.[0] || match;
   }, "");
 }
+function getStrategyTypeFromName(strategyName: string, chainId: number) {
+  return reduceSupportedChains(
+    chainId,
+    ([name]) => name === strategyMap[strategyName as keyof typeof strategyMap],
+  );
+}
+
+export function getStrategyTypeFromAddress(
+  strategyAddress: Address,
+  chainId: number,
+) {
+  return reduceSupportedChains(
+    chainId,
+    ([_, address]) => address === strategyAddress,
+  );
+}
 
 export function useStrategyType(round?: Round) {
   return useMemo(
-    () => round && getStrategyType(round?.strategyName!, round?.chainId),
+    () =>
+      round && getStrategyTypeFromName(round?.strategyName!, round?.chainId),
     [round],
   );
 }

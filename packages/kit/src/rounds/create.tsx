@@ -19,11 +19,11 @@ import { useCreateRound } from "../hooks/useRounds";
 import { Address, getAddress, zeroAddress } from "viem";
 import { RoundCreated } from "../api/types";
 
-import { PropsWithChildren, createElement } from "react";
+import { PropsWithChildren, createElement, useMemo } from "react";
 import { ImageUpload } from "../ui/image-upload";
 import { useUpload } from "../hooks/useUpload";
 import { EthAddressSchema } from "../schemas";
-import { getStrategyAddon } from "../strategies";
+import { getStrategyAddon, getStrategyTypeFromAddress } from "../strategies";
 import { EnsureCorrectNetwork } from "../ui/correct-network";
 import {
   Select,
@@ -215,8 +215,7 @@ export function CreateRound({
             name="strategy"
             render={({ field }) => (
               <FormItem className="flex-1">
-                {/* TODO: Dropdown with strategy names */}
-                <FormLabel>Strategy (TODO: Render Strategy name)</FormLabel>
+                <FormLabel>Strategy</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -228,9 +227,7 @@ export function CreateRound({
                   </FormControl>
                   <SelectContent>
                     {strategies?.map((strategy) => (
-                      <SelectItem key={strategy} value={strategy}>
-                        {strategy}
-                      </SelectItem>
+                      <StrategySelectItem key={strategy} strategy={strategy} />
                     ))}
                   </SelectContent>
                 </Select>
@@ -275,8 +272,16 @@ export function CreateRound({
               <FormItem className="flex-1">
                 <FormLabel>Initial funding amount</FormLabel>
                 <FormControl>
-                  <Input {...field} type="number" value={Number(field.value)} />
+                  <Input
+                    {...field}
+                    disabled={true}
+                    type="number"
+                    value={Number(field.value)}
+                  />
                 </FormControl>
+                <FormDescription>
+                  TODO: handle decimals from selected token
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -324,4 +329,13 @@ export function CreateRound({
       </form>
     </Form>
   );
+}
+
+function StrategySelectItem({ strategy }: { strategy: Address }) {
+  const chainId = Number(useFormContext().watch("chainId"));
+  const strategyName = useMemo(
+    () => getStrategyTypeFromAddress(strategy, chainId) || strategy,
+    [chainId, strategy],
+  );
+  return <SelectItem value={strategy}>{strategyName}</SelectItem>;
 }

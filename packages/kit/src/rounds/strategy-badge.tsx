@@ -24,20 +24,14 @@ export function RoundStrategyBadge({
 
 // Name of strategies
 const strategyMap = {
-  "allov1.QF": "Quadratic funding",
+  "allov1.QF": "Quadratic Funding",
   "allov2.DonationVotingMerkleDistributionDirectTransferStrategy":
     "Direct grant",
-  "allov2.QVSimpleStrategy": "Quadratic voting",
-  "allov2.DirectGrantsSimpleStrategy": "Direct grant",
-  "allov2.DirectGrantsLiteStrategy": "Direct grant (lite)",
+  "allov2.DirectGrantsLiteStrategy": "Direct Grant Lite",
+  "allov2.QVSimpleStrategy": "Quadratic Voting",
+  "allov2.DirectGrantsSimpleStrategy": "Direct Grant",
   "allov2.RFPCommitteeStrategy": "RFP",
 };
 
 // Color of the badge (maps to order of strategyMap)
-const colors = [
-  "blue",
-  "yellow",
-  "secondary",
-  "secondary",
-  "secondary",
-] as const;
+const colors = ["blue", "yellow", "yellow", "secondary", "secondary"] as const;

@@ -51,7 +51,7 @@ export function RoundCard({
         <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
         <div className="flex flex-1 items-center justify-between text-xs">
           <div className="w-1/2 truncate font-mono">{getRoundTime(phases)}</div>
-          <div className="w-1/2">
+          <div className="flex w-1/2 justify-end">
             <RoundStrategyBadge strategyName={strategyName} />
           </div>
         </div>
