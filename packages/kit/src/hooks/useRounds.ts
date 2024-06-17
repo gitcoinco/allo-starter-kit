@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { API, RoundInput, RoundsQuery } from "../api/types";
+import { API, AllocateInput, RoundInput, RoundsQuery } from "../api/types";
 import { useAPI } from "..";
 import { useWalletClient } from "wagmi";
 
@@ -35,6 +35,16 @@ export function useCreateRound() {
   const { data: client } = useWalletClient();
   return useMutation({
     mutationFn: (data: RoundInput) => api.createRound(data, client!),
+    // onSuccess: () => {}, // TODO: add toast
+    // onError: () => {},
+  });
+}
+
+export function useAllocate() {
+  const api = useAPI();
+  const { data: client } = useWalletClient();
+  return useMutation({
+    mutationFn: (data: AllocateInput) => api.allocate(data, client!),
     // onSuccess: () => {}, // TODO: add toast
     // onError: () => {},
   });

@@ -1,3 +1,4 @@
+export function call() {}
 export function Allocate() {
   // TODO: Render table with projects and amount inputs
 

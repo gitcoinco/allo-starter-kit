@@ -2,39 +2,57 @@
 import { NumericFormat } from "react-number-format";
 import { QueryOpts } from "../api/types";
 import { useApplications } from "../hooks/useApplications";
-import { useRoundById } from "../hooks/useRounds";
+import { useAllocate, useRoundById } from "../hooks/useRounds";
 import { useStrategyAddon } from "../strategies";
 import { BackgroundImage } from "../ui/background-image";
 import { Input } from "../ui/input";
 import { Button } from "..";
+import { formatNumber } from "../lib/utils";
+import { useRef } from "react";
 
 type AllocateProps = {
-  id: string;
-  opts?: QueryOpts;
+  roundId: string;
+  chainId: number;
 };
 
-export function Allocate({ id, opts }: AllocateProps) {
-  const { data: round } = useRoundById(id, opts);
+function useAllocateState() {
+  const state = useRef<Record<string, number>>({}).current;
+  function set(id: string, amount: number) {
+    state[id] = amount;
+  }
+  return { state, set };
+}
+export function Allocate({ roundId, chainId }: AllocateProps) {
+  const { data: round } = useRoundById(roundId, { chainId });
   const { data: applications, isPending } = useApplications({
-    where: { roundId: { equals: id }, status: { equals: "APPROVED" } },
+    where: {
+      roundId: { equals: roundId },
+      status: { equals: "APPROVED" },
+      chainId: { equals: chainId },
+    },
   });
 
-  console.log("appl", applications);
+  const allocate = useAllocate();
 
   const strategyAddon = useStrategyAddon("allocate", round);
+  const { state, set } = useAllocateState();
+  console.log(applications);
 
-  console.log(strategyAddon);
-
-  const allocation = 0;
   return (
     <section>
       <div className="mb-2 flex justify-between">
         <div />
-        <Button>Allocate</Button>
+        <Button
+          onClick={() => {
+            allocate.mutate({ roundId, data: "0x" });
+          }}
+        >
+          Allocate
+        </Button>
       </div>
-      <div className="flex flex-col gap-2 divide-y">
+      <div className="divide-y">
         {applications?.map((application) => (
-          <div key={application.id} className="flex items-center gap-2">
+          <div key={application.id} className="flex items-center gap-2 py-2">
             <BackgroundImage
               className="size-12 rounded bg-gray-100"
               src={application.avatarUrl}
@@ -46,19 +64,16 @@ export function Allocate({ id, opts }: AllocateProps) {
                 min={0}
                 allowNegative={false}
                 allowLeadingZeros={false}
+                thousandSeparator=","
                 customInput={(p) => (
-                  <Input
-                    className="w-16 text-center"
-                    {...p}
-                    max={100}
-                    min={0}
-                  />
+                  <Input className="w-32 text-center" {...p} min={0} />
                 )}
-                value={allocation}
+                value={state[application.id] ?? 0}
                 onBlur={(e) => {
                   e.preventDefault();
-                  // const updated = parseFloat(e.target.value);
-                  // allocation !== updated && set(id, updated);
+                  const value = parseFloat(e.target.value);
+                  console.log(value);
+                  value !== undefined && set(application.id, value);
                 }}
               />
             </div>

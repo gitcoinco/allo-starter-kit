@@ -1,6 +1,7 @@
 "use client";
 import { erc20Abi, formatUnits, getAddress } from "viem";
 import { useReadContracts } from "wagmi";
+import { formatNumber } from "../lib/utils";
 
 export function TokenAmount({
   amount = BigInt(0),
@@ -39,13 +40,4 @@ export function useToken(tokenAddress: string) {
     ...token,
     data: { address, symbol, decimals },
   };
-}
-
-export function formatNumber(num = 0) {
-  return (
-    Number(num)?.toLocaleString("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }) ?? "0"
-  );
 }

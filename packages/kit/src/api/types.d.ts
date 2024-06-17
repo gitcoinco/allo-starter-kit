@@ -11,7 +11,7 @@ export interface RoundsQuery extends Query {
   where?: RoundQueryWhere;
 }
 type Compare = {
-  equals?: string;
+  equals?: string | number;
   in?: (string | number)[];
   contains?: (string | number)[];
   gte?: number;
@@ -72,7 +72,10 @@ export interface API {
   ballot: () => Promise<Ballot>;
   addToBallot: (ballot: Ballot) => Promise<Ballot>;
   saveBallot: (ballot: Ballot) => Promise<Ballot>;
-  allocate: () => void;
+  allocate: (
+    data: AllocateInput,
+    signer: WalletClient,
+  ) => Promise<Address | undefined>;
   distribute: () => void;
   upload: (data: FormData) => Promise<string>;
   sendTransaction: (
@@ -151,3 +154,8 @@ export type Project = BaseProject & {
 export type ProjectInput = BaseProject & {};
 
 export type ProjectCreated = { id: string; chainId: number };
+
+export type AllocateInput = {
+  roundId: string;
+  data: `0x${string}`;
+};

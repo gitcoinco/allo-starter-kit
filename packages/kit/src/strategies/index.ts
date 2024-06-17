@@ -21,6 +21,7 @@ import {
   RegisterRecipientForm as DirectGrantsRegisterRecipientForm,
 } from "../strategies/direct-grants/register-recipient";
 import { call as reviewRecipientsCall } from "../strategies/direct-grants/review-recipients";
+import { call as allocateCall } from "../strategies/direct-grants/allocate";
 import { Round } from "../api/types";
 import { useAPI } from "..";
 import { Address } from "viem";
@@ -65,7 +66,7 @@ export const strategyAddons: Record<
       schema: z.any(),
       defaultValues: null,
       component: null,
-      call: reviewRecipientsCall,
+      call: allocateCall,
     },
   },
 };

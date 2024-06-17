@@ -69,7 +69,7 @@ export const allo2API: Partial<API> = {
         },
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   },
@@ -98,7 +98,7 @@ export const allo2API: Partial<API> = {
         return { id, chainId: signer.chain?.id as number };
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   },
@@ -113,13 +113,24 @@ export const allo2API: Partial<API> = {
       const { name, description } = data;
 
       const chainId = signer.chain?.id as number;
+      throw new Error("Create Project not implemented yet");
       return { id: "id", chainId };
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   },
-  allocate: () => {},
+  allocate: async function ({ roundId, data }, signer) {
+    try {
+      const allo = new Allo(createAlloOpts(signer.chain!));
+      const tx = allo.allocate(BigInt(roundId), data);
+
+      return await this.sendTransaction?.(tx, signer);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
   distribute: () => {},
 };
 
