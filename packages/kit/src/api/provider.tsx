@@ -1,11 +1,22 @@
 "use client";
 import { PropsWithChildren, createContext, useContext } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WalletClient, getAddress } from "viem";
+
 import { grantsStackAPI } from "./providers/grants-stack";
 import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
 import { API, RoundsQuery, QueryOpts, RoundInput } from "./types";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WalletClient, getAddress } from "viem";
+
+import posthog from "posthog-js";
+import { PostHogProvider } from "posthog-js/react";
+
+if (typeof window !== "undefined") {
+  posthog.init("phc_MkecAopGBhofBbwLqvcvV0iyHBZWSlemr7krp6lxLjl", {
+    api_host: "https://us.i.posthog.com",
+    person_profiles: "always",
+  });
+}
 
 const Context = createContext({} as API);
 const defaultApi: API = {
@@ -89,9 +100,11 @@ export function ApiProvider({
   const queryClient = getQueryClient();
   const value = { ...defaultApi, ...provider };
   return (
-    <QueryClientProvider client={queryClient}>
-      <Context.Provider value={value}>{children}</Context.Provider>
-    </QueryClientProvider>
+    <PostHogProvider client={posthog}>
+      <QueryClientProvider client={queryClient}>
+        <Context.Provider value={value}>{children}</Context.Provider>
+      </QueryClientProvider>
+    </PostHogProvider>
   );
 }
 

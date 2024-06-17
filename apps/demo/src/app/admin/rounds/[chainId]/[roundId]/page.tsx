@@ -1,5 +1,5 @@
 "use client";
-import { ApplicationReviewTable } from "@allo/kit";
+import { ApplicationReviewTable, Button } from "@allo/kit";
 import { BackButton, RoundDetails } from "@allo/kit";
 import Link from "next/link";
 
@@ -10,6 +10,11 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
       <RoundDetails
         id={roundId}
         opts={{ chainId }}
+        primaryAction={
+          <Link href={`/admin/rounds/${chainId}/${roundId}/allocate`}>
+            <Button>Allocate</Button>
+          </Link>
+        }
         backAction={
           <Link href={`/admin/rounds`}>
             <BackButton />

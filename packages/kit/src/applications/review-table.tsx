@@ -26,7 +26,6 @@ export function ApplicationReviewTable({
 
   const form = useForm();
 
-  const strategyType = useStrategyType(round);
   const strategyAddon = useStrategyAddon("reviewRecipients", round);
   const applicationByStatus = useMemo(() => {
     const initialState = {

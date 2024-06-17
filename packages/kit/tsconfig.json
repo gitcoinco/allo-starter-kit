@@ -5,8 +5,8 @@
     "sourceMap": true,
     "inlineSources": true,
     "moduleResolution": "NodeNext",
-    "outDir": "dist",
-    "baseUrl": "."
+    "outDir": "dist"
+    // "baseUrl": "."
     // "rootDir": "."
   },
   "include": ["**/*.ts", "**/*.tsx"],

@@ -10,6 +10,7 @@ import { Separator } from "../ui/separator";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { supportedChains } from "..";
+import { RoundStrategyBadge } from "./strategy-badge";
 
 const toNow = (date?: string) =>
   date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
@@ -35,6 +36,7 @@ export function RoundCard({
   matching,
   bannerUrl,
   phases,
+  strategyName,
 }: Round) {
   const network = useMemo(() => getNetwork(chainId), [chainId]);
   return (
@@ -46,13 +48,12 @@ export function RoundCard({
         </h3>
       </div>
       <CardContent className="space-y-2 p-4">
-        <div className="">
-          by <Badge variant={"secondary"}>ORG</Badge>
-        </div>
         <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
-        <div className="flex items-center justify-between text-xs">
-          <div className="font-mono">{getRoundTime(phases)}</div>
-          <Badge>StrategyType</Badge>
+        <div className="flex flex-1 items-center justify-between text-xs">
+          <div className="w-1/2 truncate font-mono">{getRoundTime(phases)}</div>
+          <div className="w-1/2">
+            <RoundStrategyBadge strategyName={strategyName} />
+          </div>
         </div>
         <Separator className="my-2" />
         <div className="">
