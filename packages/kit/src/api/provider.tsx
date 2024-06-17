@@ -14,7 +14,7 @@ import { PostHogProvider } from "posthog-js/react";
 if (typeof window !== "undefined") {
   posthog.init("phc_MkecAopGBhofBbwLqvcvV0iyHBZWSlemr7krp6lxLjl", {
     api_host: "https://us.i.posthog.com",
-    person_profiles: "always", // or 'always' to create profiles for anonymous users as well
+    person_profiles: "always",
   });
 }
 
