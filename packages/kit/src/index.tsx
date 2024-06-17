@@ -11,6 +11,7 @@ export * from "./ui/avatar";
 export * from "./ui/form";
 
 export * from "./applications/approval-item";
+export * from "./applications/card";
 export * from "./applications/create";
 export * from "./applications/discover";
 export * from "./applications/details";
@@ -18,6 +19,7 @@ export * from "./applications/review-table";
 export * from "./projects/create";
 export * from "./projects/discover";
 export * from "./projects/details";
+export * from "./rounds/allocate";
 export * from "./rounds/card";
 export * from "./rounds/create";
 export * from "./rounds/details";

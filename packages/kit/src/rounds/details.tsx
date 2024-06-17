@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Markdown } from "..";
 import { QueryOpts } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
+import { RoundNetworkBadge } from "./network-badge";
 
 type RoundDetailsProps = {
   id: string;
@@ -23,7 +24,10 @@ export function RoundDetails({
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {backAction}
-          <h1 className="text-3xl font-medium">{data?.name}</h1>
+          <div className="">
+            <h1 className="text-3xl font-medium">{data?.name}</h1>
+            <RoundNetworkBadge chainId={data?.chainId} />
+          </div>
         </div>
         <div>{primaryAction}</div>
       </div>

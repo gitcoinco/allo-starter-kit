@@ -1,4 +1,7 @@
 import { FunctionComponent, useMemo } from "react";
+import z from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { supportedChains, useWalletClient } from "../wagmi";
 import {
   schema as directGrantsRoundSchema,
   defaultValues as directGrantsRoundDefaultValues,
@@ -10,23 +13,24 @@ import {
   RegisterRecipientForm as DirectGrantsRegisterRecipientForm,
 } from "../strategies/direct-grants/register-recipient";
 import { call as reviewRecipientsCall } from "../strategies/direct-grants/review-recipients";
-import { supportedChains, useWalletClient } from "../wagmi";
 import { Round } from "../api/types";
-import z from "zod";
 import { useAPI } from "..";
-import { UseMutationResult, useMutation } from "@tanstack/react-query";
 
 export type StrategyAddonType =
   | "createRound"
   | "registerRecipient"
-  | "reviewRecipients";
+  | "reviewRecipients"
+  | "allocate";
+
 export type StrategyType = "directGrants";
+
 export type StrategyAddon = {
   schema: any;
   defaultValues: unknown;
   component: FunctionComponent | null;
   call?: Function;
 };
+
 export const strategyAddons: Record<
   StrategyType,
   Record<StrategyAddonType, StrategyAddon>
@@ -43,6 +47,12 @@ export const strategyAddons: Record<
       component: DirectGrantsRegisterRecipientForm,
     },
     reviewRecipients: {
+      schema: z.any(),
+      defaultValues: null,
+      component: null,
+      call: reviewRecipientsCall,
+    },
+    allocate: {
       schema: z.any(),
       defaultValues: null,
       component: null,

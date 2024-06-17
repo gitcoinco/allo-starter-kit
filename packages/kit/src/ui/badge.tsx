@@ -16,6 +16,7 @@ const badgeVariants = cva(
           "border-transparent bg-green-100 text-green-900 hover:bg-green-100/80",
         yellow:
           "border-transparent bg-yellow-100 text-yellow-900 hover:bg-yellow-100/80",
+        blue: "border-transparent bg-blue-100 text-blue-900 hover:bg-blue-100/80",
         red: "border-transparent bg-red-600 text-white hover:bg-red-100/80",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
