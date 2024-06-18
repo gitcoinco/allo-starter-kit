@@ -110,6 +110,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     chainId,
     status,
     project,
+    anchorAddress,
   }: GSApplication): Application => {
     return {
       id,
@@ -118,6 +119,7 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       description: project?.metadata?.description,
       projectId: project?.id,
       status,
+      recipient: anchorAddress,
       avatarUrl: ipfsGateway(project?.metadata.logoImg),
       bannerUrl: ipfsGateway(project?.metadata.bannerImg),
     };

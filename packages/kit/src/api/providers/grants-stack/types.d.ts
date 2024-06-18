@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 type GSRoundMetadata = {
   name: string;
   title?: string;
@@ -27,10 +29,10 @@ export type GSRound = {
   donationsEndTime: string;
   matchAmountInUsd: string;
   matchAmount: string;
-  matchTokenAddress: string;
+  matchTokenAddress: Address;
   strategyId: string;
   strategyName: string;
-  strategyAddress: string;
+  strategyAddress: Address;
   applications: { id: string }[];
 };
 type GSCredential = any;
@@ -67,6 +69,7 @@ export type GSApplication = {
   totalDonationsCount: number;
   round: GSRound;
   metadata: GSApplicationMetadata;
+  anchorAddress: Address;
   project: {
     tags: string[];
     id: string;

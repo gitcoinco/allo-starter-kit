@@ -111,7 +111,7 @@ function ApproveButton({ label = "", isLoading = false }) {
       type="submit"
       icon={Check}
       isLoading={isLoading}
-      disabled={!selected}
+      disabled={!selected || isLoading}
     >
       {label} {selected} applications
     </Button>

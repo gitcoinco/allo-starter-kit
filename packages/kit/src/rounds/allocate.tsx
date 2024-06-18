@@ -1,13 +1,11 @@
 "use client";
 import { NumericFormat } from "react-number-format";
-import { QueryOpts } from "../api/types";
 import { useApplications } from "../hooks/useApplications";
-import { useAllocate, useRoundById } from "../hooks/useRounds";
+import { useRoundById } from "../hooks/useRounds";
 import { useStrategyAddon } from "../strategies";
 import { BackgroundImage } from "../ui/background-image";
 import { Input } from "../ui/input";
 import { Button } from "..";
-import { formatNumber } from "../lib/utils";
 import { useRef } from "react";
 
 type AllocateProps = {
@@ -32,19 +30,18 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
     },
   });
 
-  const allocate = useAllocate();
-
   const strategyAddon = useStrategyAddon("allocate", round);
   const { state, set } = useAllocateState();
-  console.log(applications);
 
   return (
     <section>
       <div className="mb-2 flex justify-between">
         <div />
         <Button
+          isLoading={strategyAddon?.call?.isPending}
           onClick={() => {
-            allocate.mutate({ roundId, data: "0x" });
+            console.log("call", round, state, applications);
+            strategyAddon?.call?.mutate([round, state, applications]);
           }}
         >
           Allocate

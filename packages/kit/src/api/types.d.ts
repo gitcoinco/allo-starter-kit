@@ -73,7 +73,7 @@ export interface API {
   addToBallot: (ballot: Ballot) => Promise<Ballot>;
   saveBallot: (ballot: Ballot) => Promise<Ballot>;
   allocate: (
-    data: AllocateInput,
+    tx: TransactionInput,
     signer: WalletClient,
   ) => Promise<Address | undefined>;
   distribute: () => void;
@@ -103,7 +103,7 @@ export type Round = BaseRound & {
   bannerUrl?: string;
   chainId: number;
   applications?: { id: string }[];
-  matching: { amount: bigint; token: string };
+  matching: { amount: bigint; token: Address };
   avatarUrl?: string;
   bannerUrl?: string;
   strategyName?: string;
@@ -127,6 +127,7 @@ export type Application = BaseApplication & {
   id: string;
   name: string;
   description?: string;
+  recipient: Address;
   avatarUrl?: string;
   bannerUrl?: string;
   chainId: number;
@@ -158,4 +159,10 @@ export type ProjectCreated = { id: string; chainId: number };
 export type AllocateInput = {
   roundId: string;
   data: `0x${string}`;
+};
+
+export type TransactionInput = {
+  to: `0x${string}`;
+  data: `0x${string}`;
+  value: string | bigint;
 };

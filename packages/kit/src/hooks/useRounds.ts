@@ -39,13 +39,3 @@ export function useCreateRound() {
     // onError: () => {},
   });
 }
-
-export function useAllocate() {
-  const api = useAPI();
-  const { data: client } = useWalletClient();
-  return useMutation({
-    mutationFn: (data: AllocateInput) => api.allocate(data, client!),
-    // onSuccess: () => {}, // TODO: add toast
-    // onError: () => {},
-  });
-}

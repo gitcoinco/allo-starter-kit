@@ -6,7 +6,13 @@ import { WalletClient, getAddress } from "viem";
 import { grantsStackAPI } from "./providers/grants-stack";
 import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
-import { API, RoundsQuery, QueryOpts, RoundInput } from "./types";
+import {
+  API,
+  RoundsQuery,
+  QueryOpts,
+  RoundInput,
+  TransactionInput,
+} from "./types";
 
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
@@ -48,7 +54,7 @@ const defaultApi: API = {
 };
 
 export async function sendTransaction(
-  tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
+  tx: TransactionInput,
   signer: WalletClient,
 ) {
   if (!signer?.account) throw new Error("Signer missing");
@@ -56,7 +62,7 @@ export async function sendTransaction(
 
   return signer.sendTransaction({
     ...tx,
-    value: tx.value ? BigInt(tx.value) : undefined,
+    value: BigInt(tx.value),
     account: address,
     chain: signer.chain,
   });

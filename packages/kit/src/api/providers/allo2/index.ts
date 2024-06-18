@@ -76,13 +76,11 @@ export const allo2API: Partial<API> = {
   createApplication: async function (data, signer) {
     try {
       if (!signer?.account) throw new Error("Signer missing");
-      const address = getAddress(signer.account?.address);
       const allo = new Allo(createAlloOpts(signer.chain!));
 
       const client = signer.extend(publicActions);
 
       const { roundId, strategyData = "0x" } = data;
-      // const pointer = await this.uploadMetadata?.({ name, description });
 
       const tx = allo.registerRecipient(roundId, strategyData);
 
@@ -120,11 +118,8 @@ export const allo2API: Partial<API> = {
       throw error;
     }
   },
-  allocate: async function ({ roundId, data }, signer) {
+  allocate: async function (tx, signer) {
     try {
-      const allo = new Allo(createAlloOpts(signer.chain!));
-      const tx = allo.allocate(BigInt(roundId), data);
-
       return await this.sendTransaction?.(tx, signer);
     } catch (error) {
       console.error(error);

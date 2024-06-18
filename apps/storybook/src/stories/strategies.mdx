@@ -1,0 +1,121 @@
+import { Meta } from "@storybook/blocks";
+import Image from "next/image";
+
+<Meta title="Strategy Extensions" />
+
+# Strategy Extensions
+
+(Work in progress)
+
+In Allo2, some strategies require additional UI or functionality.  
+For example `registrationStartTime` and `registrationEndTime` when creating a pool.  
+This data is then encoded into a bytes string (`0x...`) and sent to `allo.createPool(strategy, initStrategyData, ...)` .
+
+**Allo.sol**
+
+```ts
+// createPool invokes the strategy's initialize function
+_strategy.initialize(poolId, _initStrategyData);
+```
+
+**DirectGrantsLite.sol**
+
+```ts
+struct InitializeData {
+    bool useRegistryAnchor;
+    bool metadataRequired;
+    uint64 registrationStartTime;
+    uint64 registrationEndTime;
+}
+
+// the strategy's initialize function decodes the data
+InitializeData memory initializeData = abi.decode(_data, (InitializeData));
+```
+
+Allo2 BaseStrategy interface:
+
+- `init`
+- `registerRecipient`
+- `allocate`
+- `distribute`
+
+Custom strategies can implement function like:
+
+- `reviewRecipients`
+
+### Building a Strategy Extension
+
+Let's use DirectGrantsLite as an example.
+
+InitializeData has the following interface:
+
+- `InitializeData(bool _useRegistryAnchor, bool _metadataRequired, uint64 _registrationStartTime, uint64 _registrationEndTime)`
+
+We want to include form components in CreateRound for the user to select start and end times.
+
+```tsx
+import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk";
+
+function FormComponent() {
+  const { control } = useFormContext();
+  return (
+    <>
+      <FormField
+        control={control}
+        // The internal state contains the dates to update (from, to)
+        name="initStrategyData.__internal__"
+        render={({ field }) => {
+          return (
+            <FormItem>
+              <FormLabel>Registration dates</FormLabel>
+              {/* RangeCalendar is a component to select from and to dates */}
+              <RangeCalendar {...field}>Pick start and end dates</RangeCalendar>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
+      />
+    </>
+  );
+}
+
+const defaultValues = "0x";
+const schema = z
+  .object({
+    // Internal state for dates
+    __internal__: z.object({ from: z.date(), to: z.date() }),
+  })
+  // Transform the dates into initStrategyData
+  .transform((val) => {
+    const { from, to } = val.__internal__;
+    // Encode data
+    return DirectGrantsLiteStrategy.prototype.getInitializeData({
+      useRegistryAnchor: false,
+      metadataRequired: false,
+      registrationStartTime: dateToUint64(from),
+      registrationEndTime: dateToUint64(to),
+    });
+  });
+
+const directGrantsLite: StrategyAddon = {
+    name: "Direct Grants Lite",
+    // Deployed strategy contract address for networks
+    contracts: {
+        1: "0x...",
+        10: "0x..."
+    },
+    createPool: {
+        schema,
+        defaultValues,
+        component: FormComponent
+    },
+    registerRecipient: { ... },
+    reviewRecipients: { ... },
+    allocate: { ... },
+    distribute: { ... },
+}
+
+<ApiProvider strategies={{ directGrantsLite }}>
+...
+</ApiProvider>
+```
