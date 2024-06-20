@@ -20,3 +20,12 @@ export const Default: Story = {
     chainId: String(application.chainId),
   },
 };
+
+export const DirectGrants: Story = {
+  args: {
+    roundId: "73",
+    chainId: "42161",
+    // roundId: application.roundId,
+    // chainId: String(application.chainId),
+  },
+};

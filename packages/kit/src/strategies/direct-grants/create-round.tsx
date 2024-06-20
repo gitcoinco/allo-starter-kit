@@ -2,26 +2,24 @@
 
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
 import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk/";
 import {
-  FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "../../ui/form";
-import { Button } from "../../ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Calendar } from "../../ui/calendar";
-import { cn } from "../../lib/utils";
+
 import { dateToUint64 } from "../../api/providers/allo2";
+import { RangeCalendar } from "../../ui/calendar-range";
 
 export const schema = z
   .object({
-    // Internal state for dates
+    /*
+    initStrategyData expects to be a bytes string starting with 0x.
+    Temporarily store from and to in an internal state. This will be encoded into the bytes string.
+    */
     __internal__: z.object({ from: z.date(), to: z.date() }),
   })
   // Transform the dates into initStrategyData
@@ -46,35 +44,9 @@ export function CreateRoundForm() {
           return (
             <FormItem className="flex flex-col">
               <FormLabel>Project Registration</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground",
-                      )}
-                    >
-                      {field.value ? (
-                        `${format(field.value.from, "PPP")}${field.value.to ? ` - ${format(field.value.to, "PPP")}` : ""}`
-                      ) : (
-                        <span>Pick start and end dates</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    initialFocus
-                    mode="range"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    numberOfMonths={2}
-                  />
-                </PopoverContent>
-              </Popover>
+              <RangeCalendar field={field}>
+                Pick start and end dates
+              </RangeCalendar>
               <FormDescription>
                 When can projects submit their application?
               </FormDescription>

@@ -19,11 +19,7 @@ import {
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { Toaster } from "../ui/toaster";
-import {
-  StrategyExtension,
-  StrategyExtensions,
-  StrategyType,
-} from "../strategies";
+import { StrategyExtensions } from "../strategies";
 
 if (typeof window !== "undefined") {
   posthog.init("phc_MkecAopGBhofBbwLqvcvV0iyHBZWSlemr7krp6lxLjl", {
@@ -128,7 +124,6 @@ export function ApiProvider({
     strategies: { ...strategies, ...props.strategies },
   };
 
-  console.log(value);
   return (
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
