@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode } from "react";
 import { Info } from "lucide-react";
 import { UseQueryResult } from "@tanstack/react-query";
-import { ErrorMessage } from "./error-message";
+import { ErrorMessageLog } from "./error-message";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { cn } from "../lib/utils";
 import { EmptyState } from "./empty-state";
@@ -25,7 +25,7 @@ export function Grid<T extends { id: string }>({
   component: Component,
   renderItem = (item, Component: any) => <Component key={item?.id} {...item} />,
 }: Props<T>) {
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessageLog error={error} />;
   if (!isPending && !data?.length) return <EmptyState />;
 
   return (

@@ -27,3 +27,5 @@ export * from "./rounds/discover";
 export * from "./rounds/fund";
 
 export * from "./checkout/add-to-checkout";
+export * from "./strategies/direct-grants";
+export * from "./strategies/quadratic-funding";

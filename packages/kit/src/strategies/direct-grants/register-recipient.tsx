@@ -1,5 +1,8 @@
 "use client";
 
+import { useAccount } from "wagmi";
+import { useEffect } from "react";
+import { encodeAbiParameters, parseAbiParameters } from "viem";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -13,14 +16,9 @@ import {
 
 import { EthAddressSchema } from "../../schemas";
 import { Input } from "../../ui/input";
-import { useAccount } from "wagmi";
-import { useEffect } from "react";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
 
-export const defaultValues = "0x";
 export const schema = z
   .object({
-    // Internal state for dates
     __internal__: z.object({
       recipientAddress: EthAddressSchema,
     }),

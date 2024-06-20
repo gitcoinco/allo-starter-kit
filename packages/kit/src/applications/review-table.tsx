@@ -27,6 +27,7 @@ export function ApplicationReviewTable({
   const form = useForm();
 
   const strategyAddon = useStrategyAddon("reviewRecipients", round);
+  console.log("strategyAddon", strategyAddon);
   const applicationByStatus = useMemo(() => {
     const initialState = {
       APPROVED: [],

@@ -9,7 +9,15 @@ export function AlloKitProviders({
 }>) {
   return (
     <ApiProvider
-      provider={{
+      strategies={{
+        maci: {
+          name: "MACI",
+          type: "maci",
+          contracts: {},
+          components: {},
+        },
+      }}
+      api={{
         upload: async (data) =>
           fetch(`/api/ipfs`, { method: "POST", body: data })
             .then((r) => r.json())

@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { AlertCircle } from "lucide-react";
 
-export function ErrorMessage({ error }: { error: unknown }) {
+export function ErrorMessageLog({ error }: { error: unknown }) {
   return (
     <Alert variant="destructive">
       <AlertCircle className="size-4" />
@@ -14,5 +14,17 @@ export function ErrorMessage({ error }: { error: unknown }) {
         </pre>
       </details>
     </Alert>
+  );
+}
+
+export function ErrorMessage({ message = "" }) {
+  return (
+    message && (
+      <Alert variant="destructive">
+        <AlertCircle className="size-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{message}</AlertDescription>
+      </Alert>
+    )
   );
 }

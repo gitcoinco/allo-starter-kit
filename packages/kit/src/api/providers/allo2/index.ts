@@ -47,6 +47,8 @@ export const allo2API: Partial<API> = {
         managers = [],
         initStrategyData = "0x",
       } = data;
+      if (typeof initStrategyData !== "string")
+        throw new Error("initStrategyData must be a bytes string.");
 
       const tx = allo.createPool({
         profileId,

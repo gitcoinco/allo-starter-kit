@@ -6,6 +6,8 @@ import { WalletClient, getAddress } from "viem";
 import { grantsStackAPI } from "./providers/grants-stack";
 import { allo2API } from "./providers/allo2";
 import { easyRpgfAPI } from "./providers/easy-rpgf";
+import { directGrants } from "../strategies/direct-grants";
+import { quadraticFunding } from "../strategies/quadratic-funding";
 import {
   API,
   RoundsQuery,
@@ -16,6 +18,12 @@ import {
 
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
+import { Toaster } from "../ui/toaster";
+import {
+  StrategyExtension,
+  StrategyExtensions,
+  StrategyType,
+} from "../strategies";
 
 if (typeof window !== "undefined") {
   posthog.init("phc_MkecAopGBhofBbwLqvcvV0iyHBZWSlemr7krp6lxLjl", {
@@ -24,7 +32,9 @@ if (typeof window !== "undefined") {
   });
 }
 
-const Context = createContext({} as API);
+const Context = createContext(
+  {} as { api: API; strategies: StrategyExtensions },
+);
 const defaultApi: API = {
   rounds: async (query: RoundsQuery) => [],
   roundById: async (id: string, opts?: QueryOpts) => undefined,
@@ -74,6 +84,11 @@ export const providers = {
   allo2API,
 };
 
+export const strategies = {
+  directGrants,
+  quadraticFunding,
+};
+
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
@@ -101,19 +116,35 @@ function getQueryClient() {
 
 export function ApiProvider({
   children,
-  provider = grantsStackAPI,
-}: PropsWithChildren<{ provider?: Partial<API> }>) {
+  api,
+  ...props
+}: PropsWithChildren<{
+  api?: Partial<API>;
+  strategies?: StrategyExtensions;
+}>) {
   const queryClient = getQueryClient();
-  const value = { ...defaultApi, ...provider };
+  const value = {
+    api: { ...defaultApi, ...api },
+    strategies: { ...strategies, ...props.strategies },
+  };
+
+  console.log(value);
   return (
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
-        <Context.Provider value={value}>{children}</Context.Provider>
+        <Context.Provider value={value}>
+          {children}
+          <Toaster />
+        </Context.Provider>
       </QueryClientProvider>
     </PostHogProvider>
   );
 }
 
 export function useAPI() {
-  return useContext(Context);
+  return useContext(Context).api;
+}
+
+export function useStrategies() {
+  return useContext(Context).strategies;
 }

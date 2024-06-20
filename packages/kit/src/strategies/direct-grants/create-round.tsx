@@ -19,7 +19,6 @@ import { Calendar } from "../../ui/calendar";
 import { cn } from "../../lib/utils";
 import { dateToUint64 } from "../../api/providers/allo2";
 
-export const defaultValues = "0x";
 export const schema = z
   .object({
     // Internal state for dates

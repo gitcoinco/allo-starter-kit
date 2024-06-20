@@ -1,8 +1,8 @@
 "use client";
 
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFormContext } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -16,14 +16,14 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useCreateRound } from "../hooks/useRounds";
-import { Address, getAddress, zeroAddress } from "viem";
+import { getAddress, zeroAddress } from "viem";
 import { RoundCreated } from "../api/types";
 
-import { PropsWithChildren, createElement, useMemo } from "react";
+import { PropsWithChildren, createElement, useState } from "react";
 import { ImageUpload } from "../ui/image-upload";
 import { useUpload } from "../hooks/useUpload";
 import { EthAddressSchema } from "../schemas";
-import { getStrategyAddon, getStrategyTypeFromAddress } from "../strategies";
+import { StrategyExtensions, StrategyType } from "../strategies";
 import { EnsureCorrectNetwork } from "../ui/correct-network";
 import {
   Select,
@@ -32,8 +32,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { supportedChains } from "..";
+import { supportedChains, useStrategies } from "..";
 import { useNetwork } from "../hooks/useNetwork";
+import { TContracts } from "@gitcoin/gitcoin-chain-data";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -41,7 +42,7 @@ const baseRoundSchema = z.object({
   }),
   description: z.string().optional(),
   bannerUrl: z.string().optional(),
-  strategy: EthAddressSchema,
+  strategy: z.string(),
   token: EthAddressSchema.optional(),
   amount: z.coerce.bigint().optional(),
   chainId: z.coerce.number(),
@@ -70,16 +71,40 @@ function CreateButton({
     </EnsureCorrectNetwork>
   );
 }
+
 export function CreateRound({
-  strategies,
   onCreated,
 }: {
-  strategies: Address[];
   onCreated?: (round: RoundCreated) => void;
 }) {
-  const strategy = "directGrants";
-  // TODO: Make this dynamic when user selects one of the schemas in the dropdown
-  const addon = getStrategyAddon(strategy, "createRound");
+  const strategies = useStrategies();
+  console.log("str", strategies);
+  const [strategy, setStrategy] = useState<StrategyType>(
+    Object.values(strategies)[0]?.type!,
+  );
+
+  return (
+    <CreateRoundForm
+      selected={strategy}
+      strategies={strategies}
+      onChangeStrategy={setStrategy}
+      onCreated={onCreated}
+    />
+  );
+}
+function CreateRoundForm({
+  selected,
+  strategies,
+  onCreated,
+  onChangeStrategy,
+}: {
+  strategies: StrategyExtensions;
+  selected: StrategyType;
+  onCreated?: (round: RoundCreated) => void;
+  onChangeStrategy: (type: StrategyType) => void;
+}) {
+  const addon = strategies[selected]?.components.createRound;
+
   // Merge strategy schema into base round schema
   const schema = addon
     ? baseRoundSchema.merge(z.object({ initStrategyData: addon.schema }))
@@ -91,13 +116,10 @@ export function CreateRound({
       amount: BigInt(0),
       name: "",
       description: "",
-      strategy: strategies?.length ? getAddress(strategies[0]!) : undefined,
       chainId: 11155111,
+      strategy: selected,
       token: zeroAddress,
       managers: undefined,
-      ...(addon?.defaultValues
-        ? { initStrategyData: addon?.defaultValues as Address }
-        : undefined),
     },
   });
 
@@ -112,6 +134,12 @@ export function CreateRound({
         onSubmit={form.handleSubmit(
           async ({ name, description, ...values }) => {
             console.log("create round", values);
+
+            // Get the strategy address based on selected network
+            const strategy = getAddress(
+              strategies[selected]?.contracts[values.chainId]!,
+            );
+
             const pointer = await upload.mutateAsync({
               // TODO: This is GrantsStack-specific
               // Do we want to move this to the provider to build the metadata shape?
@@ -130,13 +158,9 @@ export function CreateRound({
               pointer: pointer as string,
             };
 
-            console.log(metadata);
             create.mutate(
-              { ...values, metadata },
-              {
-                onSuccess: onCreated,
-                onError: (err) => console.log("Create round error", err),
-              },
+              { ...values, strategy, metadata },
+              { onSuccess: onCreated },
             );
           },
         )}
@@ -216,8 +240,13 @@ export function CreateRound({
             render={({ field }) => (
               <FormItem className="flex-1">
                 <FormLabel>Strategy</FormLabel>
+
                 <Select
-                  onValueChange={field.onChange}
+                  onValueChange={(value: keyof TContracts) => {
+                    field.onChange(value);
+
+                    onChangeStrategy(value);
+                  }}
                   defaultValue={field.value}
                 >
                   <FormControl>
@@ -226,8 +255,10 @@ export function CreateRound({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {strategies?.map((strategy) => (
-                      <StrategySelectItem key={strategy} strategy={strategy} />
+                    {Object.values(strategies)?.map((strategy) => (
+                      <SelectItem key={strategy.type} value={strategy.type}>
+                        {strategy.name}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -236,6 +267,11 @@ export function CreateRound({
             )}
           />
         </div>
+        {/* Render Strategy-specific form elements */}
+        <div className="rounded border border-dashed p-4">
+          {addon?.component && createElement(addon.component)}
+        </div>
+
         <div className="gap-2 sm:flex">
           <FormField
             control={form.control}
@@ -324,18 +360,7 @@ export function CreateRound({
             </FormItem>
           )}
         />
-        {/* Render Strategy-specific form elements */}
-        {addon?.component && createElement(addon.component)}
       </form>
     </Form>
   );
-}
-
-function StrategySelectItem({ strategy }: { strategy: Address }) {
-  const chainId = Number(useFormContext().watch("chainId"));
-  const strategyName = useMemo(
-    () => getStrategyTypeFromAddress(strategy, chainId) || strategy,
-    [chainId, strategy],
-  );
-  return <SelectItem value={strategy}>{strategyName}</SelectItem>;
 }
