@@ -19,7 +19,7 @@ export function Projects() {
   const network = params.get("network") ?? "10";
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Popular Projects</h1>
         <div className="flex gap-4 items-center mb-4">
           <h3 className="text-gray-muted text-sm tracking-wider">Network</h3>
