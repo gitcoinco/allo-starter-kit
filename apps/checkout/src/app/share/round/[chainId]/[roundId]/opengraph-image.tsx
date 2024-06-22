@@ -2,10 +2,10 @@ import { ImageResponse } from "next/og";
 import { QRCodeSVG } from "qrcode.react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { grantsStackAPI } from "@allo/kit";
+import { formatNumber, grantsStackAPI } from "@allo/kit";
 import { format } from "date-fns";
 import { getChains } from "@gitcoin/gitcoin-chain-data";
-import { formatUnits } from "viem";
+import { formatUnits, getAddress } from "viem";
 
 const title = "Gitcoin";
 export const alt = title;
@@ -24,12 +24,22 @@ export default async function Image(props: {
   const round = await grantsStackAPI?.roundById?.(roundId, {
     chainId,
   });
+
   if (!round) return notFound();
+  const applications = await grantsStackAPI.applications?.({
+    where: { roundId: { equals: roundId } },
+    orderBy: { total_amount_donated_in_usd: "desc" },
+    take: 12,
+  });
 
   const { roundStart, roundEnd } = round.phases ?? {};
   const network = getChains()?.find((chain) => chain.id === Number(chainId));
 
-  const token = network?.tokens.find((t) => t.address === round.matching.token);
+  const token = network?.tokens.find(
+    (t) => getAddress(t.address) === getAddress(round.matching.token)
+  );
+  console.log(token, round.matching);
+  console.log(round.matching.amount!, token?.decimals!);
   return new ImageResponse(
     (
       <div tw="bg-white w-full h-full flex flex-col justify-center items-center">
@@ -64,7 +74,9 @@ export default async function Image(props: {
             <div tw="mx-2">•</div>
             <div tw="flex">
               {token?.code}{" "}
-              {formatUnits(round.matching.amount!, token?.decimals!)}
+              {formatNumber(
+                Number(formatUnits(round.matching.amount!, token?.decimals!))
+              )}
             </div>
           </div>
           <div
@@ -73,6 +85,13 @@ export default async function Image(props: {
           >
             <span>{round.description?.slice(0, 270)}...</span>
           </div>
+        </div>
+        <div tw="flex mb-4">
+          {applications?.map((a) => (
+            <div key={a.id} tw="mx-.5 flex">
+              <img src={a.avatarUrl} tw="rounded-lg w-16 h-16 object-contain" />
+            </div>
+          ))}
         </div>
         <div tw="flex bg-white p-2 rounded mb-2">
           <QRCodeSVG size={200} value={queueUrl} />
@@ -85,3 +104,12 @@ export default async function Image(props: {
     { ...size }
   );
 }
+
+// <div key={a.id} tw="mx-.5 flex">
+// <div
+//   style={{
+//     backgroundImage: `url(${a.bannerUrl})`,
+//   }}
+//   tw="rounded-lg w-24 h-24 bg-contain bg-center"
+// />
+// </div>

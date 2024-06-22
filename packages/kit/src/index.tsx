@@ -36,3 +36,5 @@ export * from "./hooks/useProjects";
 export * from "./checkout/add-to-checkout";
 export * from "./strategies/direct-grants";
 export * from "./strategies/quadratic-funding";
+
+export * from "./lib/utils";
