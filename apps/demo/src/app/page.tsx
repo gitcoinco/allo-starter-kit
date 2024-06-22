@@ -3,7 +3,6 @@ import { supportedChains, Avatar } from "@allo/kit";
 import Link from "next/link";
 
 export default function Home() {
-  console.log(supportedChains);
   return (
     <section>
       <h1 className="text-7xl pt-12 pb-24 font-semibold text-center">

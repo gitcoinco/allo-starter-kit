@@ -14,6 +14,8 @@ import {
   QueryOpts,
   RoundInput,
   TransactionInput,
+  ApplicationsQuery,
+  ProjectsQuery,
 } from "./types";
 
 import posthog from "posthog-js";
@@ -36,9 +38,9 @@ const defaultApi: API = {
   roundById: async (id: string, opts?: QueryOpts) => undefined,
   createRound: async (data: RoundInput) =>
     Promise.reject(new Error("Not Implemented: Create Round")),
-  projects: async (query: RoundsQuery) => [],
+  projects: async (query: ProjectsQuery) => [],
   projectById: async (id: string, opts?: QueryOpts) => undefined,
-  applications: async (query: RoundsQuery) => [],
+  applications: async (query: ApplicationsQuery) => [],
   applicationById: async (id: string, opts?: QueryOpts) => undefined,
   allocate: async () => Promise.reject(new Error("Not Implemented: Allocate")),
   createProject: async () =>

@@ -25,7 +25,15 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
           where: {
             chainId: { in: [Number(chainId)] },
             // Approved applications
-            application: { status: { in: ["APPROVED"] } },
+            applications: {
+              where: { status: { in: ["APPROVED"] } },
+              orderBy: { status: "asc" },
+            },
+            roles: {
+              where: {
+                role: { in: ["ADMIN"] },
+              },
+            },
             // tags: { contains: ["allo-v2"] },
             // roundStart: { gte: new Date().toISOString() },
           },

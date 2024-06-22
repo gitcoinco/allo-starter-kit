@@ -2,13 +2,41 @@ import { Address, Hash, WalletClient } from "viem";
 
 type OrderBy = "asc" | "desc";
 
-interface Query {
-  orderBy?: { [key: string]: OrderBy };
+type RoundOrderKeys =
+  | "created_at_block"
+  | "funded_amount_in_usd"
+  | "funded_amount"
+  | "match_amount_in_usd"
+  | "match_amount"
+  | "matching_distribution"
+  | "total_amount_donated_in_usd"
+  | "total_donations_count"
+  | "unique_donors_count";
+
+type ProjectOrderKeys = "name" | "created_at_block";
+type ApplicationOrderKeys =
+  | "created_at_block"
+  | "status"
+  | "status_updated_at_block"
+  | "total_donations_count"
+  | "total_amount_donated_in_usd"
+  | "unique_donors_count";
+interface Query<T> {
+  orderBy?: { [key: T]: OrderBy };
   skip?: number;
   take?: number;
 }
-export interface RoundsQuery extends Query {
+export interface RoundsQuery extends Query<RoundOrderKeys> {
   where?: RoundQueryWhere;
+}
+export interface ProjectsQuery extends Query<ProjectOrderKeys> {
+  where?: RoundQueryWhere;
+}
+export interface ApplicationsQuery extends Query<ApplicationOrderKeys> {
+  where?: ApplicationQueryWhere;
+}
+export interface RolesQuery extends Query<string> {
+  where?: RolesQueryWhere;
 }
 type Compare<T = string | number> = {
   equals?: T;
@@ -16,34 +44,38 @@ type Compare<T = string | number> = {
   contains?: T[];
   gte?: number;
 };
-type RoundQueryRolesWhere = {
-  address?: Compare;
-  role?: Compare;
+type RolesQueryWhere = {
+  address?: Compare<Address>;
+  role?: Compare<"ADMIN" | "MANAGER">;
 };
-type RoundQueryApplicationsWhere = {
-  status?: Compare;
+type ApplicationQueryWhere = {
+  status?: Compare<ApplicationStatus>;
+  roundId?: Compare<string>;
+  projectId?: Compare<string>;
+  createdByAddress?: Compare<Address>;
+  totalDonationsCount?: Compare<number>;
+  totalAmountDonatedInUsd?: Compare<number>;
 };
 type RoundQueryWhere = {
   id?: Compare;
-  strategy?: Compare;
+  strategy?: Compare<Address>;
   strategyName?: Compare<
     | "allov2.DirectGrantsLiteStrategy"
     | "allov2.DonationVotingMerkleDistributionDirectTransferStrategy"
     | "allov2.SQFSuperFluidStrategy"
   >;
-  chainId?: Compare;
-  tags?: Compare; // GrantsStack only (create a type in gs to extend)
+  chainId?: Compare<number>;
+  tags?: Compare<"allo-v1" | "allo-v2" | "grants-stack">; // GrantsStack only (create a type in gs to extend)
   roundId?: Compare;
-  status?: Compare;
   createdAt?: Compare;
   createdBy?: Compare;
   roundStart?: Compare;
   allocateStart?: Compare;
   distributeStart?: Compare;
   roundEnd?: Compare;
-  application?: RoundQueryApplicationsWhere;
-  roles?: RoundQueryRolesWhere;
-  AND?: RoundQueryWhere[];
+  applications?: ApplicationsQuery;
+  roles?: RolesQuery;
+  and?: RoundQueryWhere[];
 };
 
 // For passing random data to the request in API provider (for example chainId)
@@ -58,13 +90,13 @@ export interface API {
     data: RoundInput,
     signer: WalletClient,
   ) => Promise<RoundCreated>;
-  projects: (query: RoundsQuery) => Promise<Project[]>;
+  projects: (query: ProjectsQuery) => Promise<Project[]>;
   projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
   createProject: (
     data: ProjectInput,
     signer: WalletClient,
   ) => Promise<ProjectCreated>;
-  applications: (query: RoundsQuery) => Promise<Application[]>;
+  applications: (query: ApplicationsQuery) => Promise<Application[]>;
   applicationById: (
     id: string,
     opts?: QueryOpts,
@@ -127,6 +159,13 @@ export type RoundInput = BaseRound & {
 export type RoundCreated = { id: string; chainId: number };
 
 type BaseApplication = {};
+export type ApplicationStatus =
+  | "APPROVED"
+  | "PENDING"
+  | "REJECTED"
+  | "CANCELLED"
+  | "IN_REVIEW";
+
 export type Application = BaseApplication & {
   id: string;
   name: string;
@@ -136,7 +175,7 @@ export type Application = BaseApplication & {
   bannerUrl?: string;
   chainId: number;
   projectId: string;
-  status: "APPROVED" | "PENDING" | "REJECTED";
+  status: ApplicationStatus;
 };
 
 export type ApplicationInput = BaseApplication & {
