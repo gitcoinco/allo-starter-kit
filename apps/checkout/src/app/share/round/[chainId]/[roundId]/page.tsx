@@ -9,7 +9,21 @@ import { grantsStackAPI } from "@allo/kit";
 import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo/kit";
 import { notFound } from "next/navigation";
 import { Applications } from "./applications";
+import { Metadata } from "next";
 
+export async function generateMetadata({
+  params: { roundId, chainId },
+}: {
+  params: { roundId: string; chainId: string };
+}): Promise<Metadata> {
+  const round = await grantsStackAPI.roundById?.(roundId, { chainId });
+  if (!round) return {};
+
+  return {
+    title: round.name,
+    description: round.description,
+  };
+}
 export default async function ShareRoundPage({
   params: { roundId = "", chainId = "" },
 }) {
