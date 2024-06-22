@@ -1,9 +1,7 @@
 import { RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) =>
-  cid?.includes("http")
-    ? cid
-    : `https://apricot-surviving-takin-594.mypinata.cloud/ipfs/${cid}`;
+  cid?.includes("http") ? cid : `https://ipfs.io/ipfs/${cid}`;
 
 export function queryToFilter(query: RoundsQuery) {
   function mapOrderBy(obj: unknown) {
