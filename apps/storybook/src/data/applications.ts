@@ -6,6 +6,10 @@ export const application = {
   roundId: "0xf89aad3fad6c3e79ffa3ccc835620fcc7e55f919",
   status: "APPROVED",
   name: "Edge City",
+  contributors: {
+    count: 28,
+    amount: 1235,
+  },
   bannerUrl:
     "https://gateway.pinata.cloud/ipfs/bafkreie26l5cpspcurinruvlstj5d3ztgpk63ecdksxfj5w3dk6leeffqe",
   description:

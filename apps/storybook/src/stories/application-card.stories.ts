@@ -19,3 +19,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: application,
 };
+
+export const Contributors: Story = {
+  args: { ...application, components: ["contributors"] },
+};
+
+export const ContributorsAdd: Story = {
+  args: { ...application, components: ["contributors", "add_button"] },
+};
