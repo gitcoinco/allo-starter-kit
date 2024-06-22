@@ -33,6 +33,8 @@ export function ApplicationReviewTable({
       APPROVED: [],
       PENDING: [],
       REJECTED: [],
+      CANCELLED: [],
+      IN_REVIEW: [],
     } as Record<Application["status"], Application[]>;
     return (applications ?? [])?.reduce(
       (acc, x) => ({

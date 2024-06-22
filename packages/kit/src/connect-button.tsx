@@ -1,8 +1,9 @@
 "use client";
+import { PropsWithChildren } from "react";
 import { Button } from "./ui/button";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 
-export function ConnectButton() {
+export function ConnectButton({ children }: PropsWithChildren) {
   return (
     <RainbowConnectButton.Custom>
       {({
@@ -38,10 +39,14 @@ export function ConnectButton() {
               }
 
               return (
-                <Button onClick={openAccountModal}>
-                  {account.displayName}
-                  {account.displayBalance ? ` (${account.displayBalance})` : ""}
-                </Button>
+                children || (
+                  <Button onClick={openAccountModal}>
+                    {account.displayName}
+                    {account.displayBalance
+                      ? ` (${account.displayBalance})`
+                      : ""}
+                  </Button>
+                )
               );
             })()}
           </div>

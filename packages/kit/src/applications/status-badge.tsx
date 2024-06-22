@@ -18,5 +18,7 @@ export function ApplicationStatusBadge({
 const statusMap = {
   APPROVED: "green",
   PENDING: "yellow",
+  IN_REVIEW: "yellow",
   REJECTED: "red",
+  CANCELLED: "red",
 } as const;

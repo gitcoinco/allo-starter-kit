@@ -1,4 +1,3 @@
-"use client";
 import { request } from "graphql-request";
 import { API, Application, Project, Round, Transformers } from "../../types";
 import {
@@ -31,7 +30,7 @@ export const grantsStackAPI: Partial<API> = {
         id,
         chainId: Number(opts?.chainId),
       },
-    }).then((res) => transformers.round(res.round));
+    }).then((res) => (res.round ? transformers.round(res.round) : undefined));
   },
   applications: (query) => {
     return request<{ applications: GSApplication[] }>({
@@ -49,7 +48,9 @@ export const grantsStackAPI: Partial<API> = {
         chainId: Number(opts?.chainId),
         roundId: opts?.roundId,
       },
-    }).then((res) => transformers.application(res.application));
+    }).then((res) =>
+      res.application ? transformers.application(res.application) : undefined,
+    );
   },
   projects: (query) => {
     return request<{ rounds: GSProject[] }>({
@@ -59,14 +60,16 @@ export const grantsStackAPI: Partial<API> = {
     }).then((res) => (res?.rounds ?? []).map(transformers.project));
   },
   projectById: (id, opts) => {
-    return request<{ project: GSProject }>({
+    return request<{ projects: GSProject[] }>({
       url: apiURL,
       // Query projectById requires chainId and doesn't always match with the rounds chainId
       document: projectsQuery,
       variables: {
         filter: { id: { equalTo: id } },
       },
-    }).then((res) => transformers.project(res.projects?.[0]));
+    }).then((res) =>
+      res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
+    );
   },
 };
 

@@ -2,6 +2,7 @@ export * from "./api/provider";
 export * from "./api/providers/grants-stack";
 export * from "./api/providers/easy-rpgf";
 export * from "./wagmi/provider";
+export * from "./ui/drawer";
 export * from "./ui/markdown";
 export * from "./ui/token-amount";
 export * from "./ui/back-button";
@@ -25,6 +26,10 @@ export * from "./rounds/create";
 export * from "./rounds/details";
 export * from "./rounds/discover";
 export * from "./rounds/fund";
+
+export * from "./hooks/useApplications";
+export * from "./hooks/useRounds";
+export * from "./hooks/useProjects";
 
 export * from "./checkout/add-to-checkout";
 export * from "./strategies/direct-grants";

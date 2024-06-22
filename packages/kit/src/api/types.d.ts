@@ -49,6 +49,7 @@ type RolesQueryWhere = {
   role?: Compare<"ADMIN" | "MANAGER">;
 };
 type ApplicationQueryWhere = {
+  chainId?: Compare<number>;
   status?: Compare<ApplicationStatus>;
   roundId?: Compare<string>;
   projectId?: Compare<string>;

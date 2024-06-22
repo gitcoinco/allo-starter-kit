@@ -69,7 +69,7 @@ export function FundRound({ id, opts }: RoundFundProps) {
   if (isPending) return <div>Loading...</div>;
   if (!data) return <div>Round not found</div>;
   return (
-    <section className="mx-auto max-w-sm">
+    <section>
       <div>
         Pool amount: <PoolAmount round={data} />
       </div>
