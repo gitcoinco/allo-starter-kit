@@ -26,6 +26,9 @@ importers:
       '@allo/kit':
         specifier: workspace:*
         version: link:../../packages/kit
+      '@gitcoin/gitcoin-chain-data':
+        specifier: ^1.0.17
+        version: 1.0.17(typescript@5.4.5)(zod@3.23.8)
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
