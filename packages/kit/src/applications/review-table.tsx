@@ -43,7 +43,7 @@ export function ApplicationReviewTable({
     );
   }, [applications]);
 
-  const isApproving = strategyAddon?.call?.isPending;
+  const isLoading = strategyAddon?.call?.isPending;
   return (
     <Form {...form}>
       <form
@@ -69,7 +69,7 @@ export function ApplicationReviewTable({
           <TabsContent value="PENDING">
             <div className="-mt-12 flex justify-end gap-4">
               <SelectAllButton applications={applicationByStatus.PENDING} />
-              <ApproveButton label="Approve" isLoading={isApproving} />
+              <ApproveButton label="Approve" isLoading={isLoading} />
             </div>
             <ApplicationsList
               isLoading={isPending}
@@ -80,7 +80,7 @@ export function ApplicationReviewTable({
           <TabsContent value="APPROVED">
             <div className="-mt-12 flex justify-end gap-4">
               <SelectAllButton applications={applicationByStatus.APPROVED} />
-              <ApproveButton label="Reject" />
+              <ApproveButton label="Reject" isLoading={isLoading} />
             </div>
             <ApplicationsList
               isLoading={isPending}
@@ -91,7 +91,7 @@ export function ApplicationReviewTable({
           <TabsContent value="REJECTED">
             <div className="-mt-12 flex justify-end gap-4">
               <SelectAllButton applications={applicationByStatus.REJECTED} />
-              <ApproveButton label="Approve" />
+              <ApproveButton label="Approve" isLoading={isLoading} />
             </div>
             <ApplicationsList
               isLoading={isPending}

@@ -10,10 +10,10 @@ interface Query {
 export interface RoundsQuery extends Query {
   where?: RoundQueryWhere;
 }
-type Compare = {
-  equals?: string | number;
-  in?: (string | number)[];
-  contains?: (string | number)[];
+type Compare<T = string | number> = {
+  equals?: T;
+  in?: T[];
+  contains?: T[];
   gte?: number;
 };
 type RoundQueryRolesWhere = {
@@ -26,7 +26,11 @@ type RoundQueryApplicationsWhere = {
 type RoundQueryWhere = {
   id?: Compare;
   strategy?: Compare;
-  strategyName?: Compare;
+  strategyName?: Compare<
+    | "allov2.DirectGrantsLiteStrategy"
+    | "allov2.DonationVotingMerkleDistributionDirectTransferStrategy"
+    | "allov2.SQFSuperFluidStrategy"
+  >;
   chainId?: Compare;
   tags?: Compare; // GrantsStack only (create a type in gs to extend)
   roundId?: Compare;
