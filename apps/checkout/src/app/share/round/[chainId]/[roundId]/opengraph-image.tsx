@@ -97,7 +97,7 @@ export default async function Image(props: {
           <QRCodeSVG size={200} value={queueUrl} />
         </div>
         <div tw="flex bg-gray-900 text-white w-[214px] p-2 rounded shadow-xl justify-center font-semibold  mb-4">
-          Donate Now
+          Donate now
         </div>
       </div>
     ),

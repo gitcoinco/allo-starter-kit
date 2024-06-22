@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "@allo/kit/styles.css";
 import "./globals.css";
 import { ApiProvider, ConnectButton, Web3Provider } from "@allo/kit";
 
-import "@allo/kit/styles.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

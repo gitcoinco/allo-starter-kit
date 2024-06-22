@@ -18,13 +18,36 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { supportedChains } from "../wagmi/provider";
-import { Address, formatUnits, getAddress, zeroAddress } from "viem";
+import {
+  Address,
+  formatUnits,
+  getAddress,
+  parseUnits,
+  zeroAddress,
+} from "viem";
 import { useToken } from "../hooks/useToken";
+import { useToast } from "../ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { Alert } from "../ui/alert";
+import { LoaderIcon } from "lucide-react";
 
 type RoundFundProps = {
   id: string;
+  autoFocus?: boolean;
   opts?: QueryOpts;
+  onSuccess?: () => void;
 };
+
+export function useFundPool() {
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: async ({ amount }: { amount: number }) =>
+      new Promise((r) => {
+        setTimeout(() => r({ amount }), 1000);
+      }),
+    onSuccess: () => toast({ title: "Not implemented yet" }),
+  });
+}
 
 export function getNetworkToken(round?: Round) {
   return supportedChains?.reduce<Partial<TToken>>(
@@ -64,18 +87,28 @@ function PoolAmount({ round }: { round?: Round }) {
   return null;
 }
 
-export function FundRound({ id, opts }: RoundFundProps) {
+export function FundRound({ id, opts, autoFocus, onSuccess }: RoundFundProps) {
   const { data, isPending } = useRoundById(id, opts);
-  if (isPending) return <div>Loading...</div>;
+  const fund = useFundPool();
+  if (isPending)
+    return (
+      <Alert className="flex h-[172px] items-center justify-center">
+        Loading...
+      </Alert>
+    );
   if (!data) return <div>Round not found</div>;
+  console.log(data);
   return (
     <section>
-      <div>
+      {/* <div>
         Pool amount: <PoolAmount round={data} />
-      </div>
+      </div> */}
       <FundForm
         funded={data?.matching.amount}
-        token={getAddress(data?.matching?.token!)}
+        token={data?.matching?.token!}
+        isLoading={fund.isPending}
+        autoFocus={autoFocus}
+        onSubmit={({ amount }) => fund.mutate({ amount }, { onSuccess })}
       />
     </section>
   );
@@ -98,34 +131,58 @@ function TokenBalance({
 }) {
   const { data: balance } = useTokenBalance({ address, token });
   return (
-    <>{balance && formatUnits(balance?.value, balance?.decimals).slice(0, 6)}</>
+    <>
+      {balance && formatUnits(balance?.value, balance?.decimals).slice(0, 6)}{" "}
+      {balance?.symbol}
+    </>
   );
 }
 
-function FundForm({ funded, token }: { funded?: bigint; token?: Address }) {
+function FundForm({
+  funded,
+  token,
+  autoFocus,
+  isLoading,
+  onSubmit,
+}: {
+  funded?: bigint;
+  token?: Address;
+  isLoading: boolean;
+  autoFocus?: boolean;
+  onSubmit: (values: { amount: number }) => void;
+}) {
   const { address } = useAccount();
   const form = useForm();
 
   const { data } = useToken({ token });
-  console.log("data", data);
+  const { data: balance } = useTokenBalance({ address, token });
+  console.log("data", data, balance);
 
+  const amountInUints = balance
+    ? parseUnits(form.watch("amount") ?? "0", balance?.decimals)
+    : 0;
+  const canSubmit = amountInUints > 0 && amountInUints <= (balance?.value ?? 0);
+
+  console.log({ canSubmit }, amountInUints, balance?.value);
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit((values) => {
-          console.log("Fund pool");
-        })}
-        className="space-y-8"
-      >
+      <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="username"
+          name="amount"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Amount</FormLabel>
               <FormControl>
                 <div className="relative flex items-center">
-                  <Input placeholder="0" {...field} />
+                  <Input
+                    autoFocus={autoFocus}
+                    placeholder="0"
+                    step={0.0000000001}
+                    type="number"
+                    min={0}
+                    {...field}
+                  />
                   <div className="absolute right-2 p-2 text-muted-foreground"></div>
                 </div>
               </FormControl>
@@ -136,7 +193,12 @@ function FundForm({ funded, token }: { funded?: bigint; token?: Address }) {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
+        <Button
+          isLoading={isLoading}
+          disabled={!canSubmit || isLoading}
+          className="w-full"
+          type="submit"
+        >
           Fund
         </Button>
       </form>

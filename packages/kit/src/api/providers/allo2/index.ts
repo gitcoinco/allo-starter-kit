@@ -129,6 +129,7 @@ export const allo2API: Partial<API> = {
     }
   },
   distribute: () => {},
+  fundPool: () => {},
 };
 
 async function getOrCreateProfile(signer: WalletClient) {
