@@ -1,3 +1,4 @@
+"use client";
 import { useMemo } from "react";
 import { cn } from "../lib/utils";
 import { Badge } from "../ui/badge";

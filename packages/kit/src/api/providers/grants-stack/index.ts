@@ -113,6 +113,8 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     status,
     project,
     anchorAddress,
+    totalAmountDonatedInUsd,
+    uniqueDonorsCount,
   }: GSApplication): Application => {
     return {
       id,
@@ -124,6 +126,10 @@ const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       recipient: anchorAddress,
       avatarUrl: ipfsGateway(project?.metadata.logoImg),
       bannerUrl: ipfsGateway(project?.metadata.bannerImg),
+      contributors: {
+        count: uniqueDonorsCount,
+        amount: totalAmountDonatedInUsd,
+      },
     };
   },
 

@@ -26,6 +26,8 @@ export * from "./rounds/create";
 export * from "./rounds/details";
 export * from "./rounds/discover";
 export * from "./rounds/fund";
+export * from "./rounds/network-badge";
+export * from "./rounds/strategy-badge";
 
 export * from "./hooks/useApplications";
 export * from "./hooks/useRounds";

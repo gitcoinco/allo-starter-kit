@@ -176,6 +176,10 @@ export type Application = BaseApplication & {
   bannerUrl?: string;
   chainId: number;
   projectId: string;
+  contributors?: {
+    count?: number;
+    amount?: number;
+  };
   status: ApplicationStatus;
 };
 
