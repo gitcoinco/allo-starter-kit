@@ -10,6 +10,7 @@ export * from "./connect-button";
 export * from "./ui/button";
 export * from "./ui/avatar";
 export * from "./ui/form";
+export * from "./ui/select";
 
 export * from "./applications/approval-item";
 export * from "./applications/card";

@@ -19,7 +19,7 @@ export default async function Image(props: {
   const { roundId, chainId } = props.params;
   const host = headers().get("host");
 
-  const queueUrl = `https://${host}/share/round/${chainId}/${roundId}`;
+  const roundUrl = `https://${host}/share/round/${chainId}/${roundId}`;
 
   const round = await grantsStackAPI?.roundById?.(roundId, {
     chainId,
@@ -94,7 +94,7 @@ export default async function Image(props: {
           ))}
         </div>
         <div tw="flex bg-white p-2 rounded mb-2">
-          <QRCodeSVG size={200} value={queueUrl} />
+          <QRCodeSVG size={200} value={roundUrl} />
         </div>
         <div tw="flex bg-gray-900 text-white w-[214px] p-2 rounded shadow-xl justify-center font-semibold  mb-4">
           Donate now
