@@ -2,10 +2,7 @@
 
 import { Application } from "../api/types";
 import { BackgroundImage } from "../ui/background-image";
-import { Badge } from "../ui/badge";
-import { cn } from "../lib/utils";
 import { Checkbox } from "../ui/checkbox";
-import { CheckedState } from "@radix-ui/react-checkbox";
 import { ReactNode } from "react";
 import { ApplicationStatusBadge } from "./status-badge";
 
@@ -21,7 +18,7 @@ export function ApplicationApprovalItem({
 }: Application & {
   checked: boolean;
   action?: ReactNode;
-  onCheckedChange: (bool: CheckedState) => void;
+  onCheckedChange: (bool: boolean) => void;
 }) {
   return (
     <div className="flex gap-4 rounded-lg px-2 py-4 hover:bg-moss-50/20">

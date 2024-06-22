@@ -30,7 +30,7 @@ export const suffixNumber = (num: number) => {
 export function formatMoney(val = 0, currency?: string, decimals = 2) {
   return Number(val).toLocaleString("en-US", {
     currency,
-    style: currency && "currency",
+    style: currency ? "currency" : undefined,
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
   });
