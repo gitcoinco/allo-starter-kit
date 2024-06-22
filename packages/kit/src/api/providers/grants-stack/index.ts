@@ -6,7 +6,6 @@ import {
   applicationsQuery,
   roundsByIdQuery,
   projectsQuery,
-  projectsByIdQuery,
   applicationsByIdQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
@@ -62,12 +61,12 @@ export const grantsStackAPI: Partial<API> = {
   projectById: (id, opts) => {
     return request<{ project: GSProject }>({
       url: apiURL,
-      document: projectsByIdQuery,
+      // Query projectById requires chainId and doesn't always match with the rounds chainId
+      document: projectsQuery,
       variables: {
-        id,
-        chainId: Number(opts?.chainId),
+        filter: { id: { equalTo: id } },
       },
-    }).then((res) => transformers.project(res.project));
+    }).then((res) => transformers.project(res.projects?.[0]));
   },
 };
 

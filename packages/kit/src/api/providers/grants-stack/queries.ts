@@ -119,10 +119,3 @@ export const projectsQuery = gql`
     }
   }
 `;
-export const projectsByIdQuery = gql`
-  query Project($id: String!, $chainId: Int!) {
-    project(id: $id, chainId: $chainId) {
-      ${PROJECT_FRAGMENT}
-    }
-  }
-`;
