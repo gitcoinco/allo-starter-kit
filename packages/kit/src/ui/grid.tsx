@@ -28,7 +28,11 @@ export function Grid<T extends { id: string }>({
 
   return (
     <div className={cn("grid gap-4", gridClass(columns))}>
-      {data?.map((item) => renderItem(item, Component))}
+      {isPending
+        ? Array.from({ length: 6 })
+            .fill({ isLoading: true })
+            .map((item) => renderItem(item as T, Component))
+        : data?.map((item) => renderItem(item, Component))}
     </div>
   );
 }

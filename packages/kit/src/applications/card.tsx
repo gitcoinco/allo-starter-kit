@@ -2,7 +2,7 @@
 
 import { Button } from "..";
 import { Application } from "../api/types";
-import { formatMoney, formatNumber } from "../lib/utils";
+import { cn, formatMoney, formatNumber } from "../lib/utils";
 import { BackgroundImage } from "../ui/background-image";
 import { Card, CardContent } from "../ui/card";
 import { Separator } from "../ui/separator";
@@ -17,21 +17,26 @@ export function ApplicationCard({
   bannerUrl,
   contributors,
   components = [],
-}: ApplicationCard) {
+  isLoading,
+}: ApplicationCard & { isLoading?: boolean }) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl shadow-xl">
-      <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
+    <Card
+      className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
+        ["animate-pulse"]: isLoading,
+      })}
+    >
+      <BackgroundImage className="h-32 bg-gray-100" src={bannerUrl} />
 
       <CardContent className="space-y-2 p-4">
         <h3 className="truncate text-xl font-semibold text-gray-800">{name}</h3>
         <p className="line-clamp-3 h-[70px] text-xs leading-6">{description}</p>
-        {components.length ? (
+        {contributors && components.length ? (
           <div className="py-2">
             <Separator />
           </div>
         ) : null}
         <div className="flex justify-between">
-          {components.includes("contributors") && (
+          {contributors && components.includes("contributors") && (
             <div>
               <div className="flex items-center gap-1 text-sm font-medium text-primary">
                 <ContributionIcon />
