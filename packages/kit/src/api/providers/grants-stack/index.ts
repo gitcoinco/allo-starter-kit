@@ -65,7 +65,8 @@ export const grantsStackAPI: Partial<API> = {
       // Query projectById requires chainId and doesn't always match with the rounds chainId
       document: projectsQuery,
       variables: {
-        filter: { id: { equalTo: id } },
+        take: 1,
+        filter: { id: { equalTo: id }, projectType: { equalTo: "CANONICAL" } },
       },
     }).then((res) =>
       res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,

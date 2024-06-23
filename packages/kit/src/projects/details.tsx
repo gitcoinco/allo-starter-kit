@@ -11,6 +11,7 @@ type ProjectDetailsProps = {
 
 export function ProjectDetails({ id, opts }: ProjectDetailsProps) {
   const { data, isPending } = useProjectById(id, opts);
+
   return (
     <div className={"space-y-4"}>
       <h1 className="text-2xl font-semibold">{data?.name}</h1>
