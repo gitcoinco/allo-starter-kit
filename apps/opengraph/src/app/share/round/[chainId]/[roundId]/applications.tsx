@@ -1,6 +1,7 @@
 "use client";
 
 import { DiscoverApplications } from "@allo/kit";
+import Link from "next/link";
 
 export function Applications({ roundId = "", chainId = 0 }) {
   return (
@@ -18,7 +19,12 @@ export function Applications({ roundId = "", chainId = 0 }) {
         take: 12,
       }}
       renderItem={(application, Card) => (
-        <Card {...application} components={["contributors"]} />
+        <Link
+          key={application.key}
+          href={`/share/project/${application.projectId}`}
+        >
+          <Card {...application} components={["contributors"]} />
+        </Link>
       )}
     />
   );
