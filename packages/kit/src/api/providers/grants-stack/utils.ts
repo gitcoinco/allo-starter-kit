@@ -1,7 +1,7 @@
 import { RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) => {
-  if (!cid) return null;
+  if (!cid) return "";
   return cid?.includes("http") ? cid : `https://ipfs.io/ipfs/${cid}`;
 };
 
