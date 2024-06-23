@@ -108,7 +108,7 @@ export function FundRound({ id, opts, autoFocus, onSuccess }: RoundFundProps) {
         token={data?.matching?.token!}
         isLoading={fund.isPending}
         autoFocus={autoFocus}
-        onSubmit={({ amount }) => fund.mutate({ amount }, { onSuccess })}
+        onSubmit={(amount) => fund.mutate({ amount }, { onSuccess })}
       />
     </section>
   );
@@ -149,7 +149,7 @@ function FundForm({
   token?: Address;
   isLoading: boolean;
   autoFocus?: boolean;
-  onSubmit: (values: { amount: number }) => void;
+  onSubmit: (amount: number) => void;
 }) {
   const { address } = useAccount();
   const form = useForm();
@@ -166,7 +166,10 @@ function FundForm({
   console.log({ canSubmit }, amountInUints, balance?.value);
   return (
     <Form {...form}>
-      <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
+      <form
+        className="space-y-2"
+        onSubmit={form.handleSubmit((v) => onSubmit(v.amount))}
+      >
         <FormField
           control={form.control}
           name="amount"
