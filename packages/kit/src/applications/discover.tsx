@@ -10,5 +10,12 @@ export function DiscoverApplications({
   ...props
 }: GridProps<ApplicationCard> & { query?: ApplicationsQuery }) {
   const applications = useApplications(query!);
-  return <Grid component={ApplicationCard} {...applications} {...props} />;
+  return (
+    <Grid
+      component={ApplicationCard}
+      keys={["projectId"]}
+      {...applications}
+      {...props}
+    />
+  );
 }

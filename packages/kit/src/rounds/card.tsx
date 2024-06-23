@@ -1,5 +1,3 @@
-"use client";
-
 import { useMemo } from "react";
 import { isAfter, formatDistanceToNow } from "date-fns";
 import { Round } from "../api/types";
@@ -8,14 +6,14 @@ import { BackgroundImage } from "../ui/background-image";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 import { Card, CardContent } from "../ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { supportedChains } from "..";
+import { Avatar } from "../ui/avatar";
+import { cn, supportedChains } from "..";
 import { RoundStrategyBadge } from "./strategy-badge";
 
 const toNow = (date?: string) =>
   date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
 
-const getRoundTime = (phases: Round["phases"]): string => {
+const getRoundTime = (phases: Round["phases"] = {}): string => {
   const now = new Date();
 
   if (isAfter(phases.roundStart!, now))
@@ -28,6 +26,11 @@ const getRoundTime = (phases: Round["phases"]): string => {
 const getNetwork = (chainId: number) =>
   supportedChains?.find((chain) => chain.id === chainId);
 
+export type RoundCard = Round & {
+  // components?: RoundComponent[];
+  isLoading?: boolean;
+};
+
 export function RoundCard({
   name,
   description,
@@ -37,14 +40,19 @@ export function RoundCard({
   bannerUrl,
   phases,
   strategyName,
-}: Round) {
+  isLoading,
+}: RoundCard) {
   const network = useMemo(() => getNetwork(chainId), [chainId]);
   return (
-    <Card className="relative overflow-hidden rounded-3xl shadow-xl">
+    <Card
+      className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
+        ["animate-pulse"]: isLoading,
+      })}
+    >
       <div className="">
-        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
+        <BackgroundImage className="h-32 bg-gray-100" src={bannerUrl} />
         <h3 className="-mt-8 truncate pl-1 text-2xl font-medium text-gray-100">
-          {name ?? "?"}
+          {name}
         </h3>
       </div>
       <CardContent className="space-y-2 p-4">
@@ -60,12 +68,16 @@ export function RoundCard({
           <div className="flex items-center justify-between">
             <div>
               <div className="flex gap-2">
-                <Badge variant={"secondary"}>
-                  {applications?.length} projects
-                </Badge>
-                <Badge variant={"secondary"}>
-                  <TokenAmount {...matching} />
-                </Badge>
+                {applications && (
+                  <Badge variant={"secondary"}>
+                    {applications?.length} projects
+                  </Badge>
+                )}
+                {matching && (
+                  <Badge variant={"secondary"}>
+                    <TokenAmount {...matching} />
+                  </Badge>
+                )}
               </div>
             </div>
             <Avatar className="size-8">

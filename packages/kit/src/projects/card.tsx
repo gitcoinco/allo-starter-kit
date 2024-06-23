@@ -1,23 +1,28 @@
-"use client";
-
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Round } from "../api/types";
-import { TokenAmount } from "../ui/token-amount";
+import { Project } from "../api/types";
 import { BackgroundImage } from "../ui/background-image";
 import { Card, CardContent } from "../ui/card";
-import { Separator } from "../ui/separator";
+import { cn } from "..";
+
+export type ProjectCard = Project & {
+  // components?: ProjectComponent[];
+  isLoading?: boolean;
+};
 
 export function ProjectCard({
   name,
   description,
   chainId,
-  applications,
-  matching,
   avatarUrl,
   bannerUrl,
-}: Round) {
+  isLoading,
+}: ProjectCard) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl shadow-xl">
+    <Card
+      className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
+        ["animate-pulse"]: isLoading,
+      })}
+    >
       <div className="">
         <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
       </div>

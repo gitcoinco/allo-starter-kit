@@ -9,34 +9,50 @@ type Columns = [ColumnValue?, ColumnValue?, ColumnValue?, ColumnValue?];
 
 export type GridProps<T> = {
   columns?: Columns;
-  renderItem?: (item: T, Component: ComponentType<T>) => ReactNode;
+  keys?: string[];
+  renderItem?: (
+    item: T & { key: string },
+    Component: ComponentType<T>,
+  ) => ReactNode;
 };
 
 type Props<T> = UseQueryResult<T[], unknown> &
   GridProps<T> & { component: ComponentType<T> };
 
-export function Grid<T extends { id: string }>({
+export function Grid<T extends { id: string; isLoading?: boolean }>({
   columns = [1, 1, 2, 3],
   data,
   error,
+  keys = ["id", "chainId"],
   isPending,
   component: Component,
-  renderItem = (item, Component: any) => <Component key={item?.id} {...item} />,
+  renderItem = (item, Component: any) => <Component {...item} />,
 }: Props<T>) {
   if (error) return <ErrorMessageLog error={error} />;
   if (!isPending && !data?.length) return <EmptyState />;
 
   return (
     <div className={cn("grid gap-4", gridClass(columns))}>
-      {isPending
-        ? Array.from({ length: 6 })
-            .fill({ isLoading: true })
-            .map((item) => renderItem(item as T, Component))
-        : data?.map((item) => renderItem(item, Component))}
+      {(isPending ? createLoadingCards(6, keys) : data)?.map((item) =>
+        renderItem(createItemKey(item as T, keys), Component),
+      )}
     </div>
   );
 }
 
+function createItemKey<T>(item: T, keys: string[]) {
+  const key = keys.map((k) => item[k as keyof typeof item]).join("_");
+  return { ...item, key };
+}
+function createLoadingCards(length: number, keys: string[]) {
+  return Array.from({ length })
+    .fill(0)
+    .map((_, id) => ({
+      id: String(id),
+      isLoading: true,
+      ...Object.fromEntries(keys.map((k) => [k, id])),
+    }));
+}
 function gridClass(columns: Columns): string {
   return columns.reduce<string>(
     (cols, col = 0, i) => cols.concat(columnMap?.[i]?.[col] ?? "") + " ",

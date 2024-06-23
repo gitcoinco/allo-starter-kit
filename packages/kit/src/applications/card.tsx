@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "..";
 import { Application } from "../api/types";
 import { cn, formatMoney, formatNumber } from "../lib/utils";
@@ -9,6 +7,7 @@ import { Separator } from "../ui/separator";
 
 export type ApplicationCard = Application & {
   components?: ApplicationComponent[];
+  isLoading?: boolean;
 };
 type ApplicationComponent = "contributors" | "add_button";
 export function ApplicationCard({
@@ -18,7 +17,7 @@ export function ApplicationCard({
   contributors,
   components = [],
   isLoading,
-}: ApplicationCard & { isLoading?: boolean }) {
+}: ApplicationCard) {
   return (
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {

@@ -13,6 +13,7 @@ const defaultQuery = {
 export function useApplications(
   query: Parameters<API["applications"]>[number] = defaultQuery,
 ) {
+  console.log("query", query);
   const api = useAPI();
   return useQuery({
     queryKey: ["applications", query],
