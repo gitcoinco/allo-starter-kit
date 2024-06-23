@@ -1,7 +1,9 @@
 import { RoundsQuery } from "../../types";
 
-export const ipfsGateway = (cid: string) =>
-  cid?.includes("http") ? cid : `https://ipfs.io/ipfs/${cid}`;
+export const ipfsGateway = (cid: string) => {
+  if (!cid) return null;
+  return cid?.includes("http") ? cid : `https://ipfs.io/ipfs/${cid}`;
+};
 
 export function queryToFilter(query: RoundsQuery) {
   function mapOrderBy(obj: unknown) {

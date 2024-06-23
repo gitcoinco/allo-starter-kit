@@ -32,7 +32,7 @@ export function Grid<T extends { id: string; isLoading?: boolean }>({
   if (!isPending && !data?.length) return <EmptyState />;
 
   return (
-    <div className={cn("grid gap-4", gridClass(columns))}>
+    <div className={cn("gap-4 sm:grid", gridClass(columns))}>
       {(isPending ? createLoadingCards(6, keys) : data)?.map((item) =>
         renderItem(createItemKey(item as T, keys), Component),
       )}

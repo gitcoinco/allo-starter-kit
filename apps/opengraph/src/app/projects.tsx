@@ -2,6 +2,7 @@
 
 import {
   DiscoverApplications,
+  DiscoverRounds,
   Select,
   SelectContent,
   SelectItem,
@@ -19,9 +20,9 @@ export function Projects() {
   const network = params.get("network") ?? "10";
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Popular Projects</h1>
-        <div className="flex gap-4 items-center mb-4">
+        <div className="flex gap-4 items-center">
           <h3 className="text-gray-muted text-sm tracking-wider">Network</h3>
           <Select
             value={network}
@@ -48,7 +49,7 @@ export function Projects() {
             status: { equals: "APPROVED" },
           },
           orderBy: { total_amount_donated_in_usd: "desc" },
-          take: 24,
+          take: 6,
         }}
         renderItem={(application, Card) => (
           <Link
@@ -56,6 +57,25 @@ export function Projects() {
             href={`/share/project/${application.projectId}`}
           >
             <Card {...application} components={["contributors"]} />
+          </Link>
+        )}
+      />
+      <h1 className="mt-16 mb-4 text-2xl font-semibold">Popular Rounds</h1>
+      <DiscoverRounds
+        columns={[2]}
+        query={{
+          where: {
+            chainId: { in: [Number(network)] },
+          },
+          orderBy: { total_amount_donated_in_usd: "desc" },
+          take: 6,
+        }}
+        renderItem={(round, Card) => (
+          <Link
+            key={round.key}
+            href={`/share/round/${round.chainId}/${round.id}`}
+          >
+            <Card {...round} />
           </Link>
         )}
       />

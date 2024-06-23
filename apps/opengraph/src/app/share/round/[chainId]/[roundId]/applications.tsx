@@ -15,14 +15,10 @@ export function Applications({ roundId = "", chainId = 0 }) {
         orderBy: {
           total_amount_donated_in_usd: "desc",
         },
-        take: 6,
+        take: 12,
       }}
       renderItem={(application, Card) => (
-        <Card
-          key={application.id}
-          {...application}
-          components={["contributors"]}
-        />
+        <Card {...application} components={["contributors"]} />
       )}
     />
   );

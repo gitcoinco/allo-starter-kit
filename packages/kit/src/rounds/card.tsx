@@ -50,7 +50,7 @@ export function RoundCard({
       })}
     >
       <div className="">
-        <BackgroundImage className="h-32 bg-gray-100" src={bannerUrl} />
+        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
         <h3 className="-mt-8 truncate pl-1 text-2xl font-medium text-gray-100">
           {name}
         </h3>
