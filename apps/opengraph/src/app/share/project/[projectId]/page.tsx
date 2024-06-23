@@ -1,14 +1,9 @@
 import {
-  Button,
-  FundRound,
-  Markdown,
+  DiscoverApplications,
+  DiscoverRounds,
   ProjectDetails,
-  RoundNetworkBadge,
-  RoundStrategyBadge,
 } from "@allo/kit";
 import { grantsStackAPI } from "@allo/kit";
-import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo/kit";
-import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
 export async function generateMetadata({
@@ -25,8 +20,6 @@ export async function generateMetadata({
   };
 }
 export default async function ShareProjectPage({ params: { projectId = "" } }) {
-  // const round = await grantsStackAPI.roundById?.(roundId, { chainId });
-  // if (!round) return notFound();
   return (
     <div>
       <ProjectDetails id={projectId} />

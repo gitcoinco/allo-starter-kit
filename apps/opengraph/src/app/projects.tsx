@@ -52,7 +52,7 @@ export function Projects() {
         }}
         renderItem={(application, Card) => (
           <Link
-            key={application.id}
+            key={application.key}
             href={`/share/project/${application.projectId}`}
           >
             <Card {...application} components={["contributors"]} />

@@ -27,8 +27,16 @@ export default async function Image(props: {
   return new ImageResponse(
     (
       <div tw="bg-white w-full h-full flex flex-col">
-        <img src={project.bannerUrl} tw="w-full mb-4" />
-        <div tw="flex absolute bottom-2 right-4">
+        <img
+          src={project.bannerUrl}
+          style={{
+            maxHeight: size.height / 2,
+            width: 1200,
+            objectFit: "cover",
+          }}
+        />
+
+        <div tw="flex absolute bottom-2 right-2">
           <svg
             height={20}
             xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +69,9 @@ export default async function Image(props: {
           </div>
         </div>
 
-        <div tw="flex absolute right-8 bottom-36 bg-white p-2 rounded mb-2 shadow-xl">
+        <div
+          tw={`flex absolute right-8 top-[${size.height / 4 - 78}px] bg-white p-2 rounded mb-2 shadow-xl`}
+        >
           <QRCodeSVG size={140} value={projectUrl} />
         </div>
       </div>
@@ -69,12 +79,3 @@ export default async function Image(props: {
     { ...size }
   );
 }
-
-// <div key={a.id} tw="mx-.5 flex">
-// <div
-//   style={{
-//     backgroundImage: `url(${a.bannerUrl})`,
-//   }}
-//   tw="rounded-lg w-24 h-24 bg-contain bg-center"
-// />
-// </div>
