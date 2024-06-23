@@ -102,7 +102,7 @@ export default async function Image(props: {
               </div>
             ))}
           </div>
-          <div tw="flex bg-white p-2 rounded mb-2">
+          <div tw="flex bg-white p-2 rounded mb-2 border-2 border-gray-200">
             <QRCodeSVG size={200} value={roundUrl} />
           </div>
           <div tw="flex bg-gray-900 text-white w-[214px] p-2 rounded shadow-xl justify-center font-semibold  mb-4">
