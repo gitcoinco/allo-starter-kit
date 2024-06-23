@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "@allo/kit/styles.css";
 import "./globals.css";
 import { ApiProvider, ConnectButton, Web3Provider } from "@allo/kit";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
         <ApiProvider>
           <Web3Provider>
             <header className="max-w-screen-md mx-auto  p-2 flex justify-between items-center">
-              <div className="size-6 bg-gray-950 rounded-full" />
+              <Link href="/">
+                <div className="size-6 bg-gray-950 rounded-full hover:bg-white border-4 cursor-pointer border-gray-950 transition-colors" />
+              </Link>
               <ConnectButton />
             </header>
             <main className="max-w-screen-md mx-auto p-2">
