@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@allo/kit/styles.css";
 import "./globals.css";
-import { ApiProvider, ConnectButton, Web3Provider } from "@allo/kit";
-import Link from "next/link";
+import { AlloKitProviders } from "./providers";
+import { Header } from "./header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,21 +20,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ApiProvider>
-          <Web3Provider>
-            <header className="max-w-screen-md mx-auto  p-2 flex justify-between items-center">
-              <Link href="/">
-                <div className="size-6 bg-gray-950 rounded-full hover:bg-white border-4 cursor-pointer border-gray-950 transition-colors" />
-              </Link>
-              <ConnectButton />
-            </header>
-            <main className="max-w-screen-md mx-auto p-2">
-              {children}
+        <AlloKitProviders>
+          <Header />
+          <main className="max-w-screen-md mx-auto p-2">
+            {children}
 
-              <footer className="py-24"></footer>
-            </main>
-          </Web3Provider>
-        </ApiProvider>
+            <footer className="py-24"></footer>
+          </main>
+        </AlloKitProviders>
       </body>
     </html>
   );
