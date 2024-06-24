@@ -6,6 +6,10 @@
 bun add @allo/kit # or npm i -S @allo/kit
 ```
 
+> 💡 **Package not been published yet!**
+>
+> For now, use `bun link` in `/packages/kit` folder and then `bun link @allo/kit --save` in project folder
+
 1. #### Add Component Styles
 
 ```tsx
