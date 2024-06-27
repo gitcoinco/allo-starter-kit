@@ -20,7 +20,7 @@ export const Default: Story = {
     query: {
       where: {
         chainId: { in: [10] },
-        application: { status: { in: ["APPROVED"] } },
+        applications: { where: { status: { in: ["APPROVED"] } } },
       },
       orderBy: { unique_donors_count: "desc" },
       skip: 0,
