@@ -1,9 +1,10 @@
 import { FunctionComponent, useMemo } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { supportedChains, useWalletClient } from "../wagmi";
+import { useWalletClient } from "wagmi";
+import { Address } from "viem";
+import { supportedChains } from "../wagmi/provider";
 import { Round } from "../api/types";
 import { useAPI, useStrategies } from "..";
-import { Address } from "viem";
 import { TContracts } from "@gitcoin/gitcoin-chain-data";
 
 export type StrategyComponentType =
@@ -12,10 +13,10 @@ export type StrategyComponentType =
   | "reviewRecipients"
   | "allocate";
 
-export type StrategyType = keyof TContracts | string
+export type StrategyType = keyof TContracts | string;
 export type StrategyExtension = {
   name: string;
-  type: StrategyType ;
+  type: StrategyType;
   contracts: Record<number, Address>;
   components: Partial<
     Record<
@@ -29,10 +30,7 @@ export type StrategyExtension = {
     >
   >;
 };
-export type StrategyExtensions = Record<
-  StrategyType ,
-  StrategyExtension
->;
+export type StrategyExtensions = Record<StrategyType, StrategyExtension>;
 
 const strategyMap = {
   "allov2.DirectGrantsLiteStrategy": "directGrants",

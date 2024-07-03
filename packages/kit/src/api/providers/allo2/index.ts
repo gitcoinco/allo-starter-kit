@@ -6,24 +6,18 @@ import {
   keccak256,
   zeroAddress,
   WalletClient,
-  encodeAbiParameters,
-  parseAbiParameters,
-  TransactionBase,
-  TransactionRequestBase,
+  decodeEventLog,
+  type Address,
+  type Chain,
 } from "viem";
-import { API } from "../../types";
-import { Allo, Registry, TransactionData } from "@allo-team/allo-v2-sdk/";
+import { Allo, Registry } from "@allo-team/allo-v2-sdk/";
 import { abi as AlloABI } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
-
-import { decodeEventLog, type Address, type Chain } from "viem";
+import { API } from "../../types";
 
 const createAlloOpts = (chain: Chain) => ({
   chain: chain.id,
   rpc: chain.rpcUrls.default.http[0],
 });
-function getProfileId(address: Address): Address {
-  return keccak256(encodePacked(["uint256", "address"], [BigInt(0), address]));
-}
 
 export const alloNativeToken: Address =
   "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
@@ -36,7 +30,7 @@ export const allo2API: Partial<API> = {
       const allo = new Allo(createAlloOpts(signer.chain!));
 
       const client = signer.extend(publicActions);
-      // Annoying that a profile must be created to deploy a pool
+      // Profile must be created to deploy a pool
       const profileId = await getOrCreateProfile(signer);
 
       const {
@@ -131,6 +125,34 @@ export const allo2API: Partial<API> = {
   distribute: () => {},
 };
 
+function createLogDecoder(
+  abi: readonly unknown[],
+  client?: {
+    waitForTransactionReceipt: PublicClient["waitForTransactionReceipt"];
+  },
+) {
+  return async (hash: Address, events: string[]) =>
+    client?.waitForTransactionReceipt({ hash }).then(({ logs }) => {
+      return logs
+        .map(({ data, topics }) => {
+          try {
+            const decoded = decodeEventLog({ abi, data, topics });
+            return events.includes(decoded.eventName) ? decoded : null;
+          } catch (error) {
+            return null;
+          }
+        })
+        .filter(Boolean);
+    });
+}
+
+export function dateToUint64(date: Date) {
+  return BigInt(Math.round(Number(date) / 1000));
+}
+
+/*
+Temporary until profile requirement is fixed in Allo
+*/
 async function getOrCreateProfile(signer: WalletClient) {
   const registry = new Registry(createAlloOpts(signer.chain!));
   const address = getAddress(signer.account?.address!);
@@ -160,54 +182,6 @@ async function getOrCreateProfile(signer: WalletClient) {
       return profile.id;
     });
 }
-
-function createLogDecoder(
-  abi: readonly unknown[],
-  client?: {
-    waitForTransactionReceipt: PublicClient["waitForTransactionReceipt"];
-  },
-) {
-  return async (hash: Address, events: string[]) =>
-    client?.waitForTransactionReceipt({ hash }).then(({ logs }) => {
-      return logs
-        .map(({ data, topics }) => {
-          try {
-            const decoded = decodeEventLog({ abi, data, topics });
-            return events.includes(decoded.eventName) ? decoded : null;
-          } catch (error) {
-            return null;
-          }
-        })
-        .filter(Boolean);
-    });
-}
-
-export const encoders = {
-  directGrants: encodeDirectGrantsLiteData,
-};
-
-function encodeDirectGrantsLiteData(data: {
-  registrationStartTime: string;
-  registrationEndTime: string;
-}) {
-  return encodeAbiParameters(
-    parseAbiParameters([
-      "InitializeData data",
-      "struct InitializeData { bool useRegistryAnchor; bool metadataRequired; uint64 registrationStartTime; uint64 registrationEndTime; }",
-    ]),
-    [
-      {
-        useRegistryAnchor: false,
-        metadataRequired: true,
-        registrationStartTime: dateToUint64(
-          new Date(data.registrationStartTime),
-        ),
-        registrationEndTime: dateToUint64(new Date(data.registrationEndTime)),
-      },
-    ],
-  );
-}
-
-export function dateToUint64(date: Date) {
-  return BigInt(Math.round(Number(date) / 1000));
+function getProfileId(address: Address): Address {
+  return keccak256(encodePacked(["uint256", "address"], [BigInt(0), address]));
 }

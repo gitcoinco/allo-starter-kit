@@ -1,61 +1,33 @@
+import { Address, erc20Abi, getAddress, zeroAddress } from "viem";
+import { useBalance, useReadContracts } from "wagmi";
 import { NATIVE } from "@allo-team/allo-v2-sdk";
-import { useMutation } from "@tanstack/react-query";
-import { Address, erc20Abi, zeroAddress } from "viem";
-import { useAccount, useBalance, useReadContracts } from "wagmi";
-import { useToast } from "../ui/use-toast";
 
 export const nativeToken = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
-const isNativeToken = (token?: Address) =>
+export const isNativeToken = (token?: Address) =>
   [zeroAddress, NATIVE].includes(token?.toLowerCase()!);
 
-export function useToken(opts: { token?: Address }) {
-  const { address } = useAccount();
-  const token = isNativeToken(opts.token) ? undefined : opts.token;
+export function useToken(tokenAddress?: Address) {
+  const address = tokenAddress ? getAddress(tokenAddress) : undefined;
+  const tokenContract = { address, abi: erc20Abi };
 
-  console.log("token", opts, token);
-  const tokenContract = {
-    address: token,
-    abi: erc20Abi,
-  };
-  //   const { data: balance } = useBalance({
-  //     address,
-  //     token: tokenContract.address,
-  //   });
-
-  //   const network = supportedChains?.find((n) => n.chain === round?.network);
-  const query = useReadContracts({
+  const token = useReadContracts({
     allowFailure: false,
     contracts: [
       { ...tokenContract, functionName: "decimals" },
       { ...tokenContract, functionName: "symbol" },
-      //   {
-      //     ...tokenContract,
-      //     functionName: "allowance",
-      //     args: [address!, allo.alloAddress],
-      //   },
     ],
   });
-  console.log(query.data, query.error, opts);
-  const [decimals, symbol] = query.data ?? [];
+
+  const [decimals = 18, symbol = "ETH"] = token.data ?? [];
   return {
-    ...query,
-    data: {
-      decimals,
-      symbol,
-    },
+    ...token,
+    data: { address, symbol, decimals },
   };
-  //   const [decimals = network?.nativeCurrency.decimals ?? 18, symbol, allowance] =
-  //     (token.data ?? []) as [number, string, bigint];
-  //   return {
-  //     ...token,
-  //     data: {
-  //       address: tokenAddress,
-  //       isNativeToken,
-  //       symbol: isNativeToken ? network?.nativeCurrency.name : symbol ?? "",
-  //       balance: balance?.value ?? 0n,
-  //       decimals,
-  //       allowance,
-  //     },
-  //   };
+}
+
+export function useTokenBalance(opts: { address?: Address; token?: Address }) {
+  const token = isNativeToken(opts.token) ? undefined : opts.token;
+
+  return useBalance({ address: opts.address, token });
 }

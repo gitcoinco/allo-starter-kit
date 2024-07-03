@@ -1,5 +1,5 @@
 import { useChainId } from "wagmi";
-import { supportedChains } from "../wagmi";
+import { supportedChains } from "../wagmi/provider";
 
 export function useNetwork() {
   const chainId = useChainId();

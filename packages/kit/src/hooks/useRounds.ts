@@ -1,6 +1,6 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { API, AllocateInput, RoundInput, RoundsQuery } from "../api/types";
+import { API, RoundInput, RoundsQuery } from "../api/types";
 import { useAPI } from "..";
 import { useWalletClient } from "wagmi";
 import { useToast } from "../ui/use-toast";
@@ -9,7 +9,6 @@ const defaultQuery = {
   where: {},
   skip: 0,
   take: 12,
-  // orderBy: { createdAt: "asc" } as const,
 };
 
 export function useRounds(query: RoundsQuery = defaultQuery) {

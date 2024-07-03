@@ -1,6 +1,6 @@
 "use client";
 
-import { ApiProvider, Web3Provider, strategies } from "@allo/kit";
+import { ApiProvider, Web3Provider } from "@allo/kit";
 
 export function AlloKitProviders({
   children,
@@ -9,7 +9,6 @@ export function AlloKitProviders({
 }>) {
   return (
     <ApiProvider
-      strategies={strategies}
       api={{
         upload: async (data) =>
           fetch(`/api/ipfs`, { method: "POST", body: data })

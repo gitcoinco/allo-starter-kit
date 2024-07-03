@@ -1,4 +1,4 @@
-# Allo Starter Kit
+# Allo Kit
 
 ### Getting Started
 

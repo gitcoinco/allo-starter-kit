@@ -1,7 +1,7 @@
 "use client";
-import { erc20Abi, formatUnits, getAddress } from "viem";
-import { useReadContracts } from "wagmi";
+import { Address, formatUnits } from "viem";
 import { formatNumber } from "../lib/utils";
+import { useToken } from "../hooks/useToken";
 
 export function TokenAmount({
   amount = BigInt(0),
@@ -9,7 +9,7 @@ export function TokenAmount({
   symbol = true,
 }: {
   amount: bigint;
-  token: string;
+  token: Address;
   symbol?: boolean;
 }) {
   const { data } = useToken(token);
@@ -20,24 +20,4 @@ export function TokenAmount({
       {symbol && data?.symbol}
     </>
   );
-}
-
-// TODO: use a http api instead of wagmi so user doesn't need to be connected with wallet?
-export function useToken(tokenAddress: string) {
-  const address = tokenAddress ? getAddress(tokenAddress) : undefined;
-  const tokenContract = { address, abi: erc20Abi };
-
-  const token = useReadContracts({
-    allowFailure: false,
-    contracts: [
-      { ...tokenContract, functionName: "decimals" },
-      { ...tokenContract, functionName: "symbol" },
-    ],
-  });
-
-  const [decimals = 18, symbol = "ETH"] = token.data ?? [];
-  return {
-    ...token,
-    data: { address, symbol, decimals },
-  };
 }

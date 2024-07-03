@@ -25,11 +25,10 @@ import {
   parseUnits,
   zeroAddress,
 } from "viem";
-import { useToken } from "../hooks/useToken";
+import { useToken, useTokenBalance } from "../hooks/useToken";
 import { useToast } from "../ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { Alert } from "../ui/alert";
-import { LoaderIcon } from "lucide-react";
 
 type RoundFundProps = {
   id: string;
@@ -65,28 +64,6 @@ export function getNetworkToken(round?: Round) {
   );
 }
 
-function PoolAmount({ round }: { round?: Round }) {
-  const token = getNetworkToken(round);
-  if (token) {
-    const amount = round?.matching.amount ?? BigInt(0);
-    return (
-      <>
-        {amount && formatUnits(amount, token?.decimals ?? 0)} {token?.code}
-      </>
-    );
-  }
-  // Token not found in the listed ones in config - query the network
-  if (round)
-    return (
-      <TokenBalance
-        address={round.strategy}
-        token={getAddress(round?.matching.token!)}
-      />
-    );
-
-  return null;
-}
-
 export function FundRound({ id, opts, autoFocus, onSuccess }: RoundFundProps) {
   const { data, isPending } = useRoundById(id, opts);
   const fund = useFundPool();
@@ -112,14 +89,6 @@ export function FundRound({ id, opts, autoFocus, onSuccess }: RoundFundProps) {
       />
     </section>
   );
-}
-
-function useTokenBalance(opts: { address?: Address; token?: Address }) {
-  const token = [zeroAddress, NATIVE].includes(opts.token?.toLowerCase()!)
-    ? undefined
-    : opts.token;
-
-  return useBalance({ address: opts.address, token });
 }
 
 function TokenBalance({
@@ -154,7 +123,7 @@ function FundForm({
   const { address } = useAccount();
   const form = useForm();
 
-  const { data } = useToken({ token });
+  const { data } = useToken(token);
   const { data: balance } = useTokenBalance({ address, token });
   console.log("data", data, balance);
 

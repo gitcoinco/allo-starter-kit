@@ -117,7 +117,7 @@ export interface API {
   upload: (data: FormData) => Promise<string>;
   sendTransaction: (
     tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
-    signer: WalletClient, // TODO: Use something more generic than WalletClient?
+    signer?: WalletClient, // TODO: Use something more generic than WalletClient?
   ) => Promise<Hash>;
 }
 // Transforms data from API into a common shape
