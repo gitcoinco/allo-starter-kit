@@ -1,8 +1,9 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useAccount, useBalance } from "wagmi";
-import { NATIVE } from "@allo-team/allo-v2-sdk";
+import { useMutation } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
+import { Address, formatUnits, parseUnits } from "viem";
 import { TToken } from "@gitcoin/gitcoin-chain-data";
 import { QueryOpts, Round } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
@@ -17,17 +18,9 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { supportedChains } from "../wagmi/provider";
-import {
-  Address,
-  formatUnits,
-  getAddress,
-  parseUnits,
-  zeroAddress,
-} from "viem";
+import { supportedChains } from "../api/web3-provider";
 import { useToken, useTokenBalance } from "../hooks/useToken";
 import { useToast } from "../ui/use-toast";
-import { useMutation } from "@tanstack/react-query";
 import { Alert } from "../ui/alert";
 
 type RoundFundProps = {

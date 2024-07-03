@@ -2,7 +2,7 @@ export * from "./api/provider";
 export * from "./api/default-api";
 export * from "./api/providers/grants-stack";
 export * from "./api/providers/easy-rpgf";
-export * from "./wagmi/provider";
+export * from "./api/web3-provider";
 export * from "./ui/drawer";
 export * from "./ui/markdown";
 export * from "./ui/token-amount";

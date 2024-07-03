@@ -2,10 +2,10 @@ import { FunctionComponent, useMemo } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useWalletClient } from "wagmi";
 import { Address } from "viem";
-import { supportedChains } from "../wagmi/provider";
+import { TContracts } from "@gitcoin/gitcoin-chain-data";
+import { supportedChains } from "../api/web3-provider";
 import { Round } from "../api/types";
 import { useAPI, useStrategies } from "..";
-import { TContracts } from "@gitcoin/gitcoin-chain-data";
 
 export type StrategyComponentType =
   | "createRound"

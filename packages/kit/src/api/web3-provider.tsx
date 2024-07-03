@@ -22,6 +22,13 @@ const defaultConfig = getDefaultConfig({
   ssr: true,
 });
 
+/*
+Our default Web3Provider is RainbowKit + Wagmi + Gitcoin supported chains.
+
+It is possible for apps to use their own implementation. 
+However, Wagmi is currently a requirement because of hooks. 
+
+*/
 export function Web3Provider({
   children,
   config = defaultConfig,
