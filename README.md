@@ -1,5 +1,12 @@
 # Allo Kit
 
+AlloKit is a collection of functions, hooks, and components for interacting with the Allo Protocol and its Indexer.
+
+For example:
+
+- Query Rounds, Applications, and Projects
+- Create Rounds, Register and Approve Applications
+
 ### Getting Started
 
 ```sh
@@ -10,49 +17,75 @@ bun add @allo/kit # or npm i -S @allo/kit
 >
 > For now, use `bun link` in `/packages/kit` folder and then `bun link @allo/kit --save` in project folder
 
-1. #### Add Component Styles
+#### 1. Add Component Styles
 
 ```tsx
 import "@allo/kit/styles.css";
 ```
 
-2. #### Add AlloKit Providers
+#### 2. Add AlloKit Providers
 
 ```tsx
 "use client";
 import { ApiProvider, Web3Provider } from "@allo/kit";
 
 export function AlloKitProviders({ children }: PropsWithChildren) {
-  // Provide Upload metadata API (See ApiProvider for full interface)
-  async function upload(data) {
-    return fetch(`/api/ipfs`, { method: "POST", body: data })
-      .then((r) => r.json())
-      .then((r) => r.cid);
-  }
-
   return (
-    <ApiProvider provider={{ upload }}>
+    <ApiProvider api={{ upload }}>
       <Web3Provider>{children}</Web3Provider>
     </ApiProvider>
   );
 }
+// Provide Upload metadata API
+// See `apps/demo/src/app/api/ipfs/route.ts` for example implementation
+async function upload(data) {
+  return fetch(`/api/ipfs`, { method: "POST", body: data })
+    .then((r) => r.json())
+    .then((r) => r.cid);
+}
 ```
 
-3. #### Import & Use Components
+#### 3. Import & Use Components
+
+Depending on your app and use-cases you can use the kit in different ways. For example:
+
+- Server-side
+- React Hooks
+- React Components
 
 ```tsx
-import {
-  Button,
-  CreateRound,
-  DiscoverRounds,
-  RoundDetails,
-  DiscoverProjects,
-  ProjectDetails,
-  CreateApplication,
-  FundRound,
-  Allocate,
-  Distribute,
-} from "@allo/kit";
+import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
+
+export default function RoundsPage() {
+  // Server-side rendering
+  const rounds = await grantsStack.rounds(query);
+
+  // Or using hooks (remember to "use client" at top of file)
+  const { data, error, isPending } = useRounds(query);
+
+  // Or render ready-made component
+  return (
+    <DiscoverRounds
+      query={query}
+      // Optional renderItem function to wrap in Link component
+      renderItem={({ key, ...round }, RoundCard) => (
+        <Link key={key} href={`/${round.chainId}/rounds/${round.id}`}>
+          <RoundCard {...round} />
+        </Link>
+      )}
+    />
+  );
+}
+
+// Simple query
+// Discover queries here: https://grants-stack-indexer-v2.gitcoin.co/graphiql
+// (There are some differences in the queries. See packages/kit/src/api/types.d.ts)
+const query = {
+  where: { chainId: { in: [10] } },
+  orderBy: { unique_donors_count: "desc" },
+  skip: 0,
+  take: 12,
+};
 ```
 
 See Storybook for more components:  
