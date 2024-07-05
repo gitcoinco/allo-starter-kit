@@ -144,7 +144,7 @@ The Allo Protocol is highly flexible in the types of strategies can be created. 
 
 The AlloKit provides a way to create StrategyExtensions where UI components are rendered based on the strategy in the correct components.
 
-### Building a Strategy Extension
+#### Building a Strategy Extension
 
 Let's use DirectGrantsLite as an example.
 
@@ -171,20 +171,25 @@ struct InitializeData {
 InitializeData memory initializeData = abi.decode(_data, (InitializeData));
 ```
 
-We want to include form components in CreateRound for the user to select start and end times. We also want to encode this into the strategy's InitializeData struct.
+Now, we want to include form components in CreateRound for the user to select start and end times. We also want to encode this into the strategy's InitializeData struct.
+
+The CreateRound component (and many others) will look for a strategy extension for the current round (or the selected strategy in CreateRound).
+
+If a matching strategy extension is found, it will render the custom UI component and extend the Zod form schema with the strategy extension.
+
+Let's define a FormField with a RangeCalendar component to choose dates for registration start and end
 
 ```tsx
-// Define a FormField with a RangeCalendar component to choose dates for registration start and end
 export function ChooseRegistrationTimes() {
   const { control } = useFormContext();
   return (
     <FormField
       control={control}
-      {/* See the schema definition for information about internal state */ }
+      // See the schema definition for information about internal state
       name="initStrategyData.__internal__"
       render={({ field }) => {
         return (
-          <FormItem className="flex flex-col">
+          <FormItem>
             <FormLabel>Project Registration</FormLabel>
             <RangeCalendar field={field}>
               Pick start and end dates
@@ -201,7 +206,7 @@ export function ChooseRegistrationTimes() {
 }
 
 // Schema definition
-export const schema = z
+export const directGrantsRoundSchema = z
   .object({
     /*
     initStrategyData expects to be a bytes string starting with 0x.
@@ -234,9 +239,11 @@ export const directGrants: StrategyExtension = {
       schema: directGrantsRoundSchema,
       component: ChooseRegistrationTimes,
     },
+    // We can also extend other components with strategy-specific functionality
     registerRecipient: { ... },
     reviewRecipients: { ... },
     allocate: { ... },
+    distribute: { ... },
   },
 };
 
