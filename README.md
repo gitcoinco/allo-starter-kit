@@ -6,6 +6,11 @@ For example:
 
 - Query Rounds, Applications, and Projects
 - Create Rounds, Register and Approve Applications
+- Allocate and Distribute
+
+### Stack
+
+![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
 
 ### Getting Started
 
@@ -49,9 +54,11 @@ async function upload(data) {
 
 Depending on your app and use-cases you can use the kit in different ways. For example:
 
-- Server-side
-- React Hooks
-- React Components
+- **Direct function call** - This is useful when you want to query the indexer server-side
+- **React Hooks** - Function calls are wrapped in ReactQuery hooks for loading & error states (plus more!)
+- **React Components** - Ready-made components for common uses
+  - **UI** - Simple design primitives like buttons and forms (see `packages/kit/src/ui`)
+  - **Features** - Larger components often with a complete feature (CreateRound, DiscoverProjects, etc)
 
 ```tsx
 import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
@@ -73,6 +80,8 @@ export default function RoundsPage() {
           <RoundCard {...round} />
         </Link>
       )}
+      // Customize how many columns for different screen-sizes [sm, md, lg, xl]
+      columns={[1, 2, 3, 4]}
     />
   );
 }
