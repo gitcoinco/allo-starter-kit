@@ -137,3 +137,109 @@ open http://localhost:3000
 # Storybook
 open http://localhost:6006
 ```
+
+### Strategy Extensions
+
+The Allo Protocol is highly flexible in the types of strategies can be created. Different strategies might require different parameters and configurations.
+
+The AlloKit provides a way to create StrategyExtensions where UI components are rendered based on the strategy in the correct components.
+
+### Building a Strategy Extension
+
+Let's use DirectGrantsLite as an example.
+
+First we need to understand how Allo and strategies work:
+
+**Allo.sol**
+
+```solidity
+// createPool invokes the strategy's initialize function
+_strategy.initialize(poolId, _initStrategyData);
+```
+
+**DirectGrantsLite.sol**
+
+```solidity
+struct InitializeData {
+    bool useRegistryAnchor;
+    bool metadataRequired;
+    uint64 registrationStartTime;
+    uint64 registrationEndTime;
+}
+
+// the strategy's initialize function decodes the data
+InitializeData memory initializeData = abi.decode(_data, (InitializeData));
+```
+
+We want to include form components in CreateRound for the user to select start and end times. We also want to encode this into the strategy's InitializeData struct.
+
+```tsx
+// Define a FormField with a RangeCalendar component to choose dates for registration start and end
+export function ChooseRegistrationTimes() {
+  const { control } = useFormContext();
+  return (
+    <FormField
+      control={control}
+      {/* See the schema definition for information about internal state */ }
+      name="initStrategyData.__internal__"
+      render={({ field }) => {
+        return (
+          <FormItem className="flex flex-col">
+            <FormLabel>Project Registration</FormLabel>
+            <RangeCalendar field={field}>
+              Pick start and end dates
+            </RangeCalendar>
+            <FormDescription>
+              When can projects submit their application?
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        );
+      }}
+    />
+  );
+}
+
+// Schema definition
+export const schema = z
+  .object({
+    /*
+    initStrategyData expects to be a bytes string starting with 0x.
+    Temporarily store from and to in an internal state. This will be encoded into the bytes string.
+    */
+    __internal__: z.object({ from: z.date(), to: z.date() }),
+  })
+  // Transform the dates into initStrategyData
+  .transform((val) => {
+    const { from, to } = val.__internal__;
+    return DirectGrantsLiteStrategy.prototype.getInitializeData({
+      useRegistryAnchor: false,
+      metadataRequired: false,
+      registrationStartTime: dateToUint64(from),
+      registrationEndTime: dateToUint64(to),
+    });
+  });
+
+// Define the DirectGrants Strategy Extension with the createRound component and schema
+export const directGrants: StrategyExtension = {
+  name: "Direct Grants Lite",
+  type: "directGrants",
+  // Deployed strategy contract address for all supported networks
+  contracts: supportedChains.reduce(
+    (acc, x) => ({ ...acc, [x.id]: x.contracts.directGrants }),
+    {}
+  ),
+  components: {
+    createRound: {
+      schema: directGrantsRoundSchema,
+      component: ChooseRegistrationTimes,
+    },
+    registerRecipient: { ... },
+    reviewRecipients: { ... },
+    allocate: { ... },
+  },
+};
+
+// Finally we add the directGrants strategy to the AlloKit ApiProvider
+<ApiProvider strategies={{ directGrants }}>...</ApiProvider>;
+```
