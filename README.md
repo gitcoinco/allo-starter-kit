@@ -12,7 +12,19 @@ For example:
 
 ![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
 
-### Getting Started
+### Getting Started: Run Demo App
+
+```sh
+git clone https://github.com/gitcoinco/allo-starter-kit
+cd allo-starter-kit
+bun install
+bun run build
+cd apps/demo
+bun run dev
+```
+
+
+### Getting Started: Building on Allo
 
 ```sh
 bun add @allo/kit # or npm i -S @allo/kit
