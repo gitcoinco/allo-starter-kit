@@ -18,8 +18,9 @@ For example:
 git clone https://github.com/gitcoinco/allo-starter-kit
 cd allo-starter-kit
 bun install
+cd packages/kit
 bun run build
-cd apps/demo
+cd ../../apps/demo
 bun run dev
 ```
 
