@@ -2,46 +2,117 @@
 
 AlloKit is a collection of functions, hooks, and components for interacting with the Allo Protocol and its Indexer.
 
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Stack](#stack)
+3. [Using AlloKit in your project](#using-allokit-in-your-project)
+   - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
+   - [Usage](#usage)
+     - [Add Component Styles](#add-component-styles)
+     - [Add AlloKit Providers](#add-allokit-providers)
+     - [Import & Use Components](#import--use-components)
+     - [Example usage in your project](#example-usage-in-your-project)
+4. [Local Development](#local-development)
+   - [Setup](#setup)
+   - [Running the project](#running-the-project)
+   - [Running the Demo App Standalone](#running-the-demo-app-standalone)
+   - [Running Storybook Standalone](#running-storybook-standalone)
+5. [Strategy Extensions](#strategy-extensions)
+
+## Introduction
+
+AlloKit is a collection of functions, hooks, and components for interacting with the Allo Protocol and its Indexer.
+
 For example:
 
 - Query Rounds, Applications, and Projects
 - Create Rounds, Register and Approve Applications
 - Allocate and Distribute
 
-### Stack
+## Stack
 
 ![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
 
-### Getting Started: Run Demo App
+## Using AlloKit in your project
+
+### Install AlloKit in your project
+
+💡 **PACKAGE NOT PUBLISHED YET!**
+
+💡 **While we publish the package clone the repo and link it to your project. [Link to your project](#link-allokit-to-your-project)**
+
+You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
+
+<details>
+<summary>using npm</summary>
 
 ```sh
-git clone https://github.com/gitcoinco/allo-starter-kit
-cd allo-starter-kit
-bun install
-cd packages/kit
-bun run build
-cd ../../apps/demo
-bun run dev
+npm install @allo/kit
 ```
 
+</details>
 
-### Getting Started: Building on Allo
+<details>
+<summary>using yarn</summary>
+
+```
+yarn add @allo/kit
+```
+
+</details>
+
+<details>
+<summary>using pnpm</summary>
 
 ```sh
-bun add @allo/kit # or npm i -S @allo/kit
+pnpm add @allo/kit
 ```
 
-> 💡 **Package not been published yet!**
->
-> For now, use `bun link` in `/packages/kit` folder and then `bun link @allo/kit --save` in project folder
+</details>
 
-#### 1. Add Component Styles
+<details>
+<summary>using bun</summary>
+
+```sh
+bun add @allo/kit
+```
+
+</details>
+
+### Link AlloKit to your project
+
+If the package is not yet published or if you want to modify AlloKit while including it in your project, you can link the package:
+
+1. Link the package from the AlloKit project:
+
+   ```sh
+    bun run link
+   ```
+
+2. Link the package to your project:
+   ```sh
+    cd /path/to/your-project
+    bun link @allo/kit --save
+   ```
+
+This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
+
+**Note:** Do not link AlloKit if you have already installed it using the previous step.
+
+### Usage
+
+#### Add Component Styles
+
+To use AlloKit's styles in your project, import the styles CSS file:
 
 ```tsx
 import "@allo/kit/styles.css";
 ```
 
-#### 2. Add AlloKit Providers
+#### Add AlloKit Providers
+
+To use AlloKit's context providers, add them to your application:
 
 ```tsx
 "use client";
@@ -63,7 +134,7 @@ async function upload(data) {
 }
 ```
 
-#### 3. Import & Use Components
+#### Import & Use Components
 
 Depending on your app and use-cases you can use the kit in different ways. For example:
 
@@ -72,6 +143,8 @@ Depending on your app and use-cases you can use the kit in different ways. For e
 - **React Components** - Ready-made components for common uses
   - **UI** - Simple design primitives like buttons and forms (see `packages/kit/src/ui`)
   - **Features** - Larger components often with a complete feature (CreateRound, DiscoverProjects, etc)
+
+Example:
 
 ```tsx
 import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
@@ -110,10 +183,9 @@ const query = {
 };
 ```
 
-See Storybook for more components:  
-https://allo-starter-kit-storybook.vercel.app
+See Storybook for more components: https://allo-starter-kit-storybook.vercel.app
 
-### Usage
+### Example usage in your project
 
 See `apps/demo`
 
@@ -134,30 +206,86 @@ Explore code:
 - [Review Applications](./apps/demo/src/app/admin/rounds/%5BchainId%5D/%5BroundId%5D/page.tsx)
 - [Metadata Upload API](./apps/demo/src/app/api/ipfs/route.ts)
 
-### Development
+## Local Development
+
+### Setup
+
+#### Clone the Repository
 
 ```sh
-# optional install bun
+git clone https://github.com/gitcoinco/allo-starter-kit
+cd allo-starter-kit
+```
+
+#### Install bun
+
+```sh
 curl -fsSL https://bun.sh/install | bash
+```
 
-bun install # or npm | pnpm install
+#### Install Dependencies
 
+```sh
+bun install
+```
+
+### Running the project
+
+This will run the apps and the kit build in parallel
+
+```sh
 bun run dev
+```
 
-# Demo App
+#### Open Demo App in your browser
+
+```sh
 open http://localhost:3000
+```
 
-# Storybook
+#### Open Storybook in your browser
+
+```sh
 open http://localhost:6006
 ```
 
-### Strategy Extensions
+### Running the Demo App Standalone
+
+This section covers how to run the demo app independently for local development.
+
+#### Run Demo App
+
+This will build the kit and run the demo app.
+
+```sh
+bun run dev:demo
+```
+
+#### Open Demo App in your browser
+
+```sh
+open http://localhost:3000
+```
+
+### Running Storybook Standalone
+
+This section covers how to run Storybook independently for local development.
+
+#### Run Storybook
+
+This will build the kit and run storybook.
+
+```sh
+bun run storybook
+```
+
+## Strategy Extensions
 
 The Allo Protocol is highly flexible in the types of strategies can be created. Different strategies might require different parameters and configurations.
 
 The AlloKit provides a way to create StrategyExtensions where UI components are rendered based on the strategy in the correct components.
 
-#### Building a Strategy Extension
+### Building a Strategy Extension
 
 Let's use DirectGrantsLite as an example.
 

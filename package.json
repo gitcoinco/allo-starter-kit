@@ -3,9 +3,16 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:kit": "cd packages/kit && bun run build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prelink": "bun run build:kit",
+    "link": "cd packages/kit && bun link",
+    "prestorybook": "bun run build:kit",
+    "storybook": "cd apps/storybook && bun run dev",
+    "predev:demo": "bun run build:kit",
+    "dev:demo": "cd apps/demo && bun run dev"
   },
   "devDependencies": {
     "@allo/eslint-config": "*",
