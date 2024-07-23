@@ -3,7 +3,7 @@ import {
   Button,
   BackButton,
   DiscoverApplications,
-  RoundDetails,
+  RoundDetailsWithHook as RoundDetails,
 } from "@allo/kit";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
     <section className="space-y-8">
       <RoundDetails
         id={roundId}
-        opts={{ chainId }}
+        chainId={chainId}
         backAction={
           <Link href={`/${chainId}`}>
             <BackButton />

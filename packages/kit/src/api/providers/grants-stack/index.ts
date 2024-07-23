@@ -77,7 +77,7 @@ export const grantsStackAPI: Partial<API> = {
 function validateDate(date?: string) {
   return date && isValid(new Date(date)) ? date : undefined;
 }
-const transformers: Transformers<GSRound, GSApplication, GSProject> = {
+export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   round: ({
     id,
     chainId,
