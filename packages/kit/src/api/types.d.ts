@@ -137,6 +137,7 @@ export type Round = BaseRound & {
   id: string;
   name: string;
   description: string;
+  eligibility: { requirements?: { requirement: string }[] };
   bannerUrl?: string;
   chainId: number;
   applications?: { id: string }[];
@@ -180,6 +181,13 @@ export type Application = BaseApplication & {
     count?: number;
     amount?: number;
   };
+  answers: {
+    questionId: number;
+    type: string;
+    answer: string;
+    hidden: boolean;
+    question: string;
+  }[];
   status: ApplicationStatus;
 };
 

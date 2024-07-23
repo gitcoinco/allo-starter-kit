@@ -19,6 +19,8 @@ export function RoundDetails({
   primaryAction,
 }: RoundDetailsProps) {
   const { data } = useRoundById(id, opts);
+
+  console.log("data", data);
   return (
     <section>
       <div className="mb-2 flex items-center justify-between">
