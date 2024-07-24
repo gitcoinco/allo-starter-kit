@@ -13,12 +13,14 @@ export default function Home() {
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-2">
         {supportedChains.map((chain) => (
           <Link
+            key={chain.id}
             href={`/${chain.id}`}
             className="flex gap-2 items-center hover:bg-gray-100 rounded-xl p-2"
           >
             <Avatar className="size-8">
               <span
                 className="size-8"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: chain.icon comes as an SVG string
                 dangerouslySetInnerHTML={{ __html: fixSvg(chain.icon) }}
               />
             </Avatar>
