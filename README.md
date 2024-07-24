@@ -5,20 +5,20 @@ AlloKit is a collection of functions, hooks, and components for interacting with
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Stack](#stack)
-3. [Using AlloKit in your project](#using-allokit-in-your-project)
+2. [Using AlloKit in your project](#using-allokit-in-your-project)
    - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
    - [Usage](#usage)
      - [Add Component Styles](#add-component-styles)
      - [Add AlloKit Providers](#add-allokit-providers)
      - [Import & Use Components](#import--use-components)
      - [Example usage in your project](#example-usage-in-your-project)
-4. [Local Development](#local-development)
+3. [Local Development](#local-development)
+   - [TLDR](#tldr)
    - [Setup](#setup)
    - [Running the project](#running-the-project)
    - [Running the Demo App Standalone](#running-the-demo-app-standalone)
    - [Running Storybook Standalone](#running-storybook-standalone)
-5. [Strategy Extensions](#strategy-extensions)
+4. [Strategy Extensions](#strategy-extensions)
 
 ## Introduction
 
@@ -34,7 +34,7 @@ For example:
 
 https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
 
-## Stack
+### Stack
 
 ![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
 
@@ -210,24 +210,40 @@ Explore code:
 - [Review Applications](./apps/demo/src/app/admin/rounds/%5BchainId%5D/%5BroundId%5D/page.tsx)
 - [Metadata Upload API](./apps/demo/src/app/api/ipfs/route.ts)
 
-## Local Development
+# Local Development
 
-### Setup
+## TLDR
 
-#### Clone the Repository
+### Start AlloKit and Apps (Demo, Opengraph and Storybook)
+
+```sh
+git clone https://github.com/gitcoinco/allo-starter-kit
+cd allo-starter-kit
+npm install -g bun
+bun install
+bun run dev
+```
+
+- Demo App: http://localhost:3000
+- Opengraph: http://localhost:3001
+- Storybook: http://localhost:6006
+
+## Setup
+
+### Clone the Repository
 
 ```sh
 git clone https://github.com/gitcoinco/allo-starter-kit
 cd allo-starter-kit
 ```
 
-#### Install bun
+### Install bun
 
 ```sh
-curl -fsSL https://bun.sh/install | bash
+npm install -g bun
 ```
 
-#### Install Dependencies
+### Install Dependencies
 
 ```sh
 bun install
@@ -241,23 +257,23 @@ This will run the apps and the kit build in parallel
 bun run dev
 ```
 
-#### Open Demo App in your browser
+### Open Demo App in your browser
 
 ```sh
 open http://localhost:3000
 ```
 
-#### Open Storybook in your browser
+### Open Storybook in your browser
 
 ```sh
 open http://localhost:6006
 ```
 
-### Running the Demo App Standalone
+## Running the Demo App Standalone
 
 This section covers how to run the demo app independently for local development.
 
-#### Run Demo App
+### Run Demo App
 
 This will build the kit and run the demo app.
 
@@ -265,17 +281,17 @@ This will build the kit and run the demo app.
 bun run dev:demo
 ```
 
-#### Open Demo App in your browser
+### Open Demo App in your browser
 
 ```sh
 open http://localhost:3000
 ```
 
-### Running Storybook Standalone
+## Running Storybook Standalone
 
 This section covers how to run Storybook independently for local development.
 
-#### Run Storybook
+### Run Storybook
 
 This will build the kit and run storybook.
 
