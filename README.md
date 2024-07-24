@@ -30,6 +30,10 @@ For example:
 - Create Rounds, Register and Approve Applications
 - Allocate and Distribute
 
+### Building a simple Discover Rounds app
+
+https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
+
 ## Stack
 
 ![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
