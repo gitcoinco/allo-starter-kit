@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "npx storybook dev -p 6006",
     "start": "npx storybook dev -p 6006",
-    "build": "npx storybook build"
+    "build": "npx storybook build",
+    "test": "npm run test-storybook"
   },
   "dependencies": {
     "react": "^18",
@@ -23,6 +24,7 @@
     "@storybook/nextjs": "^8.1.6",
     "@storybook/react": "^8.1.6",
     "@storybook/test": "^8.1.6",
+    "@storybook/test-runner": "^0.19.1",
     "@swc/helpers": "^0.5.11",
     "@types/node": "^20",
     "@types/react": "^18",
