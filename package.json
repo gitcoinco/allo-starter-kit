@@ -30,5 +30,8 @@
   ],
   "volta": {
     "node": "20.15.1"
+  },
+  "dependencies": {
+    "@rollup/rollup-darwin-x64": "^4.19.0"
   }
 }
