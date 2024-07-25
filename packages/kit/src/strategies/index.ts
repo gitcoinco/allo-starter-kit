@@ -84,3 +84,12 @@ export function useStrategyAddon(
     }),
   };
 }
+
+export function useStrategyAddonCall(
+  component: StrategyComponentType,
+  round?: Round,
+) {
+  const { call } = useStrategyAddon(component, round);
+
+  return call;
+}

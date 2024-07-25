@@ -12,8 +12,8 @@ export const call = (
   signer: WalletClient,
 ) => {
   const statuses: { index: bigint; statusRow: bigint }[] = applications.map(
-    (application, index) => ({
-      index: BigInt(index),
+    (application) => ({
+      index: BigInt(application.id),
       statusRow: selected.includes(application.id) ? statusValue : BigInt(0),
     }),
   );
