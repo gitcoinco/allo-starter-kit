@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { QRCodeSVG } from "qrcode.react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { formatNumber, grantsStackAPI } from "@allo/kit";
+import { formatNumber, grantsStackAPI } from "@allo-team/kit";
 import { format } from "date-fns";
 import { getChains } from "@gitcoin/gitcoin-chain-data";
 import { formatUnits, getAddress } from "viem";

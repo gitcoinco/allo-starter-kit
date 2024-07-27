@@ -1,5 +1,5 @@
 "use client";
-import { supportedChains, Avatar } from "@allo/kit";
+import { supportedChains, Avatar } from "@allo-team/kit";
 import Link from "next/link";
 
 export default function Home() {

@@ -4,7 +4,7 @@ import {
   BackButton,
   DiscoverApplications,
   RoundDetailsWithHook as RoundDetails,
-} from "@allo/kit";
+} from "@allo-team/kit";
 import Link from "next/link";
 
 export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {

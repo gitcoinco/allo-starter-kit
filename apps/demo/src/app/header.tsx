@@ -1,5 +1,5 @@
 "use client";
-import { ConnectButton } from "@allo/kit";
+import { ConnectButton } from "@allo-team/kit";
 import Link from "next/link";
 export function Header() {
   return (

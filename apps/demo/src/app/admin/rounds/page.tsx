@@ -1,6 +1,6 @@
 "use client";
 import { useAccount } from "wagmi";
-import { DiscoverRounds } from "@allo/kit";
+import { DiscoverRounds } from "@allo-team/kit";
 import Link from "next/link";
 
 export default function AdminRounds() {

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
   supportedChains,
-} from "@allo/kit";
+} from "@allo-team/kit";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 

@@ -1,1 +1,1 @@
-- [ ] Publish @allo/kit and verify it works with `npm i @allo/kit -S`
+- [ ] Publish @allo-team/kit and verify it works with `npm i @allo-team/kit -S`
