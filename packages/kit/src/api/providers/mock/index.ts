@@ -1,2 +1,4 @@
-export * as mockRound from "./data/round";
-export * as mockRounds from "./data/rounds";
+import mockRound from "./data/round.json";
+import mockRounds from "./data/rounds.json";
+
+export { mockRound, mockRounds };
