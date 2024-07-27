@@ -1,5 +1,5 @@
 {
-  "name": "@allo-team/kit",
+  "name": "@allo/kit",
   "version": "0.0.1",
   "private": false,
   "main": "./dist/index.js",
@@ -32,8 +32,8 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@allo-team/eslint-config": "*",
-    "@allo-team/typescript-config": "*",
+    "@allo/eslint-config": "*",
+    "@allo/typescript-config": "*",
     "@swc/helpers": "^0.5.11",
     "@turbo/gen": "^1.12.4",
     "@types/eslint": "^8.56.5",

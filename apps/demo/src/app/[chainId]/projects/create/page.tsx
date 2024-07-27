@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateProject } from "@allo-team/kit";
+import { CreateProject } from "@allo/kit";
 import { useRouter } from "next/navigation";
 
 export default function CreateProjectPage({}) {

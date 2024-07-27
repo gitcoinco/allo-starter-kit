@@ -1,6 +1,6 @@
 "use client";
 
-import { ApiProvider, Web3Provider } from "@allo-team/kit";
+import { ApiProvider, Web3Provider } from "@allo/kit";
 
 export function AlloKitProviders({
   children,

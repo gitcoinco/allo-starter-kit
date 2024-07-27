@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@allo-team/kit/styles.css";
+import "@allo/kit/styles.css";
 import "./globals.css";
 import { AlloKitProviders } from "./providers";
 import { Header } from "./header";

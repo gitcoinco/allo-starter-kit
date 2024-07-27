@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { type Round, RoundDetails } from "@allo-team/kit";
+import { type Round, RoundDetails } from "@allo/kit";
 import { rounds } from "@/data/rounds";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateRound, directGrants, quadraticFunding } from "@allo-team/kit";
+import { CreateRound, directGrants, quadraticFunding } from "@allo/kit";
 import { useRouter } from "next/navigation";
 
 export default function CreateRoundPage({}) {

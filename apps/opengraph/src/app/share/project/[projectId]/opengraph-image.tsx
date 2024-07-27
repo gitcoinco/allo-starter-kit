@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { QRCodeSVG } from "qrcode.react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { grantsStackAPI } from "@allo-team/kit";
+import { grantsStackAPI } from "@allo/kit";
 
 const title = "Gitcoin";
 export const alt = title;

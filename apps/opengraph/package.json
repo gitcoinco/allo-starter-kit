@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@allo-team/kit": "workspace:*",
+    "@allo/kit": "workspace:*",
     "@gitcoin/gitcoin-chain-data": "^1.0.17",
     "date-fns": "^3.6.0",
     "next": "14.2.4",

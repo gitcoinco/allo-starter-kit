@@ -1,13 +1,7 @@
 "use client";
 import { ReactNode, useMemo } from "react";
 import { Check } from "lucide-react";
-import {
-  Button,
-  Form,
-  FormField,
-  useForm,
-  useFormContext,
-} from "@allo-team/kit";
+import { Button, Form, FormField, useForm, useFormContext } from "@allo/kit";
 import { ApplicationApprovalItem } from "../applications/approval-item";
 import { useApplications } from "../hooks/useApplications";
 import { Application } from "../api/types";

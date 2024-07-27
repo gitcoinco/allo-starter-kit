@@ -13,7 +13,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@allo-team/kit": "workspace:*",
+    "@allo/kit": "workspace:*",
     "@chromatic-com/storybook": "^1.5.0",
     "@storybook/addon-essentials": "^8.1.6",
     "@storybook/addon-interactions": "^8.1.6",
