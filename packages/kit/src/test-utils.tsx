@@ -11,6 +11,12 @@ vi.mock("posthog-js/react", () => {
   return { PostHogProvider: ({ children }: PropsWithChildren) => children };
 });
 
+/* 
+TODO: Add more mocks
+Copy graphql response from the network tab in the browser and save in providers/mock/data.
+
+Docs: https://mswjs.io/docs/network-behavior/graphql
+*/
 const server = setupServer(
   graphql.query("Round", ({ query }) => HttpResponse.json(mockRound)),
   graphql.query("Rounds", ({ query }) => HttpResponse.json(mockRounds)),
