@@ -3,6 +3,7 @@ export * from "./api/types.d";
 export * from "./api/default-api";
 export * from "./api/providers/grants-stack";
 export * from "./api/providers/easy-rpgf";
+export * from "./api/providers/mock";
 export * from "./api/web3-provider";
 export * from "./ui/drawer";
 export * from "./ui/markdown";

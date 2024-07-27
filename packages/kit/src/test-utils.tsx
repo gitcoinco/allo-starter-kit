@@ -1,24 +1,30 @@
-import React, { ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
-import { API, ApiProvider, Web3Provider } from ".";
 import { vi } from "vitest";
+import { graphql, HttpResponse } from "msw";
+import { setupServer } from "msw/node";
+
+import { ApiProvider, Web3Provider } from ".";
+import { mockRound, mockRounds } from "./api/providers/mock";
 
 vi.mock("posthog-js/react", () => {
-  return { PostHogProvider: ({ children }) => children };
+  return { PostHogProvider: ({ children }: PropsWithChildren) => children };
 });
 
-const mockApi: API = {
-  roundById: async () => ({
-    id: "test",
-    name: "Test Round",
-  }),
-};
+const server = setupServer(
+  graphql.query("Round", ({ query }) => HttpResponse.json(mockRound)),
+  graphql.query("Rounds", ({ query }) => HttpResponse.json(mockRounds)),
+);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
 const Providers = ({ children }: { children: React.ReactNode }) => {
-  return <ApiProvider api={mockApi}>{children}</ApiProvider>;
   return (
-    <Web3Provider>
-      <ApiProvider api={mockApi}>{children}</ApiProvider>
-    </Web3Provider>
+    <ApiProvider>
+      <Web3Provider>{children}</Web3Provider>
+    </ApiProvider>
   );
 };
 

@@ -1,21 +1,17 @@
-// import "@testing-library/jest-dom";
 import { describe, test, expect } from "vitest";
 import { render, screen } from "../../test-utils";
 import { RoundDetailsWithHook } from "../details";
+import { mockRound } from "../..";
 
 describe("Round Details", async () => {
   test("render", async () => {
     render(<RoundDetailsWithHook id="id" chainId={10} />);
+    const { name, eligibility } = mockRound.data.round.roundMetadata;
+
+    expect(await screen.findByText(name)).toBeDefined();
+    expect(await screen.findByText(eligibility.description)).toBeDefined();
+    expect(await screen.findByText("optimism")).toBeDefined();
+
     screen.debug();
-    // expect(true).toBe(false);
-    //   // ARRANGE  //   render(<Fetch url="/greeting" />)
-
-    //   // ACT
-    //   await userEvent.click(screen.getByText('Load Greeting'))
-    await screen.findByRole("heading");
-
-    //   // ASSERT
-    //   expect(screen.getByRole('heading')).toHaveTextContent('hello there')
-    //   expect(screen.getByRole('button')).toBeDisabled()
   });
 });

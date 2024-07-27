@@ -108,7 +108,6 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       roundEnd: validateDate(donationsEndTime),
     },
   }),
-
   application: ({
     id,
     chainId,
