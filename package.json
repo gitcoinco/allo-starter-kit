@@ -17,8 +17,6 @@
   "devDependencies": {
     "@allo-team/eslint-config": "*",
     "@allo-team/typescript-config": "*",
-    "@vitest/ui": "^2.0.4",
-    "jsdom": "^24.1.1",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
