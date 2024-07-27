@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ApplicationReviewTable } from "@allo/kit";
+import { Button, ApplicationReviewTable } from "@allo-team/kit";
 import { application } from "@/data/applications";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -19,5 +19,8 @@ export const Default: Story = {
     roundId: application.roundId,
     chainId: application.chainId,
     initialTab: "APPROVED",
+    renderAction: (application) => {
+      return <Button>{application.status}</Button>;
+    },
   },
 };

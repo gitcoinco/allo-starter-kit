@@ -30,6 +30,10 @@ For example:
 - Create Rounds, Register and Approve Applications
 - Allocate and Distribute
 
+### Building a simple Discover Rounds app
+
+https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
+
 ## Stack
 
 ![image](https://github.com/gitcoinco/allo-starter-kit/assets/2961337/4eaabc4a-80a6-41ac-959c-bc2ee459831b)
@@ -48,7 +52,7 @@ You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
 <summary>using npm</summary>
 
 ```sh
-npm install @allo/kit
+npm install @allo-team/kit
 ```
 
 </details>
@@ -57,7 +61,7 @@ npm install @allo/kit
 <summary>using yarn</summary>
 
 ```
-yarn add @allo/kit
+yarn add @allo-team/kit
 ```
 
 </details>
@@ -66,7 +70,7 @@ yarn add @allo/kit
 <summary>using pnpm</summary>
 
 ```sh
-pnpm add @allo/kit
+pnpm add @allo-team/kit
 ```
 
 </details>
@@ -75,7 +79,7 @@ pnpm add @allo/kit
 <summary>using bun</summary>
 
 ```sh
-bun add @allo/kit
+bun add @allo-team/kit
 ```
 
 </details>
@@ -93,7 +97,7 @@ If the package is not yet published or if you want to modify AlloKit while inclu
 2. Link the package to your project:
    ```sh
     cd /path/to/your-project
-    bun link @allo/kit --save
+    bun link @allo-team/kit --save
    ```
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
@@ -107,7 +111,7 @@ This will link the AlloKit package from the cloned repository to the project whe
 To use AlloKit's styles in your project, import the styles CSS file:
 
 ```tsx
-import "@allo/kit/styles.css";
+import "@allo-team/kit/styles.css";
 ```
 
 #### Add AlloKit Providers
@@ -116,7 +120,7 @@ To use AlloKit's context providers, add them to your application:
 
 ```tsx
 "use client";
-import { ApiProvider, Web3Provider } from "@allo/kit";
+import { ApiProvider, Web3Provider } from "@allo-team/kit";
 
 export function AlloKitProviders({ children }: PropsWithChildren) {
   return (
@@ -147,7 +151,7 @@ Depending on your app and use-cases you can use the kit in different ways. For e
 Example:
 
 ```tsx
-import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
+import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo-team/kit";
 
 export default function RoundsPage() {
   // Server-side

@@ -10,6 +10,7 @@ vi.mock("posthog-js/react", () => {
 const mockApi: API = {
   roundById: async () => ({
     id: "test",
+    name: "Test Round",
   }),
 };
 const Providers = ({ children }: { children: React.ReactNode }) => {

@@ -78,7 +78,6 @@ export function CreateRound({
   onCreated?: (round: RoundCreated) => void;
 }) {
   const strategies = useStrategies();
-  console.log("str", strategies);
   const [strategy, setStrategy] = useState<StrategyType>(
     Object.values(strategies)[0]?.type!,
   );

@@ -1,23 +1,56 @@
 "use client";
 import { ReactNode, useMemo } from "react";
 import { Check } from "lucide-react";
-import { Button, Form, FormField, useForm, useFormContext } from "@allo/kit";
+import {
+  Button,
+  Form,
+  FormField,
+  useForm,
+  useFormContext,
+} from "@allo-team/kit";
 import { ApplicationApprovalItem } from "../applications/approval-item";
 import { useApplications } from "../hooks/useApplications";
 import { Application } from "../api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useRoundById } from "../hooks/useRounds";
-import { useStrategyAddon, useStrategyType } from "../strategies";
+import { useStrategyAddonCall } from "../strategies";
 import { EmptyState } from "../ui/empty-state";
+
+const actionMap: Partial<Record<Application["status"], string>> = {
+  APPROVED: "Reject",
+  PENDING: "Approve",
+  REJECTED: "Approve",
+};
+
+function createApplicationByStatus(applications: Application[] = []) {
+  return useMemo(() => {
+    const initialState = {
+      APPROVED: [],
+      PENDING: [],
+      REJECTED: [],
+      CANCELLED: [],
+      IN_REVIEW: [],
+    } as Record<Application["status"], Application[]>;
+
+    return (applications ?? [])?.reduce(
+      (acc, x) => ({ ...acc, [x.status]: (acc[x.status] || []).concat(x) }),
+      initialState,
+    );
+  }, [applications]);
+}
 
 export function ApplicationReviewTable({
   roundId,
   chainId,
+  renderAction,
   initialTab = "PENDING",
+  visibleTabs = ["APPROVED", "PENDING", "REJECTED"],
 }: {
   roundId: string;
   chainId: number;
   initialTab?: Application["status"];
+  visibleTabs?: Application["status"][];
+  renderAction?: (application: Application) => ReactNode;
 }) {
   const { data: round } = useRoundById(roundId, { chainId });
   const { data: applications, isPending } = useApplications({
@@ -26,31 +59,17 @@ export function ApplicationReviewTable({
 
   const form = useForm();
 
-  const strategyAddon = useStrategyAddon("reviewRecipients", round);
-  console.log("strategyAddon", strategyAddon);
-  const applicationByStatus = useMemo(() => {
-    const initialState = {
-      APPROVED: [],
-      PENDING: [],
-      REJECTED: [],
-      CANCELLED: [],
-      IN_REVIEW: [],
-    } as Record<Application["status"], Application[]>;
-    return (applications ?? [])?.reduce(
-      (acc, x) => ({
-        ...acc,
-        [x.status]: (acc[x.status] || []).concat(x),
-      }),
-      initialState,
-    );
-  }, [applications]);
+  const { mutate, isPending: isSubmitting } = useStrategyAddonCall(
+    "reviewRecipients",
+    round,
+  );
+  const applicationByStatus = createApplicationByStatus(applications);
 
-  const isLoading = strategyAddon?.call?.isPending;
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(({ selected }) => {
-          strategyAddon?.call?.mutate([
+          mutate([
             applications,
             selected,
             round?.strategy,
@@ -64,43 +83,28 @@ export function ApplicationReviewTable({
           onValueChange={() => form.setValue("selected", [])}
         >
           <TabsList>
-            <TabsTrigger value="APPROVED">Approved</TabsTrigger>
-            <TabsTrigger value="PENDING">Pending</TabsTrigger>
-            <TabsTrigger value="REJECTED">Rejected</TabsTrigger>
+            {visibleTabs.map((tab) => (
+              <TabsTrigger key={tab} value={tab}>
+                {tab}
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <TabsContent value="PENDING">
-            <div className="-mt-12 flex justify-end gap-4">
-              <SelectAllButton applications={applicationByStatus.PENDING} />
-              <ApproveButton label="Approve" isLoading={isLoading} />
-            </div>
-            <ApplicationsList
-              isLoading={isPending}
-              action={<Button variant="outline">Review</Button>}
-              applications={Object.values(applicationByStatus.PENDING)}
-            />
-          </TabsContent>
-          <TabsContent value="APPROVED">
-            <div className="-mt-12 flex justify-end gap-4">
-              <SelectAllButton applications={applicationByStatus.APPROVED} />
-              <ApproveButton label="Reject" isLoading={isLoading} />
-            </div>
-            <ApplicationsList
-              isLoading={isPending}
-              action={<Button variant="outline">Reject</Button>}
-              applications={Object.values(applicationByStatus.APPROVED)}
-            />
-          </TabsContent>
-          <TabsContent value="REJECTED">
-            <div className="-mt-12 flex justify-end gap-4">
-              <SelectAllButton applications={applicationByStatus.REJECTED} />
-              <ApproveButton label="Approve" isLoading={isLoading} />
-            </div>
-            <ApplicationsList
-              isLoading={isPending}
-              action={<Button variant="outline">Approve</Button>}
-              applications={Object.values(applicationByStatus.REJECTED)}
-            />
-          </TabsContent>
+          {visibleTabs.map((tab) => (
+            <TabsContent key={tab} value={tab}>
+              <div className="-mt-12 flex justify-end gap-4">
+                <SelectAllButton applications={applicationByStatus[tab]} />
+                <ApproveButton
+                  label={actionMap[tab]}
+                  isLoading={isSubmitting}
+                />
+              </div>
+              <ApplicationsList
+                isLoading={isPending}
+                renderAction={renderAction}
+                applications={Object.values(applicationByStatus[tab])}
+              />
+            </TabsContent>
+          ))}
         </Tabs>
       </form>
     </Form>
@@ -146,11 +150,11 @@ function SelectAllButton({
 }
 
 function ApplicationsList({
-  action,
+  renderAction = () => null,
   applications = [],
   isLoading,
 }: {
-  action: ReactNode;
+  renderAction?: (application: Application) => ReactNode;
   applications: Application[];
   isLoading?: boolean;
 }) {
@@ -171,7 +175,7 @@ function ApplicationsList({
                 render={({ field }) => (
                   <ApplicationApprovalItem
                     key={application.id}
-                    action={action}
+                    action={renderAction(application)}
                     checked={field.value?.includes(application.id)}
                     onCheckedChange={(checked) =>
                       checked

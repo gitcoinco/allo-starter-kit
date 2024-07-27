@@ -1,6 +1,6 @@
 "use client";
 
-import { DiscoverApplications } from "@allo/kit";
+import { DiscoverApplications } from "@allo-team/kit";
 import Link from "next/link";
 
 export function Applications({ roundId = "", chainId = 0 }) {

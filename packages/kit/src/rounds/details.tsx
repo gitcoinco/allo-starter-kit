@@ -1,39 +1,70 @@
 "use client";
 import { ReactNode } from "react";
 import { Markdown } from "..";
-import { QueryOpts } from "../api/types";
+import { QueryOpts, Round } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
 import { RoundNetworkBadge } from "./network-badge";
+import { UseQueryResult } from "@tanstack/react-query";
+import { Skeleton } from "../ui/skeleton";
 
-type RoundDetailsProps = {
+type PageActions = { backAction?: ReactNode; primaryAction?: ReactNode };
+
+/*
+We provide two components for flexibility.
+
+WithHook accepts roundId and chainId to query the indexer
+RoundDetails is just the view component
+*/
+
+export function RoundDetailsWithHook({
+  id,
+  chainId,
+  ...props
+}: {
   id: string;
+  chainId: number;
   opts?: QueryOpts;
-  backAction?: ReactNode;
-  primaryAction?: ReactNode;
-};
+} & PageActions) {
+  return <RoundDetails {...useRoundById(id, { chainId })} {...props} />;
+}
 
 export function RoundDetails({
-  id,
-  opts,
+  data,
+  isPending,
+  error,
   backAction,
   primaryAction,
-}: RoundDetailsProps) {
-  const { data } = useRoundById(id, opts);
-
-  console.log("data", data);
+}: Partial<UseQueryResult<Round | undefined, unknown>> & PageActions) {
   return (
     <section>
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {backAction}
           <div className="">
-            <h1 className="text-3xl font-medium">{data?.name}</h1>
-            <RoundNetworkBadge chainId={data?.chainId} />
+            {isPending ? (
+              <Skeleton className="mb-2 h-10 w-96" />
+            ) : (
+              <h1 className="text-3xl font-medium">{data?.name}</h1>
+            )}
+
+            {isPending ? (
+              <Skeleton className="h-4 w-16" />
+            ) : (
+              <RoundNetworkBadge chainId={data?.chainId} />
+            )}
           </div>
         </div>
         <div>{primaryAction}</div>
       </div>
-      <Markdown className={"prose-xl"}>{data?.description}</Markdown>
+      {isPending ? (
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-full" />
+          <Skeleton className="h-5 w-4/5" />
+        </div>
+      ) : (
+        <Markdown className={"prose-xl"}>{data?.description}</Markdown>
+      )}
     </section>
   );
 }

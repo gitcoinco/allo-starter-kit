@@ -1,5 +1,5 @@
 "use client";
-import { DiscoverRounds } from "@allo/kit";
+import { DiscoverRounds } from "@allo-team/kit";
 import Link from "next/link";
 
 export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
