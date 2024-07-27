@@ -1,5 +1,5 @@
 "use client";
-import { Allocate } from "@allo-team/kit";
+import { Allocate } from "@allo/kit";
 
 export default function AllocatePage({
   params: { chainId = 0, roundId = "" },

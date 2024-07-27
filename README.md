@@ -52,7 +52,7 @@ You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
 <summary>using npm</summary>
 
 ```sh
-npm install @allo-team/kit
+npm install @allo/kit
 ```
 
 </details>
@@ -61,7 +61,7 @@ npm install @allo-team/kit
 <summary>using yarn</summary>
 
 ```
-yarn add @allo-team/kit
+yarn add @allo/kit
 ```
 
 </details>
@@ -70,7 +70,7 @@ yarn add @allo-team/kit
 <summary>using pnpm</summary>
 
 ```sh
-pnpm add @allo-team/kit
+pnpm add @allo/kit
 ```
 
 </details>
@@ -79,7 +79,7 @@ pnpm add @allo-team/kit
 <summary>using bun</summary>
 
 ```sh
-bun add @allo-team/kit
+bun add @allo/kit
 ```
 
 </details>
@@ -97,7 +97,7 @@ If the package is not yet published or if you want to modify AlloKit while inclu
 2. Link the package to your project:
    ```sh
     cd /path/to/your-project
-    bun link @allo-team/kit --save
+    bun link @allo/kit --save
    ```
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
@@ -111,7 +111,7 @@ This will link the AlloKit package from the cloned repository to the project whe
 To use AlloKit's styles in your project, import the styles CSS file:
 
 ```tsx
-import "@allo-team/kit/styles.css";
+import "@allo/kit/styles.css";
 ```
 
 #### Add AlloKit Providers
@@ -120,7 +120,7 @@ To use AlloKit's context providers, add them to your application:
 
 ```tsx
 "use client";
-import { ApiProvider, Web3Provider } from "@allo-team/kit";
+import { ApiProvider, Web3Provider } from "@allo/kit";
 
 export function AlloKitProviders({ children }: PropsWithChildren) {
   return (
@@ -151,7 +151,7 @@ Depending on your app and use-cases you can use the kit in different ways. For e
 Example:
 
 ```tsx
-import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo-team/kit";
+import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
 
 export default function RoundsPage() {
   // Server-side

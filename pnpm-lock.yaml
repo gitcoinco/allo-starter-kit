@@ -8,10 +8,10 @@ importers:
 
   .:
     devDependencies:
-      '@allo-team/eslint-config':
+      '@allo/eslint-config':
         specifier: '*'
         version: link:packages/eslint-config
-      '@allo-team/typescript-config':
+      '@allo/typescript-config':
         specifier: '*'
         version: link:packages/typescript-config
       prettier:
@@ -23,7 +23,7 @@ importers:
 
   apps/demo:
     dependencies:
-      '@allo-team/kit':
+      '@allo/kit':
         specifier: workspace:*
         version: link:../../packages/kit
       next:
@@ -66,7 +66,7 @@ importers:
 
   apps/opengraph:
     dependencies:
-      '@allo-team/kit':
+      '@allo/kit':
         specifier: workspace:*
         version: link:../../packages/kit
       '@gitcoin/gitcoin-chain-data':
@@ -125,7 +125,7 @@ importers:
         specifier: ^18
         version: 18.3.1(react@18.3.1)
     devDependencies:
-      '@allo-team/kit':
+      '@allo/kit':
         specifier: workspace:*
         version: link:../../packages/kit
       '@chromatic-com/storybook':
@@ -345,10 +345,10 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@allo-team/eslint-config':
+      '@allo/eslint-config':
         specifier: '*'
         version: link:../eslint-config
-      '@allo-team/typescript-config':
+      '@allo/typescript-config':
         specifier: '*'
         version: link:../typescript-config
       '@swc/helpers':

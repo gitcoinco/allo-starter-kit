@@ -4,9 +4,9 @@ import {
   Markdown,
   RoundNetworkBadge,
   RoundStrategyBadge,
-} from "@allo-team/kit";
-import { grantsStackAPI } from "@allo-team/kit";
-import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo-team/kit";
+} from "@allo/kit";
+import { grantsStackAPI } from "@allo/kit";
+import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo/kit";
 import { notFound } from "next/navigation";
 import { Applications } from "./applications";
 import { Metadata } from "next";

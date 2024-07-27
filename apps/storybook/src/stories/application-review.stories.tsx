@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button, ApplicationReviewTable } from "@allo-team/kit";
+import { Button, ApplicationReviewTable } from "@allo/kit";
 import { application } from "@/data/applications";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

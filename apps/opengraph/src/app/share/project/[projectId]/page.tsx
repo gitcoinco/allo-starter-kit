@@ -2,8 +2,8 @@ import {
   DiscoverApplications,
   DiscoverRounds,
   ProjectDetails,
-} from "@allo-team/kit";
-import { grantsStackAPI } from "@allo-team/kit";
+} from "@allo/kit";
+import { grantsStackAPI } from "@allo/kit";
 import { Metadata } from "next";
 
 export async function generateMetadata({
