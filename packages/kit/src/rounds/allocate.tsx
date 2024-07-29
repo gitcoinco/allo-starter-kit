@@ -2,7 +2,7 @@
 import { NumericFormat } from "react-number-format";
 import { useApplications } from "../hooks/useApplications";
 import { useRoundById } from "../hooks/useRounds";
-import { useStrategyAddon } from "../strategies";
+import { useRoundStrategyAddon } from "../strategies";
 import { BackgroundImage } from "../ui/background-image";
 import { Input } from "../ui/input";
 import { Button } from "..";
@@ -30,7 +30,7 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
     },
   });
 
-  const strategyAddon = useStrategyAddon("allocate", round);
+  const strategyAddon = useRoundStrategyAddon("allocate", round);
   const { state, set } = useAllocateState();
 
   return (
