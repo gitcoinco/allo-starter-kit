@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, ReactElement } from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import { render, renderHook, RenderOptions } from "@testing-library/react";
 import { vi } from "vitest";
 import { graphql, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
@@ -26,9 +26,14 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+export const mockCreateRound = vi.fn();
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
-    <ApiProvider>
+    <ApiProvider
+      api={{
+        createRound: mockCreateRound,
+      }}
+    >
       <Web3Provider>{children}</Web3Provider>
     </ApiProvider>
   );
@@ -39,5 +44,11 @@ const customRender = (
   options?: Omit<RenderOptions, "wrapper">,
 ) => render(ui, { wrapper: Providers, ...options });
 
+const customRenderHook = <Props, Result>(
+  hook: (initialProps: Props) => Result,
+  options?: Omit<RenderOptions, "wrapper">,
+) => renderHook(hook, { wrapper: Providers, ...options });
+
 export * from "@testing-library/react";
 export { customRender as render };
+export { customRenderHook as renderHook };
