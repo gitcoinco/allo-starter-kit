@@ -31,6 +31,7 @@ export const allo2API: Partial<API> = {
 
       const client = signer.extend(publicActions);
       // Profile must be created to deploy a pool
+      // TODO: Should we move this outside of this function and pass the profileId in data?
       const profileId = await getOrCreateProfile(signer);
 
       const {

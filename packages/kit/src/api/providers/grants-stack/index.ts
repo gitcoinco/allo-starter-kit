@@ -96,6 +96,7 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     chainId,
     name: name || title || "?",
     description: description || eligibility?.description,
+    eligibility: eligibility,
     applications,
     matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
     strategy: getAddress(strategyAddress),
@@ -107,11 +108,11 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       roundEnd: validateDate(donationsEndTime),
     },
   }),
-
   application: ({
     id,
     chainId,
     status,
+    answers,
     project,
     anchorAddress,
     totalAmountDonatedInUsd,
@@ -124,6 +125,7 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       description: project?.metadata?.description,
       projectId: project?.id,
       status,
+      answers,
       recipient: anchorAddress,
       avatarUrl: ipfsGateway(project?.metadata.logoImg),
       bannerUrl: ipfsGateway(project?.metadata.bannerImg),
