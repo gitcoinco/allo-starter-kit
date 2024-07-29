@@ -16,33 +16,35 @@ import {
 
 import { EthAddressSchema } from "../../schemas";
 import { Input } from "../../ui/input";
+import { StrategyCreateSchemaFn } from "..";
+import { Textarea } from "../../ui/textarea";
 
-export const schema = z
-  .object({
-    __internal__: z.object({
-      recipientAddress: EthAddressSchema,
-    }),
-  })
-  // Transform into strategyData
-  .transform((val) => {
-    const { recipientAddress } = val.__internal__;
+export const createSchema: StrategyCreateSchemaFn = (api) =>
+  z
+    .object({
+      __internal__: z.object({
+        recipientAddress: EthAddressSchema,
+        metadata: z.object({
+          name: z.string(),
+          description: z.string(),
+        }),
+      }),
+    })
+    .transform(async ({ __internal__: { recipientAddress, metadata } }) => {
+      const pointer = await api.upload(metadata);
 
-    // TODO: add application metadata
-    const metadata = { protocol: BigInt(1), pointer: "" };
-    return encodeAbiParameters(
-      parseAbiParameters("address, address, (uint256, string)"),
-      [
-        recipientAddress,
-        recipientAddress,
-        [metadata.protocol, metadata.pointer],
-      ],
-    );
-  });
+      return encodeAbiParameters(
+        parseAbiParameters("address, address, (uint256, string)"),
+        [recipientAddress, recipientAddress, [BigInt(1), pointer]],
+      );
+    });
 
+// };
 export function RegisterRecipientForm() {
   const { control, setValue } = useFormContext();
   const { address } = useAccount();
   useEffect(() => {
+    // Initialize with connected wallet address
     setValue("strategyData.__internal__.recipientAddress", address);
   }, [address]);
   return (
@@ -60,6 +62,36 @@ export function RegisterRecipientForm() {
               <FormDescription>
                 Payouts will be transferred to this address.
               </FormDescription>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
+      />
+      <FormField
+        control={control}
+        name="strategyData.__internal__.metadata.name"
+        render={({ field }) => {
+          return (
+            <FormItem className="flex flex-col">
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="..." {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          );
+        }}
+      />
+      <FormField
+        control={control}
+        name="strategyData.__internal__.metadata.description"
+        render={({ field }) => {
+          return (
+            <FormItem className="flex flex-col">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea placeholder="..." {...field} />
+              </FormControl>
               <FormMessage />
             </FormItem>
           );

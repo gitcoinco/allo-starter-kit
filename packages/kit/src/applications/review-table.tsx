@@ -7,7 +7,7 @@ import { useApplications } from "../hooks/useApplications";
 import { Application } from "../api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useRoundById } from "../hooks/useRounds";
-import { useStrategyAddonCall } from "../strategies";
+import { useRoundStrategyAddonCall } from "../strategies";
 import { EmptyState } from "../ui/empty-state";
 
 const actionMap: Partial<Record<Application["status"], string>> = {
@@ -53,17 +53,14 @@ export function ApplicationReviewTable({
 
   const form = useForm();
 
-  const { mutate, isPending: isSubmitting } = useStrategyAddonCall(
-    "reviewRecipients",
-    round,
-  );
+  const call = useRoundStrategyAddonCall("reviewRecipients", round);
   const applicationByStatus = createApplicationByStatus(applications);
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(({ selected }) => {
-          mutate([
+          call?.mutate([
             applications,
             selected,
             round?.strategy,
@@ -89,7 +86,7 @@ export function ApplicationReviewTable({
                 <SelectAllButton applications={applicationByStatus[tab]} />
                 <ApproveButton
                   label={actionMap[tab]}
-                  isLoading={isSubmitting}
+                  isLoading={call?.isPending}
                 />
               </div>
               <ApplicationsList

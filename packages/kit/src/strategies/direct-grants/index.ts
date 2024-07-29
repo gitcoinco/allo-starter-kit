@@ -1,9 +1,9 @@
 import {
-  schema as directGrantsRoundSchema,
+  createSchema as createDirectGrantsRoundSchema,
   CreateRoundForm as DirectGrantsCreateRoundForm,
 } from "./create-round";
 import {
-  schema as directGrantsRegisterSchema,
+  createSchema as createDirectGrantsRegisterSchema,
   RegisterRecipientForm as DirectGrantsRegisterRecipientForm,
 } from "./register-recipient";
 import { call as reviewRecipientsCall } from "./review-recipients";
@@ -21,11 +21,11 @@ export const directGrants: StrategyExtension = {
   ),
   components: {
     createRound: {
-      schema: directGrantsRoundSchema,
+      createSchema: createDirectGrantsRoundSchema,
       component: DirectGrantsCreateRoundForm,
     },
     registerRecipient: {
-      schema: directGrantsRegisterSchema,
+      createSchema: createDirectGrantsRegisterSchema,
       component: DirectGrantsRegisterRecipientForm,
     },
     reviewRecipients: {

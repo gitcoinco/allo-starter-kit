@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 import { useRoundById } from "../hooks/useRounds";
 import { ApplicationCreated, Round } from "../api/types";
 import { useCreateApplication } from "../hooks/useApplications";
-import { useStrategyAddon } from "../strategies";
+import { useRoundStrategyAddon } from "../strategies";
 
 const baseApplicationSchema = z.object({
   roundId: z.coerce.bigint(),
@@ -24,9 +24,10 @@ function ApplicationForm({
   defaultValues: z.infer<typeof baseApplicationSchema>;
   onCreated?: (application: ApplicationCreated) => void;
 }) {
-  const addon = useStrategyAddon("registerRecipient", round);
+  const addon = useRoundStrategyAddon("registerRecipient", round);
   // Merge strategy schema into base round schema
-  const schema = addon
+  // TODO: Move this to a utility function or part of the useRoundStrategyAddon
+  const schema = addon?.schema
     ? baseApplicationSchema.merge(z.object({ strategyData: addon.schema }))
     : baseApplicationSchema;
 
@@ -35,6 +36,7 @@ function ApplicationForm({
     defaultValues,
   });
 
+  const { isValidating } = form.formState;
   const create = useCreateApplication();
   return (
     <Form {...form}>
@@ -49,7 +51,7 @@ function ApplicationForm({
           <h3 className="text-2xl font-semibold">
             Create application for {round.name}
           </h3>
-          <Button type="submit" isLoading={create.isPending}>
+          <Button type="submit" isLoading={create.isPending || isValidating}>
             Create
           </Button>
         </div>

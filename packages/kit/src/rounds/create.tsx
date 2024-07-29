@@ -23,7 +23,11 @@ import { PropsWithChildren, createElement, useState } from "react";
 import { ImageUpload } from "../ui/image-upload";
 import { useUpload } from "../hooks/useUpload";
 import { EthAddressSchema } from "../schemas";
-import { StrategyExtensions, StrategyType } from "../strategies";
+import {
+  StrategyExtensions,
+  StrategyType,
+  useStrategyAddon,
+} from "../strategies";
 import { EnsureCorrectNetwork } from "../ui/correct-network";
 import {
   Select,
@@ -102,10 +106,10 @@ function CreateRoundForm({
   onCreated?: (round: RoundCreated) => void;
   onChangeStrategy: (type: StrategyType) => void;
 }) {
-  const addon = strategies[selected]?.components.createRound;
+  const addon = useStrategyAddon("createRound", strategies[selected]);
 
   // Merge strategy schema into base round schema
-  const schema = addon
+  const schema = addon?.schema
     ? baseRoundSchema.merge(z.object({ initStrategyData: addon.schema }))
     : baseRoundSchema;
 

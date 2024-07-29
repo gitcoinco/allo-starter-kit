@@ -114,7 +114,7 @@ export interface API {
     signer: WalletClient,
   ) => Promise<Address | undefined>;
   distribute: () => void;
-  upload: (data: FormData) => Promise<string>;
+  upload: (data: Record<string, unknown> | File | FormData) => Promise<string>;
   sendTransaction: (
     tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
     signer?: WalletClient, // TODO: Use something more generic than WalletClient?

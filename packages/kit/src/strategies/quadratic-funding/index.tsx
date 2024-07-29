@@ -13,7 +13,7 @@ export const quadraticFunding: StrategyExtension = {
   ),
   components: {
     createRound: {
-      schema: z.any(),
+      createSchema: () => z.any(),
       component: () => <div>QF Component</div>,
     },
   },

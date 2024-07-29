@@ -4,9 +4,11 @@ import { useWalletClient } from "wagmi";
 import { Address } from "viem";
 import { TContracts } from "@gitcoin/gitcoin-chain-data";
 import { supportedChains } from "../api/web3-provider";
-import { Round } from "../api/types";
+import { API, Round } from "../api/types";
 import { useAPI, useStrategies } from "..";
+import z from "zod";
 
+// These represent the different function calls in Allo Protocol
 export type StrategyComponentType =
   | "createRound"
   | "registerRecipient"
@@ -22,7 +24,7 @@ export type StrategyExtension = {
     Record<
       StrategyComponentType,
       Partial<{
-        schema: any;
+        createSchema: StrategyCreateSchemaFn;
         defaultValues: unknown;
         component: FunctionComponent | null;
         call?: Function;
@@ -30,6 +32,8 @@ export type StrategyExtension = {
     >
   >;
 };
+
+export type StrategyCreateSchemaFn = (api: API) => z.ZodTypeAny;
 export type StrategyExtensions = Record<StrategyType, StrategyExtension>;
 
 const strategyMap = {
@@ -37,10 +41,10 @@ const strategyMap = {
 } as const;
 
 function getStrategyTypeFromName(strategyName: string, chainId: number) {
-  return reduceSupportedChains(
-    chainId,
-    ([name]) => name === strategyMap[strategyName as keyof typeof strategyMap],
-  );
+  return reduceSupportedChains(chainId, ([name]) => {
+    console.log(name, strategyName);
+    return name === strategyMap[strategyName as keyof typeof strategyMap];
+  });
 }
 
 // Helper function to find matching contract from name or address
@@ -67,16 +71,16 @@ export function useStrategyType(round?: Round) {
 
 export function useStrategyAddon(
   component: StrategyComponentType,
-  round?: Round,
+  strategy?: StrategyExtension,
 ) {
   const api = useAPI();
-  const strategies = useStrategies();
   const { data: signer } = useWalletClient();
-
-  const type = useStrategyType(round);
-  const addon = type && (strategies as any)?.[type]?.components?.[component];
+  const addon = strategy?.components?.[component];
+  if (!addon) return null;
   return {
     ...addon,
+    // Create the schema and pass the api so we can use it in the schema transform function
+    schema: addon?.createSchema?.(api),
     // Wrap the strategy call function in useMutation (for loading + error states)
     // Include api + signer
     call: useMutation({
@@ -85,11 +89,20 @@ export function useStrategyAddon(
   };
 }
 
-export function useStrategyAddonCall(
+export function useRoundStrategyAddon(
   component: StrategyComponentType,
   round?: Round,
 ) {
-  const { call } = useStrategyAddon(component, round);
+  const strategies = useStrategies();
+  const type = useStrategyType(round);
+  const strategy = type ? strategies[type] : undefined;
 
-  return call;
+  return useStrategyAddon(component, strategy);
+}
+
+export function useRoundStrategyAddonCall(
+  component: StrategyComponentType,
+  round?: Round,
+) {
+  return useRoundStrategyAddon(component, round)?.call;
 }
