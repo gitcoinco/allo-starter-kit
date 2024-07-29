@@ -4,7 +4,7 @@ import { useCreateRound } from "../..";
 
 import { zeroAddress } from "viem";
 describe("Round Hooks", async () => {
-  test("render", async () => {
+  test("useCreateRound", async () => {
     const { result } = renderHook(() => useCreateRound());
 
     await waitFor(() => expect(result.current?.mutateAsync).toBeDefined());
@@ -14,7 +14,6 @@ describe("Round Hooks", async () => {
       metadata: { protocol: BigInt(1), pointer: "cid" },
       managers: [],
     });
-    console.log(result);
 
     expect(mockCreateRound).toHaveBeenCalled();
   });
