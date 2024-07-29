@@ -19,10 +19,7 @@ const config: StorybookConfig = {
     getAbsolutePath("@chromatic-com/storybook"),
     getAbsolutePath("@storybook/addon-interactions"),
   ],
-  framework: {
-    name: getAbsolutePath("@storybook/nextjs"),
-    options: {},
-  },
+  framework: getAbsolutePath("@storybook/nextjs"),
   staticDirs: ["../public"],
 };
 export default config;
