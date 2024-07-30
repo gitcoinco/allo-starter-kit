@@ -61,6 +61,8 @@ export default function RootLayout({
 
 ### Create Round Page
 
+Create the file: `src/admin/rounds/create/page.tsx`
+
 ```tsx
 "use client";
 
@@ -77,9 +79,11 @@ export default function CreateRoundPage({}) {
 }
 ```
 
+This will render the form for creating a new round. When successfully created a round the user is redirected to view the round details. Later we can create a different page where Round admins can manage the round.
+
 ### Discover Rounds Page
 
-Create a new file: `src/rounds/page.tsx`.
+Create a new file: `src/[chainId]/rounds/page.tsx`.
 
 DiscoverRounds is a pre-made component that does most of the heavy lifting in fetching and displaying rounds.
 
@@ -92,19 +96,23 @@ https://grants-stack-indexer-v2.gitcoin.co/graphiql
 import Link from "next/link";
 import { DiscoverRounds } from "@allo/kit";
 
-export default function DiscoverRoundsPage() {
+export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
   return (
     <DiscoverRounds
       query={{
         where: {
-          // Only show rounds on Optimism
-          chainId: { in: [10] },
+          // Show rounds matching the chainId in the route
+          chainId: { in: [Number(chainId)] },
           // With the DirectGrantsLite strategy (we can add more to this array or leave empty for all)
           strategyName: { in: ["allov2.DirectGrantsLiteStrategy"] },
+          // In the RoundCard component we show how many applications in the Round
+          // With this query we choose to count only the approved ones
+          applications: { where: { status: { in: ["APPROVED"] } } },
         },
         // Sort by top donated rounds
         orderBy: { total_amount_donated_in_usd: "desc" },
-        // We can implement pagination here later
+        // We can implement pagination here later by storing these in a state or url with nuqs
+        // Changing these will automatically fetch (and cached when navigating back and forth thanks to ReactQuery)
         offset: 0,
         first: 12,
       }}
