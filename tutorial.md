@@ -182,7 +182,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }}
         renderItem={(application, Application) => (
           <Link
-            href={`/${chainId}/projects/${application.id}`}
+            href={`/${chainId}/applications/${roundId}/${application.id}`}
             key={application.id}
           >
             <Application {...application} />
@@ -234,7 +234,7 @@ When the application has been created we navigate the user to the application de
 
 ### Application Details Page
 
-Create the file: `src/[chainId]/applications/[applicationId]/page.tsx`.
+Create the file: `src/[chainId]/applications/[roundId]/[applicationId]/page.tsx`.
 
 ```tsx
 import {

@@ -6,11 +6,12 @@ import { BackgroundImage } from "../ui/background-image";
 
 type ProjectDetailsProps = {
   id: string;
+  chainId: number;
   opts?: QueryOpts;
 };
 
-export function ProjectDetails({ id, opts }: ProjectDetailsProps) {
-  const { data, isPending } = useProjectById(id, opts);
+export function ProjectDetails({ id, chainId, opts }: ProjectDetailsProps) {
+  const { data, isPending } = useProjectById(id, { chainId });
 
   return (
     <div className={"space-y-4"}>

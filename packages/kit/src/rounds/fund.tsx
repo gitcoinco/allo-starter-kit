@@ -25,6 +25,7 @@ import { Alert } from "../ui/alert";
 
 type RoundFundProps = {
   id: string;
+  chainId: number;
   autoFocus?: boolean;
   opts?: QueryOpts;
   onSuccess?: () => void;
@@ -57,8 +58,14 @@ export function getNetworkToken(round?: Round) {
   );
 }
 
-export function FundRound({ id, opts, autoFocus, onSuccess }: RoundFundProps) {
-  const { data, isPending } = useRoundById(id, opts);
+export function FundRound({
+  id,
+  chainId,
+  opts,
+  autoFocus,
+  onSuccess,
+}: RoundFundProps) {
+  const { data, isPending } = useRoundById(id, { chainId });
   const fund = useFundPool();
   if (isPending)
     return (

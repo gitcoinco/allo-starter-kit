@@ -42,7 +42,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }}
         renderItem={(application, Component) => (
           <Link
-            href={`/${chainId}/projects/${application.projectId}`}
+            href={`/${chainId}/applications/${roundId}/${application.id}`}
             key={application.id}
           >
             <Component {...application} />

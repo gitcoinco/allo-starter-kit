@@ -8,18 +8,21 @@ import { ReactNode } from "react";
 
 type ApplicationDetailsProps = {
   id: string;
+  roundId: string;
+  chainId: number;
   opts?: QueryOpts;
   action?: ReactNode;
 };
 
 export function ApplicationDetails({
   id,
+  chainId,
+  roundId,
   opts,
   action,
 }: ApplicationDetailsProps) {
-  const { data, isPending } = useApplicationById(id, opts);
+  const { data, isPending } = useApplicationById(id, { roundId, chainId });
 
-  console.log(id, opts, data);
   return (
     <div className={"space-y-4"}>
       <div className="flex items-center justify-between">

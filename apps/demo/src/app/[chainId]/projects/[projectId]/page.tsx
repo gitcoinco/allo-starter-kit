@@ -5,7 +5,7 @@ export default function ProjectPage({
 }) {
   return (
     <section className="space-y-8">
-      <ProjectDetails id={projectId} opts={{ chainId }} />
+      <ProjectDetails id={projectId} chainId={chainId} />
     </section>
   );
 }
