@@ -106,6 +106,8 @@ This will link the AlloKit package from the cloned repository to the project whe
 
 ### Usage
 
+Create a simple grants app [tutorial](./tutorial.md).
+
 #### Add Component Styles
 
 To use AlloKit's styles in your project, import the styles CSS file:
