@@ -11,7 +11,7 @@ npx create-next-app@latest allo-app
 bun add @allo-team/kit
 ```
 
-**Package has not been published to NPM yet**
+**💡Package has not been published to NPM yet**
 You can link the repo by
 
 1.  Clone the repo (`git clone git@github.com:gitcoinco/allo-starter-kit.git`)
