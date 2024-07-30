@@ -1,8 +1,8 @@
 "use client";
+import { useWalletClient } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { API, ApplicationInput, ApplicationsQuery } from "../api/types";
 import { useAPI } from "..";
-import { useWalletClient } from "wagmi";
 
 const defaultQuery: ApplicationsQuery = {
   where: {},
@@ -11,7 +11,6 @@ const defaultQuery: ApplicationsQuery = {
   orderBy: { created_at_block: "asc" } as const,
 };
 export function useApplications(query: ApplicationsQuery = defaultQuery) {
-  console.log("query", query);
   const api = useAPI();
   return useQuery({
     queryKey: ["applications", query],

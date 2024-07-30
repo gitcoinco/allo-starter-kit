@@ -2,8 +2,6 @@ import { Address, erc20Abi, getAddress, zeroAddress } from "viem";
 import { useBalance, useReadContracts } from "wagmi";
 import { NATIVE } from "@allo-team/allo-v2-sdk";
 
-export const nativeToken = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
-
 export const isNativeToken = (token?: Address) =>
   [zeroAddress, NATIVE].includes(token?.toLowerCase()!);
 

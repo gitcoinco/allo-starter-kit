@@ -10,7 +10,7 @@ import {
   type Address,
   type Chain,
 } from "viem";
-import { Allo, Registry } from "@allo-team/allo-v2-sdk/";
+import { Allo, NATIVE, Registry } from "@allo-team/allo-v2-sdk/";
 import { abi as AlloABI } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
 import { API } from "../../types";
 
@@ -18,9 +18,6 @@ const createAlloOpts = (chain: Chain) => ({
   chain: chain.id,
   rpc: chain.rpcUrls.default.http[0],
 });
-
-export const alloNativeToken: Address =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
 export const allo2API: Partial<API> = {
   createRound: async function (data, signer) {
@@ -49,7 +46,7 @@ export const allo2API: Partial<API> = {
         profileId,
         strategy,
         // Set token address to native token if empty or zero address
-        token: !token || token === zeroAddress ? alloNativeToken : token,
+        token: !token || token === zeroAddress ? (NATIVE as Address) : token,
         managers,
         amount,
         metadata,
