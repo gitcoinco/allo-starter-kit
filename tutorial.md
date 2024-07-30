@@ -64,8 +64,8 @@ export default function RootLayout({
 ```tsx
 "use client";
 
-import { CreateRound, directGrants, quadraticFunding } from "@allo/kit";
 import { useRouter } from "next/navigation";
+import { CreateRound } from "@allo/kit";
 
 export default function CreateRoundPage({}) {
   const router = useRouter();
