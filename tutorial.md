@@ -47,10 +47,11 @@ export function AlloKitProviders({
 }
 ```
 
-Update `src/layout.tsx` to add the providers and define a simple layout.
+Update `src/layout.tsx` to import the css, add the providers and define a simple layout.
 
 ```tsx
 ...
+import "@allo/kit/styles.css";
 
 export default function RootLayout({
   children,
