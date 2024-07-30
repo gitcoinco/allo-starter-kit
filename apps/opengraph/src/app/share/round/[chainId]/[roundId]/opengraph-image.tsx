@@ -28,13 +28,13 @@ export default async function Image(props: {
 
     if (!round) return notFound();
     const applications = await grantsStackAPI.applications?.({
-      where: { roundId: { equals: roundId } },
+      where: { roundId: { equalTo: roundId } },
       orderBy: { total_amount_donated_in_usd: "desc" },
       first: 12,
     });
 
     console.log(applications);
-    const { roundStart, roundEnd } = round.phases ?? {};
+    const { applicationsStartTime, donationsEndTime } = round.phases ?? {};
     const network = getChains()?.find((chain) => chain.id === Number(chainId));
 
     const token = network?.tokens.find(
@@ -68,8 +68,8 @@ export default async function Image(props: {
             </div>
             <div tw="flex text-gray-800 tracking-widest gap-4 text mb-4">
               <div tw="flex">
-                {roundStart && format(roundStart, "PP")} -{" "}
-                {roundEnd && format(roundEnd, "PP")}
+                {applicationsStartTime && format(applicationsStartTime, "PP")} -{" "}
+                {donationsEndTime && format(donationsEndTime, "PP")}
               </div>
               <div tw="mx-2">•</div>
               <div tw="flex">{network?.prettyName}</div>

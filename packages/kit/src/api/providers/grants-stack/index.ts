@@ -77,6 +77,40 @@ export const grantsStackAPI: Partial<API> = {
 function validateDate(date?: string) {
   return date && isValid(new Date(date)) ? date : undefined;
 }
+
+/* 
+TODO: Are these transformers really needed if we only use Grants Indexer? 
+Is it simpler and easier to just use the shape from the Indexer without re-mapping?
+
+A better approach would be to use a Zod schema that handles the validation and parsing:
+- BigInt
+- getAddress
+- validateDate
+- ipfsGateway
+
+const RoundSchema = z.object({
+  ...
+  matching: z.object({ amount: z.coerce.bigint(), token: z.string().transform(getAddress). })
+  bannerImage: z.string().transform(ipfsGateway)
+  ...
+})
+  
+And then each request simply parses the schema:
+
+}).then(mapSchema(RoundSchema, "rounds"))
+}).then(mapSchema(ApplicationSchema, "application"))
+
+const mapSchema = (schema: z.Schema, key: string) => (res) => {
+  const items = Array.isArray(res[key]) ? res[key] : [res[key]];
+  return items.map((item) => schema.safeParse(item).data);
+};
+
+
+If that's too clever, we can just call it inline for each request like this:
+
+(res => res?.rounds?.map(round => RoundSchema.safeParse(round).data)
+
+*/
 export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   round: ({
     id,
@@ -102,10 +136,10 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     strategy: getAddress(strategyAddress),
     strategyName,
     phases: {
-      roundStart: validateDate(applicationsStartTime),
-      allocateStart: validateDate(donationsStartTime),
-      distributeStart: validateDate(donationsEndTime),
-      roundEnd: validateDate(donationsEndTime),
+      applicationsStartTime: validateDate(applicationsStartTime),
+      applicationsEndTime: validateDate(applicationsEndTime),
+      donationsStartTime: validateDate(donationsStartTime),
+      donationsEndTime: validateDate(donationsEndTime),
     },
   }),
   application: ({

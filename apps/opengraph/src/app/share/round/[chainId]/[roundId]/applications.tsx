@@ -9,9 +9,9 @@ export function Applications({ roundId = "", chainId = 0 }) {
       columns={[3]}
       query={{
         where: {
-          roundId: { equals: roundId },
-          chainId: { equals: chainId },
-          status: { equals: "APPROVED" },
+          roundId: { equalTo: roundId },
+          chainId: { equalTo: chainId },
+          status: { equalTo: "APPROVED" },
         },
         orderBy: {
           total_amount_donated_in_usd: "desc",

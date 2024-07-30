@@ -6,20 +6,7 @@ export const ipfsGateway = (cid: string) => {
 };
 
 export function queryToFilter(query: RoundsQuery) {
-  function mapOrderBy(obj: unknown) {
-    return Object.entries(obj ?? {})[0]
-      ?.map((v) => v.toUpperCase())
-      .join("_");
-  }
-
-  const filter = renameKeys(query, {
-    equals: "equalTo",
-    gte: "greaterThanOrEqualTo",
-    roundStart: "applicationsStartTime",
-    allocateStart: "donationsStartTime",
-    distributeStart: "donationsEndTime",
-    roundEnd: "donationsEndTime",
-  }).where;
+  const filter = query.where;
 
   /* 
   
@@ -56,26 +43,10 @@ export function queryToFilter(query: RoundsQuery) {
     orderBy: mapOrderBy(query.orderBy),
   };
 }
-
-function renameKeys(
-  query: RoundsQuery,
-  keys: Record<string, string>,
-): RoundsQuery {
-  function rename(obj: any): any {
-    if (Array.isArray(obj)) {
-      return obj.map(rename);
-    } else if (obj !== null && typeof obj === "object") {
-      return Object.keys(obj).reduce((acc, key) => {
-        const renamedKey = keys[key] || key;
-        acc[renamedKey] = rename(obj[key]);
-        return acc;
-      }, {} as any);
-    } else {
-      return obj;
-    }
-  }
-
-  return rename(query) as RoundsQuery;
+function mapOrderBy(obj: unknown) {
+  return Object.entries(obj ?? {})[0]
+    ?.map((v) => v.toUpperCase())
+    .join("_");
 }
 function removeEmpty(obj: unknown) {
   return Object.keys(obj as {})?.length ? obj : undefined;

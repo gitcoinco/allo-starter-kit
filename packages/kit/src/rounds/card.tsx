@@ -16,10 +16,12 @@ const toNow = (date?: string) =>
 const getRoundTime = (phases: Round["phases"] = {}): string => {
   const now = new Date();
 
-  if (isAfter(phases.roundStart!, now))
-    return `Starts ${toNow(phases.roundStart)}`;
-  if (isAfter(now, phases.roundEnd!)) return `Ended ${toNow(phases.roundEnd)}`;
-  if (isAfter(phases.roundEnd!, now)) return `Ends ${toNow(phases.roundEnd)}`;
+  if (isAfter(phases.applicationsStartTime!, now))
+    return `Starts ${toNow(phases.applicationsStartTime)}`;
+  if (isAfter(now, phases.donationsEndTime!))
+    return `Ended ${toNow(phases.donationsEndTime)}`;
+  if (isAfter(phases.donationsEndTime!, now))
+    return `Ends ${toNow(phases.donationsEndTime)}`;
   return "";
 };
 

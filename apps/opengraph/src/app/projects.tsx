@@ -46,7 +46,7 @@ export function Projects() {
         query={{
           where: {
             chainId: { in: [Number(network)] },
-            status: { equals: "APPROVED" },
+            status: { equalTo: "APPROVED" },
           },
           orderBy: { total_amount_donated_in_usd: "desc" },
           first: 6,

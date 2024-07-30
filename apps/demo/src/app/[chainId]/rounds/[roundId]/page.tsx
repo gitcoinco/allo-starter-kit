@@ -36,8 +36,8 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         query={{
           first: 12,
           where: {
-            roundId: { equals: roundId },
-            status: { equals: "APPROVED" },
+            roundId: { equalTo: roundId },
+            status: { equalTo: "APPROVED" },
           },
         }}
         renderItem={(application, Component) => (

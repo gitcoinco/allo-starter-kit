@@ -34,10 +34,9 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
                 role: { in: ["ADMIN"] },
               },
             },
-            // tags: { contains: ["allo-v2"] },
-            // roundStart: { gte: new Date().toISOString() },
+            // applicationsStartTime: { greaterThanOrEqualTo: new Date().toISOString() },
           },
-          // orderBy: { created_at_block: "desc" },
+
           orderBy: { unique_donors_count: "desc" },
           offset: 0,
           first: 12,

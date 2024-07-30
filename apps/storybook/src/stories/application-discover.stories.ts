@@ -21,8 +21,8 @@ export const Default: Story = {
     query: {
       first: 12,
       where: {
-        roundId: { equals: "0xf89aad3fad6c3e79ffa3ccc835620fcc7e55f919" },
-        status: { equals: "APPROVED" },
+        roundId: { equalTo: "0xf89aad3fad6c3e79ffa3ccc835620fcc7e55f919" },
+        status: { equalTo: "APPROVED" },
       },
     },
   },

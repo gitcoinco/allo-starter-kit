@@ -31,10 +31,10 @@ export const Default: Story = {
     },
     strategy: "0x03730c4b1Aaef6025D60Eb6451D37066f1baBCd2",
     phases: {
-      roundStart: "2024-01-15T12:00:00+00:00",
-      allocateStart: "2024-01-30T12:00:00+00:00",
-      distributeStart: "2024-02-23T05:00:00+00:00",
-      roundEnd: "2024-02-23T05:00:00+00:00",
+      applicationsStartTime: "2024-01-15T12:00:00+00:00",
+      donationsStartTime: "2024-01-30T12:00:00+00:00",
+      donationsEndTime: "2024-02-23T05:00:00+00:00",
+      donationsEndTime: "2024-02-23T05:00:00+00:00",
     },
   },
 };

@@ -21,8 +21,9 @@ type ApplicationOrderKeys =
   | "total_donations_count"
   | "total_amount_donated_in_usd"
   | "unique_donors_count";
+
 interface Query<T> {
-  orderBy?: { [key: T]: OrderBy };
+  orderBy?: Partial<Record<T, OrderBy>>;
   offset?: number;
   first?: number;
 }
@@ -39,7 +40,7 @@ export interface RolesQuery extends Query<string> {
   where?: RolesQueryWhere;
 }
 type Compare<T = string | number> = {
-  equals?: T;
+  equalTo?: T;
   in?: T[];
   contains?: T[];
   gte?: number;
@@ -70,10 +71,10 @@ type RoundQueryWhere = {
   roundId?: Compare;
   createdAt?: Compare;
   createdBy?: Compare;
-  roundStart?: Compare;
-  allocateStart?: Compare;
-  distributeStart?: Compare;
-  roundEnd?: Compare;
+  applicationsStartTime?: Compare;
+  donationsStartTime?: Compare;
+  donationsEndTime?: Compare;
+  donationsEndTime?: Compare;
   applications?: ApplicationsQuery;
   roles?: RolesQuery;
   and?: RoundQueryWhere[];
@@ -146,10 +147,10 @@ export type Round = BaseRound & {
   bannerUrl?: string;
   strategyName?: string;
   phases: {
-    roundStart?: string;
-    allocateStart?: string;
-    distributeStart?: string;
-    roundEnd?: string;
+    applicationsStartTime?: string;
+    applicationsEndTime?: string;
+    donationsStartTime?: string;
+    donationsEndTime?: string;
   };
 };
 

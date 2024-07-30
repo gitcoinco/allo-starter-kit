@@ -48,7 +48,7 @@ export function ApplicationReviewTable({
 }) {
   const { data: round } = useRoundById(roundId, { chainId });
   const { data: applications, isPending } = useApplications({
-    where: { roundId: { equals: roundId } },
+    where: { roundId: { equalTo: roundId } },
   });
 
   const form = useForm();
