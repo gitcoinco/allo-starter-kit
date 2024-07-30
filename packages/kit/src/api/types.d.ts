@@ -23,8 +23,8 @@ type ApplicationOrderKeys =
   | "unique_donors_count";
 interface Query<T> {
   orderBy?: { [key: T]: OrderBy };
-  skip?: number;
-  take?: number;
+  offset?: number;
+  first?: number;
 }
 export interface RoundsQuery extends Query<RoundOrderKeys> {
   where?: RoundQueryWhere;

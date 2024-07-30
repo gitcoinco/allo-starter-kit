@@ -20,8 +20,8 @@ export default function AdminRounds() {
           // },
         },
         orderBy: { created_at_block: "desc" },
-        skip: 0,
-        take: 12,
+        offset: 0,
+        first: 12,
       }}
       renderItem={(round, Component) => (
         <Link

@@ -51,8 +51,8 @@ export function queryToFilter(query: RoundsQuery) {
   return {
     filter: removeEmpty(omit(filter, nestedKeys)),
     ...nestedFilters,
-    offset: query.skip,
-    first: query.take,
+    offset: query.offset,
+    first: query.first,
     orderBy: mapOrderBy(query.orderBy),
   };
 }

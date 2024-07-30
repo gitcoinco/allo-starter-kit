@@ -30,7 +30,7 @@ export default async function Image(props: {
     const applications = await grantsStackAPI.applications?.({
       where: { roundId: { equals: roundId } },
       orderBy: { total_amount_donated_in_usd: "desc" },
-      take: 12,
+      first: 12,
     });
 
     console.log(applications);

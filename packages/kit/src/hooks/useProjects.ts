@@ -6,8 +6,8 @@ import { useWalletClient } from "wagmi";
 
 const defaultQuery = {
   where: {},
-  skip: 0,
-  take: 12,
+  offset: 0,
+  first: 12,
   orderBy: { createdAt: "asc" } as const,
 };
 

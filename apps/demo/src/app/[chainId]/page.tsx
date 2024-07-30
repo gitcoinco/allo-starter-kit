@@ -21,7 +21,7 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
         For example:
         - only rounds with these strategies (deployed contract address)
         - order by when they were created, newest first
-        - with skip and take we can paginate the results and decide how many to show */
+        - with first and offset we can paginate the results and decide how many to show */
           where: {
             chainId: { in: [Number(chainId)] },
             // Approved applications
@@ -39,8 +39,8 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
           },
           // orderBy: { created_at_block: "desc" },
           orderBy: { unique_donors_count: "desc" },
-          skip: 0,
-          take: 12,
+          offset: 0,
+          first: 12,
         }}
         /*
 

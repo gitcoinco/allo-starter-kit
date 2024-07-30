@@ -16,7 +16,7 @@ export function Applications({ roundId = "", chainId = 0 }) {
         orderBy: {
           total_amount_donated_in_usd: "desc",
         },
-        take: 12,
+        first: 12,
       }}
       renderItem={(application, Card) => (
         <Link

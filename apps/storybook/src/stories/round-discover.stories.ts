@@ -23,8 +23,8 @@ export const Default: Story = {
         applications: { where: { status: { in: ["APPROVED"] } } },
       },
       orderBy: { unique_donors_count: "desc" },
-      skip: 0,
-      take: 6,
+      offset: 0,
+      first: 6,
     },
   },
 };

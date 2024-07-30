@@ -34,7 +34,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
       <DiscoverApplications
         columns={[1, 3]}
         query={{
-          take: 12,
+          first: 12,
           where: {
             roundId: { equals: roundId },
             status: { equals: "APPROVED" },

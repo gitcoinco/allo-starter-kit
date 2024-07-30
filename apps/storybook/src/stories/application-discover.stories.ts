@@ -19,7 +19,7 @@ export const Default: Story = {
   args: {
     columns: [1, 3],
     query: {
-      take: 12,
+      first: 12,
       where: {
         roundId: { equals: "0xf89aad3fad6c3e79ffa3ccc835620fcc7e55f919" },
         status: { equals: "APPROVED" },

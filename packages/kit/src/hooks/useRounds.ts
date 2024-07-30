@@ -7,8 +7,8 @@ import { useToast } from "../ui/use-toast";
 
 const defaultQuery = {
   where: {},
-  skip: 0,
-  take: 12,
+  offset: 0,
+  first: 12,
 };
 
 export function useRounds(query: RoundsQuery = defaultQuery) {

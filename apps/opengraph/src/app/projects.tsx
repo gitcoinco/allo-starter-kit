@@ -49,7 +49,7 @@ export function Projects() {
             status: { equals: "APPROVED" },
           },
           orderBy: { total_amount_donated_in_usd: "desc" },
-          take: 6,
+          first: 6,
         }}
         renderItem={(application, Card) => (
           <Link
@@ -68,7 +68,7 @@ export function Projects() {
             chainId: { in: [Number(network)] },
           },
           orderBy: { total_amount_donated_in_usd: "desc" },
-          take: 6,
+          first: 6,
         }}
         renderItem={(round, Card) => (
           <Link

@@ -61,7 +61,7 @@ export function ApplicationReviewTable({
       <form
         onSubmit={form.handleSubmit(({ selected }) => {
           call?.mutate([
-            applications,
+            applications?.map((appl) => appl.id),
             selected,
             round?.strategy,
             BigInt(2), // TODO: map to approved, pending, rejected

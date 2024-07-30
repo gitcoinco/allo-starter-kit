@@ -184,8 +184,8 @@ export default function RoundsPage() {
 const query = {
   where: { chainId: { in: [10] } },
   orderBy: { unique_donors_count: "desc" },
-  skip: 0,
-  take: 12,
+  offset: 0,
+  first: 12,
 };
 ```
 
