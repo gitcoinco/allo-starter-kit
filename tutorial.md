@@ -81,6 +81,13 @@ export default function CreateRoundPage({}) {
 
 Create a new file: `src/rounds/page.tsx`.
 
+DiscoverRounds is a pre-made component that does most of the heavy lifting in fetching and displaying rounds.
+
+It fetches the rounds based on a provided query (with sane defaults) and renders it as a grid by default but easy to render custom components.
+
+The `query` prop is mapped to the queries in the Indexer GraphQL api.
+https://grants-stack-indexer-v2.gitcoin.co/graphiql
+
 ```tsx
 import Link from "next/link";
 import { DiscoverRounds } from "@allo/kit";
@@ -98,8 +105,8 @@ export default function DiscoverRoundsPage() {
         // Sort by top donated rounds
         orderBy: { total_amount_donated_in_usd: "desc" },
         // We can implement pagination here later
-        skip: 0,
-        take: 12,
+        offset: 0,
+        first: 12,
       }}
       // Wrap the RoundCard in a Link (both roundId and chainId are required to query the round)
       renderItem={(round, Round) => (
@@ -112,8 +119,6 @@ export default function DiscoverRoundsPage() {
   );
 }
 ```
-
-This will render a grid of round cards that links to a round details page.
 
 ### Round Details Page
 
@@ -151,11 +156,11 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
       <DiscoverApplications
         columns={[1, 3]}
         query={{
-          take: 12,
+          first: 12,
           where: {
             // Get the approved Applications for the round
-            roundId: { equals: roundId },
-            status: { equals: "APPROVED" },
+            roundId: { equalTo: roundId },
+            status: { equalTo: "APPROVED" },
           },
         }}
         renderItem={(application, Application) => (
