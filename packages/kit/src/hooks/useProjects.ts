@@ -1,17 +1,17 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAPI } from "..";
-import { API, ProjectInput, RoundsQuery } from "../api/types";
+import { API, ProjectInput, ProjectsQuery } from "../api/types";
 import { useWalletClient } from "wagmi";
 
-const defaultQuery = {
+const defaultQuery: ProjectsQuery = {
   where: {},
   offset: 0,
   first: 12,
-  orderBy: { createdAt: "asc" } as const,
+  orderBy: { created_at_block: "asc" } as const,
 };
 
-export function useProjects(query: RoundsQuery = defaultQuery) {
+export function useProjects(query: ProjectsQuery = defaultQuery) {
   const api = useAPI();
   return useQuery({
     queryKey: ["projects", query],

@@ -5,7 +5,7 @@ import { useAPI } from "..";
 import { useWalletClient } from "wagmi";
 import { useToast } from "../ui/use-toast";
 
-const defaultQuery = {
+const defaultQuery: RoundsQuery = {
   where: {},
   offset: 0,
   first: 12,
