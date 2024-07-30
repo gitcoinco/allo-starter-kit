@@ -6,7 +6,7 @@ import { BackgroundImage } from "../ui/background-image";
 
 type ProjectDetailsProps = {
   id: string;
-  chainId: number;
+  chainId?: number;
   opts?: QueryOpts;
 };
 
