@@ -6,12 +6,10 @@ import { BackgroundImage } from "../ui/background-image";
 
 type ProjectDetailsProps = {
   id: string;
-  chainId: number;
-  opts?: QueryOpts;
 };
 
-export function ProjectDetails({ id, chainId, opts }: ProjectDetailsProps) {
-  const { data, isPending } = useProjectById(id, { chainId });
+export function ProjectDetails({ id }: ProjectDetailsProps) {
+  const { data, isPending } = useProjectById(id);
 
   const {
     metadata: {

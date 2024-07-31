@@ -49,7 +49,7 @@ function ApplicationForm({
       >
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-semibold">
-            Create application for {round.name}
+            Create application for {round.roundMetadata.name}
           </h3>
           <Button type="submit" isLoading={create.isPending || isValidating}>
             Create
