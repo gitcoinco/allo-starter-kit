@@ -35,6 +35,10 @@ export function RoundDetails({
   backAction,
   primaryAction,
 }: Partial<UseQueryResult<Round | undefined, unknown>> & PageActions) {
+  const {
+    chainId,
+    roundMetadata: { name = "", eligibility: { description = "" } = {} } = {},
+  } = data || {};
   return (
     <section>
       <div className="mb-2 flex items-center justify-between">
@@ -44,13 +48,13 @@ export function RoundDetails({
             {isPending ? (
               <Skeleton className="mb-2 h-10 w-96" />
             ) : (
-              <h1 className="text-3xl font-medium">{data?.name}</h1>
+              <h1 className="text-3xl font-medium">{name}</h1>
             )}
 
             {isPending ? (
               <Skeleton className="h-4 w-16" />
             ) : (
-              <RoundNetworkBadge chainId={data?.chainId} />
+              <RoundNetworkBadge chainId={chainId} />
             )}
           </div>
         </div>
@@ -63,7 +67,7 @@ export function RoundDetails({
           <Skeleton className="h-5 w-4/5" />
         </div>
       ) : (
-        <Markdown className={"prose-xl"}>{data?.description}</Markdown>
+        <Markdown className={"prose-xl"}>{description}</Markdown>
       )}
     </section>
   );

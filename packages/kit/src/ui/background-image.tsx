@@ -8,7 +8,7 @@ export const BackgroundImage = ({
   className,
   ...props
 }: {
-  src?: string;
+  src?: string | null;
   fallbackSrc?: string;
   isLoading?: boolean;
 } & ComponentPropsWithRef<"div">) => (

@@ -11,38 +11,42 @@ export type ApplicationCard = Application & {
 };
 type ApplicationComponent = "contributors" | "add_button";
 export function ApplicationCard({
-  name,
-  description,
-  bannerUrl,
-  contributors,
   components = [],
   isLoading,
+  ...application
 }: ApplicationCard) {
+  const {
+    uniqueDonorsCount,
+    totalAmountDonatedInUsd,
+    project: { metadata: { title, description, logoImg, bannerImg } = {} } = {},
+  } = application;
   return (
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
         ["animate-pulse"]: isLoading,
       })}
     >
-      <BackgroundImage className="h-32 bg-gray-100" src={bannerUrl} />
+      <BackgroundImage className="h-32 bg-gray-100" src={bannerImg} />
 
       <CardContent className="space-y-2 p-4">
-        <h3 className="truncate text-xl font-semibold text-gray-800">{name}</h3>
+        <h3 className="truncate text-xl font-semibold text-gray-800">
+          {title}
+        </h3>
         <p className="line-clamp-3 h-[70px] text-xs leading-6">{description}</p>
-        {contributors && components.length ? (
+        {components.length ? (
           <div className="py-2">
             <Separator />
           </div>
         ) : null}
         <div className="flex justify-between">
-          {contributors && components.includes("contributors") && (
+          {components.includes("contributors") && (
             <div>
               <div className="flex items-center gap-1 text-sm font-medium text-primary">
                 <ContributionIcon />
-                {formatMoney(contributors?.amount, "usd", 0)}
+                {formatMoney(totalAmountDonatedInUsd, "usd", 0)}
               </div>
               <div className="text-xs">
-                {formatNumber(contributors?.count)} contributors
+                {formatNumber(uniqueDonorsCount)} contributors
               </div>
             </div>
           )}

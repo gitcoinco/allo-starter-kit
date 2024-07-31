@@ -1,4 +1,10 @@
 import { Address, Hash, WalletClient } from "viem";
+import z from "zod";
+import {
+  ApplicationSchema,
+  ProjectSchema,
+  RoundSchema,
+} from "./providers/grants-stack";
 
 type OrderBy = "asc" | "desc";
 
@@ -134,26 +140,8 @@ type BaseRound = {
   strategy: Address;
   managers?: Address[];
 };
-export type Round = BaseRound & {
-  id: string;
-  name: string;
-  description: string;
-  eligibility: { requirements?: { requirement: string }[] };
-  bannerUrl?: string;
-  chainId: number;
-  applications?: { id: string }[];
-  matching: { amount: bigint; token: Address };
-  avatarUrl?: string;
-  bannerUrl?: string;
-  strategyName?: string;
-  phases: {
-    applicationsStartTime?: string;
-    applicationsEndTime?: string;
-    donationsStartTime?: string;
-    donationsEndTime?: string;
-  };
-};
 
+export type Round = z.infer<typeof RoundSchema>;
 export type RoundInput = BaseRound & {
   metadata: { protocol: bigint; pointer: string };
   initStrategyData?: Address;
@@ -169,29 +157,7 @@ export type ApplicationStatus =
   | "CANCELLED"
   | "IN_REVIEW";
 
-export type Application = BaseApplication & {
-  id: string;
-  name: string;
-  description?: string;
-  recipient: Address;
-  avatarUrl?: string;
-  bannerUrl?: string;
-  chainId: number;
-  projectId: string;
-  contributors?: {
-    count?: number;
-    amount?: number;
-  };
-  answers: {
-    questionId: number;
-    type: string;
-    answer: string;
-    hidden: boolean;
-    question: string;
-  }[];
-  status: ApplicationStatus;
-};
-
+export type Application = z.infer<typeof ApplicationSchema>;
 export type ApplicationInput = BaseApplication & {
   roundId: bigint;
   strategyData?: Address;
@@ -205,10 +171,8 @@ type BaseProject = {
   avatarUrl?: string;
   bannerUrl?: string;
 };
-export type Project = BaseProject & {
-  id: string;
-  chainId: number;
-};
+
+export type Project = z.infer<typeof ProjectSchema>;
 export type ProjectInput = BaseProject & {};
 
 export type ProjectCreated = { id: string; chainId: number };

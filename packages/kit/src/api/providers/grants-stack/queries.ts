@@ -61,13 +61,7 @@ uniqueDonorsCount
 totalDonationsCount
 anchorAddress
 round {
-  strategyName
-  donationsStartTime
-  donationsEndTime
-  applicationsStartTime
-  applicationsEndTime
-  matchTokenAddress
-  roundMetadata
+  ${ROUND_FRAGMENT}
 }
 metadata
 project: canonicalProject {

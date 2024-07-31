@@ -1,5 +1,5 @@
 import { request } from "graphql-request";
-import { API, Application, Project, Round, Transformers } from "../../types";
+import { API } from "../../types";
 import {
   roundsQuery,
   applicationsQuery,
@@ -8,39 +8,39 @@ import {
   applicationsByIdQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
-import { GSRound, GSApplication, GSProject } from "./types";
 import { isValid } from "date-fns";
-import { getAddress } from "viem";
+import z from "zod";
+import { EthAddressSchema } from "../../../schemas";
 
 const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
 
 export const grantsStackAPI: Partial<API> = {
   rounds: async (query) => {
-    return request<{ rounds: GSRound[] }>({
+    return request({
       url: apiURL,
       document: roundsQuery,
       variables: queryToFilter(query),
-    }).then((res) => (res?.rounds ?? []).map(transformers.round));
+    }).then(mapSchema(RoundSchema, "rounds"));
   },
   roundById: (id, opts) => {
-    return request<{ round: GSRound }>({
+    return request({
       url: apiURL,
       document: roundsByIdQuery,
       variables: {
         id,
         chainId: Number(opts?.chainId),
       },
-    }).then((res) => (res.round ? transformers.round(res.round) : undefined));
+    }).then(mapSchema(RoundSchema, "round"));
   },
   applications: (query) => {
-    return request<{ applications: GSApplication[] }>({
+    return request({
       url: apiURL,
       document: applicationsQuery,
       variables: queryToFilter(query),
-    }).then((res) => (res?.applications ?? []).map(transformers.application));
+    }).then(mapSchema(ApplicationSchema, "applications"));
   },
   applicationById: (id, opts) => {
-    return request<{ application: GSApplication }>({
+    return request({
       url: apiURL,
       document: applicationsByIdQuery,
       variables: {
@@ -48,19 +48,17 @@ export const grantsStackAPI: Partial<API> = {
         chainId: Number(opts?.chainId),
         roundId: opts?.roundId,
       },
-    }).then((res) =>
-      res.application ? transformers.application(res.application) : undefined,
-    );
+    }).then(mapSchema(ApplicationSchema, "application"));
   },
   projects: (query) => {
-    return request<{ rounds: GSProject[] }>({
+    return request({
       url: apiURL,
       document: projectsQuery,
       variables: queryToFilter(query),
-    }).then((res) => (res?.rounds ?? []).map(transformers.project));
+    }).then(mapSchema(ProjectSchema, "projects"));
   },
   projectById: (id, opts) => {
-    return request<{ projects: GSProject[] }>({
+    return request({
       url: apiURL,
       // Query projectById requires chainId and doesn't always match with the rounds chainId
       document: projectsQuery,
@@ -68,114 +66,121 @@ export const grantsStackAPI: Partial<API> = {
         first: 1,
         filter: { id: { equalTo: id }, projectType: { equalTo: "CANONICAL" } },
       },
-    }).then((res) =>
-      res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
-    );
+    }).then(mapSchema(ProjectSchema, "project"));
   },
 };
+
+function mapSchema(schema: z.Schema, key: string) {
+  return (res: Record<string, unknown>) => {
+    const _items = res?.[key];
+    const items = Array.isArray(_items) ? _items : [_items];
+    const { data, error } = z.array(schema).safeParse(items);
+
+    console.log(data, error, items);
+    if (error) {
+      throw new Error(JSON.stringify(error, null, 2));
+    }
+    return Array.isArray(_items) ? data : data?.[0];
+  };
+}
 
 function validateDate(date?: string) {
   return date && isValid(new Date(date)) ? date : undefined;
 }
 
-/* 
-TODO: Are these transformers really needed if we only use Grants Indexer? 
-Is it simpler and easier to just use the shape from the Indexer without re-mapping?
-
-A better approach would be to use a Zod schema that handles the validation and parsing:
-- BigInt
-- getAddress
-- validateDate
-- ipfsGateway
-
-const RoundSchema = z.object({
-  ...
-  matching: z.object({ amount: z.coerce.bigint(), token: z.string().transform(getAddress). })
-  bannerImage: z.string().transform(ipfsGateway)
-  ...
-})
-  
-And then each request simply parses the schema:
-
-}).then(mapSchema(RoundSchema, "rounds"))
-}).then(mapSchema(ApplicationSchema, "application"))
-
-const mapSchema = (schema: z.Schema, key: string) => (res) => {
-  const items = Array.isArray(res[key]) ? res[key] : [res[key]];
-  return items.map((item) => schema.safeParse(item).data);
-};
-
-
-If that's too clever, we can just call it inline for each request like this:
-
-(res => res?.rounds?.map(round => RoundSchema.safeParse(round).data)
-
-*/
-export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
-  round: ({
-    id,
-    chainId,
-    roundMetadata: { name, title, description, eligibility },
-    matchAmount,
-    matchTokenAddress,
-    applications,
-    applicationsStartTime,
-    applicationsEndTime,
-    donationsStartTime,
-    donationsEndTime,
-    strategyAddress,
-    strategyName,
-  }: GSRound): Round => ({
-    id,
-    chainId,
-    name: name || title || "?",
-    description: description || eligibility?.description,
-    eligibility: eligibility,
-    applications,
-    matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
-    strategy: getAddress(strategyAddress),
-    strategyName,
-    phases: {
-      applicationsStartTime: validateDate(applicationsStartTime),
-      applicationsEndTime: validateDate(applicationsEndTime),
-      donationsStartTime: validateDate(donationsStartTime),
-      donationsEndTime: validateDate(donationsEndTime),
-    },
+const RoundMetadataSchema = z.object({
+  name: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  eligibility: z.object({
+    description: z.string().optional(),
+    requirements: z.array(z.object({ requirement: z.string() })).optional(),
   }),
-  application: ({
-    id,
-    chainId,
-    status,
-    answers,
-    project,
-    anchorAddress,
-    totalAmountDonatedInUsd,
-    uniqueDonorsCount,
-  }: GSApplication): Application => {
-    return {
-      id,
-      chainId,
-      name: project?.metadata?.title,
-      description: project?.metadata?.description,
-      projectId: project?.id,
-      status,
-      answers,
-      recipient: anchorAddress,
-      avatarUrl: ipfsGateway(project?.metadata.logoImg),
-      bannerUrl: ipfsGateway(project?.metadata.bannerImg),
-      contributors: {
-        count: uniqueDonorsCount,
-        amount: totalAmountDonatedInUsd,
-      },
-    };
-  },
-
-  project: ({ id, chainId, name, metadata }: GSProject): Project => ({
-    id,
-    chainId,
-    name,
-    description: metadata?.description,
-    avatarUrl: ipfsGateway(metadata.logoImg),
-    bannerUrl: ipfsGateway(metadata?.bannerImg),
+  quadraticFundingConfig: z.object({
+    matchingCap: z.boolean(),
+    sybilDefense: z.boolean(),
+    matchingCapAmount: z.number().optional(),
+    minDonationThreshold: z.boolean().optional(),
+    matchingFundsAvailable: z.number(),
+    minDonationThresholdAmount: z.number().optional(),
   }),
-};
+});
+
+export const RoundSchema = z.object({
+  id: z.string(),
+  chainId: z.number(),
+  tags: z.array(z.string()),
+  roundMetadata: RoundMetadataSchema,
+  roundMetadataCid: z.string(),
+  applicationsStartTime: z.string().transform(validateDate),
+  applicationsEndTime: z.string().transform(validateDate),
+  donationsStartTime: z.string().transform(validateDate),
+  donationsEndTime: z.string().transform(validateDate),
+  matchAmountInUsd: z.number(),
+  matchAmount: z.any(),
+  matchTokenAddress: EthAddressSchema,
+  strategyId: z.string(),
+  strategyName: z.string(),
+  strategyAddress: EthAddressSchema,
+  applications: z.array(z.object({ id: z.string() })).optional(),
+});
+const AnswersSchema = z.array(
+  z.object({
+    questionId: z.number(),
+    type: z.string(),
+    answer: z.string().optional(),
+    hidden: z.boolean(),
+    question: z.string(),
+  }),
+);
+const ProjectMetadataSchema = z.object({
+  title: z.string(),
+  website: z.string(),
+  logoImg: z.string().optional(),
+  bannerImg: z
+    .string()
+    .optional()
+    .transform((cid) => (cid ? ipfsGateway(cid) : null)),
+  createdAt: z.number(),
+  credentials: z.any(), // ?
+  description: z.string(),
+  lastUpdated: z.number().optional(),
+  projectTwitter: z.string().optional(),
+});
+const ApplicationMetadataSchema = z.object({
+  signature: z.string(),
+  application: z.object({
+    round: z.string(),
+    answers: AnswersSchema.optional(),
+    recipient: z.string(),
+    project: ProjectMetadataSchema,
+  }),
+});
+
+export const ApplicationSchema = z.object({
+  id: z.string(),
+  chainId: z.number(),
+  roundId: z.string(),
+  projectId: z.string(),
+  status: z.enum(["APPROVED", "PENDING"]),
+  totalAmountDonatedInUsd: z.number(),
+  uniqueDonorsCount: z.number(),
+  totalDonationsCount: z.number(),
+  round: RoundSchema,
+  metadata: ApplicationMetadataSchema,
+  anchorAddress: z.string().nullish(),
+  project: z.object({
+    tags: z.array(z.string()),
+    id: z.string(),
+    metadata: ProjectMetadataSchema,
+  }),
+});
+
+export const ProjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  projectType: z.enum(["CANONICAL"]),
+  chainId: z.number(),
+  createdByAddress: z.string(),
+  metadata: ProjectMetadataSchema,
+});

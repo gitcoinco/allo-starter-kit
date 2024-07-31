@@ -13,15 +13,15 @@ import { RoundStrategyBadge } from "./strategy-badge";
 const toNow = (date?: string) =>
   date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
 
-const getRoundTime = (phases: Round["phases"] = {}): string => {
+const getRoundTime = (round: Round): string => {
   const now = new Date();
 
-  if (isAfter(phases.applicationsStartTime!, now))
-    return `Starts ${toNow(phases.applicationsStartTime)}`;
-  if (isAfter(now, phases.donationsEndTime!))
-    return `Ended ${toNow(phases.donationsEndTime)}`;
-  if (isAfter(phases.donationsEndTime!, now))
-    return `Ends ${toNow(phases.donationsEndTime)}`;
+  if (isAfter(round.applicationsStartTime!, now))
+    return `Starts ${toNow(round.applicationsStartTime)}`;
+  if (isAfter(now, round.donationsEndTime!))
+    return `Ended ${toNow(round.donationsEndTime)}`;
+  if (isAfter(round.donationsEndTime!, now))
+    return `Ends ${toNow(round.donationsEndTime)}`;
   return "";
 };
 
@@ -33,17 +33,15 @@ export type RoundCard = Round & {
   isLoading?: boolean;
 };
 
-export function RoundCard({
-  name,
-  description,
-  chainId,
-  applications,
-  matching,
-  bannerUrl,
-  phases,
-  strategyName,
-  isLoading,
-}: RoundCard) {
+export function RoundCard({ isLoading, ...round }: RoundCard) {
+  const {
+    chainId,
+    applications,
+    roundMetadata: { name, eligibility: { description } = {} } = {},
+    matchAmount,
+    matchTokenAddress,
+    strategyName,
+  } = round;
   const network = useMemo(() => getNetwork(chainId), [chainId]);
   return (
     <Card
@@ -52,7 +50,7 @@ export function RoundCard({
       })}
     >
       <div className="">
-        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
+        <BackgroundImage className="h-32 bg-gray-800" src={""} />
         <h3 className="-mt-8 truncate pl-1 text-2xl font-medium text-gray-100">
           {name}
         </h3>
@@ -60,7 +58,7 @@ export function RoundCard({
       <CardContent className="space-y-2 p-4">
         <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
         <div className="flex flex-1 items-center justify-between text-xs">
-          <div className="w-1/2 truncate font-mono">{getRoundTime(phases)}</div>
+          <div className="w-1/2 truncate font-mono">{getRoundTime(round)}</div>
           <div className="flex w-1/2 justify-end">
             <RoundStrategyBadge strategyName={strategyName} />
           </div>
@@ -75,11 +73,14 @@ export function RoundCard({
                     {applications?.length} projects
                   </Badge>
                 )}
-                {matching && (
+                {matchAmount ? (
                   <Badge variant={"secondary"}>
-                    <TokenAmount {...matching} />
+                    <TokenAmount
+                      amount={matchAmount}
+                      token={matchTokenAddress}
+                    />
                   </Badge>
-                )}
+                ) : null}
               </div>
             </div>
             <Avatar className="size-8">

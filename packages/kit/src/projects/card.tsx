@@ -9,14 +9,10 @@ export type ProjectCard = Project & {
   isLoading?: boolean;
 };
 
-export function ProjectCard({
-  name,
-  description,
-  chainId,
-  avatarUrl,
-  bannerUrl,
-  isLoading,
-}: ProjectCard) {
+export function ProjectCard({ isLoading, ...project }: ProjectCard) {
+  const {
+    metadata: { title, description, logoImg, bannerImg },
+  } = project;
   return (
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
@@ -24,16 +20,16 @@ export function ProjectCard({
       })}
     >
       <div className="">
-        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
+        <BackgroundImage className="h-32 bg-gray-800" src={bannerImg} />
       </div>
       <div className="-mt-12 ml-2 inline-flex rounded-full bg-white p-0.5">
         <Avatar className="size-8">
-          <AvatarImage src={avatarUrl} alt={name} />
+          <AvatarImage src={logoImg} alt={title} />
           <AvatarFallback></AvatarFallback>
         </Avatar>
       </div>
       <CardContent className="space-y-2 p-4">
-        <h3 className="text-xl font-semibold text-gray-800">{name}</h3>
+        <h3 className="text-xl font-semibold text-gray-800">{title}</h3>
         <p className="line-clamp-3 text-xs leading-6">{description}</p>
       </CardContent>
     </Card>
