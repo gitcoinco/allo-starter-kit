@@ -45,7 +45,7 @@ const baseRoundSchema = z.object({
     message: "Round name must be at least 2 characters.",
   }),
   description: z.string().optional(),
-  bannerUrl: z.string().optional(),
+  bannerImg: z.string().optional(),
   strategy: z.string(),
   token: EthAddressSchema.optional(),
   amount: z.coerce.bigint().optional(),
@@ -194,7 +194,7 @@ function CreateRoundForm({
         />
         <FormField
           control={form.control}
-          name="bannerUrl"
+          name="bannerImg"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image</FormLabel>

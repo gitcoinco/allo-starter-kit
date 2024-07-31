@@ -129,12 +129,6 @@ export interface API {
 }
 // Transforms data from API into a common shape
 
-export interface Transformers<TRound, TApplication, TProject> {
-  round: (round: TRound) => Round;
-  application: (application: TApplication) => Application;
-  project: (project: TProject) => Project;
-}
-
 type BaseRound = {
   token?: Address;
   strategy: Address;
@@ -168,8 +162,8 @@ export type ApplicationCreated = { id: string; chainId: number };
 type BaseProject = {
   name: string;
   description?: string;
-  avatarUrl?: string;
-  bannerUrl?: string;
+  logoImg?: string;
+  bannerImg?: string;
 };
 
 export type Project = z.infer<typeof ProjectSchema>;

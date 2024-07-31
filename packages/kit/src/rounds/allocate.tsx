@@ -52,7 +52,7 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
           <div key={application.id} className="flex items-center gap-2 py-2">
             <BackgroundImage
               className="size-12 rounded bg-gray-100"
-              src={application.avatarUrl}
+              src={application.logoImg}
             />
             <h3 className="flex-1 text-lg">{application.name}</h3>
 
