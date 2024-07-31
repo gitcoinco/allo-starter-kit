@@ -16,7 +16,7 @@ export async function generateMetadata({
 
   return {
     title: project.name,
-    description: project.description,
+    description: project.metadata.description,
   };
 }
 export default async function ShareProjectPage({ params: { projectId = "" } }) {

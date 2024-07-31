@@ -20,8 +20,8 @@ export async function generateMetadata({
   if (!round) return {};
 
   return {
-    title: round.name,
-    description: round.description,
+    title: round.roundMetadata.name,
+    description: round.roundMetadata.description,
   };
 }
 export default async function ShareRoundPage({
@@ -31,12 +31,12 @@ export default async function ShareRoundPage({
   if (!round) return notFound();
   return (
     <div>
-      <h1 className="text-2xl font-semibold">{round.name}</h1>
+      <h1 className="text-2xl font-semibold">{round.roundMetadata.name}</h1>
       <div className="flex gap-2 pb-1">
         <RoundNetworkBadge chainId={round.chainId} />
         <RoundStrategyBadge strategyName={round.strategyName} />
       </div>
-      <Markdown className={"mb-8"}>{round.description}</Markdown>
+      <Markdown className={"mb-8"}>{round.roundMetadata.description}</Markdown>
       <div className="flex justify-center">
         <Drawer>
           <DrawerTrigger>
@@ -44,7 +44,7 @@ export default async function ShareRoundPage({
           </DrawerTrigger>
           <DrawerContent>
             <DrawerFooter>
-              <FundRound autoFocus id={roundId} chainId={chainId} />
+              <FundRound autoFocus id={roundId} chainId={Number(chainId)} />
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
