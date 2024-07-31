@@ -33,15 +33,12 @@ export default async function Image(props: {
       first: 12,
     });
 
-    console.log(applications);
-    const { applicationsStartTime, donationsEndTime } = round.phases ?? {};
+    const { applicationsStartTime, donationsEndTime } = round ?? {};
     const network = getChains()?.find((chain) => chain.id === Number(chainId));
 
     const token = network?.tokens.find(
-      (t) => getAddress(t.address) === getAddress(round.matching.token)
+      (t) => getAddress(t.address) === getAddress(round.matchTokenAddress)
     );
-    console.log(token, round.matching);
-    console.log(round.matching.amount!, token?.decimals!);
     return new ImageResponse(
       (
         <div tw="bg-white w-full h-full flex flex-col justify-center items-center">
@@ -64,7 +61,7 @@ export default async function Image(props: {
           </div>
           <div tw="flex flex-col items-center">
             <div tw="text-[56px] text-gray-900 text-center mb-2">
-              {round.name}
+              {round.roundMetadata.name}
             </div>
             <div tw="flex text-gray-800 tracking-widest gap-4 text mb-4">
               <div tw="flex">
@@ -77,7 +74,7 @@ export default async function Image(props: {
               <div tw="flex">
                 {token?.code}{" "}
                 {formatNumber(
-                  Number(formatUnits(round.matching.amount!, token?.decimals!))
+                  Number(formatUnits(round.matchAmount!, token?.decimals!))
                 )}
               </div>
             </div>
@@ -85,15 +82,15 @@ export default async function Image(props: {
               tw="flex text-lg mb-6 text-gray-900 max-w-[800px]"
               style={{ lineHeight: 1.3 }}
             >
-              <span>{round.description?.slice(0, 270)}...</span>
+              <span>{round.roundMetadata.description?.slice(0, 270)}...</span>
             </div>
           </div>
           <div tw="flex mb-4">
             {(applications ?? []).map((a) => (
               <div key={a.id} tw="mx-.5 flex">
-                {a.avatarUrl ? (
+                {a.project.metadata.logoImg ? (
                   <img
-                    src={a.avatarUrl}
+                    src={a.project.metadata.logoImg}
                     tw="rounded-lg w-16 h-16 object-contain"
                   />
                 ) : (
@@ -118,12 +115,3 @@ export default async function Image(props: {
     return notFound();
   }
 }
-
-// <div key={a.id} tw="mx-.5 flex">
-// <div
-//   style={{
-//     backgroundImage: `url(${a.bannerUrl})`,
-//   }}
-//   tw="rounded-lg w-24 h-24 bg-contain bg-center"
-// />
-// </div>

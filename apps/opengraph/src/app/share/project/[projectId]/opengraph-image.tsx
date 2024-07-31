@@ -28,7 +28,7 @@ export default async function Image(props: {
     (
       <div tw="bg-white w-full h-full flex flex-col">
         <img
-          src={project.bannerUrl}
+          src={project.metadata.bannerImg!}
           style={{
             maxHeight: size.height / 2,
             width: 1200,
@@ -55,7 +55,7 @@ export default async function Image(props: {
         </div>
         <div tw="flex p-8">
           <img
-            src={project.avatarUrl}
+            src={project.metadata.logoImg}
             tw="max-w-32 max-h-32 shadow-xl rounded-xl"
           />
           <div tw="flex flex-col pl-4">
@@ -64,7 +64,7 @@ export default async function Image(props: {
               tw="flex max-w-[1000px] text-lg text-gray-900"
               style={{ lineHeight: 1.3 }}
             >
-              {project.description?.slice(0, 270)}...
+              {project.metadata.description?.slice(0, 270)}...
             </div>
           </div>
         </div>
