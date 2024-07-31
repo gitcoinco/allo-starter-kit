@@ -69,28 +69,6 @@ export default function RootLayout({
   );
 ```
 
-### Create Round Page
-
-Create the file: `src/admin/rounds/create/page.tsx`
-
-```tsx
-"use client";
-
-import { useRouter } from "next/navigation";
-import { CreateRound } from "@allo/kit";
-
-export default function CreateRoundPage({}) {
-  const router = useRouter();
-  return (
-    <CreateRound
-      onCreated={({ id, chainId }) => router.push(`/${chainId}/rounds/${id}`)}
-    />
-  );
-}
-```
-
-This will render the form for creating a new round. When successfully created a round the user is redirected to view the round details. Later we can create a different page where Round admins can manage the round.
-
 ### Discover Rounds Page
 
 Create a new file: `src/[chainId]/rounds/page.tsx`.
@@ -196,6 +174,110 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
 ```
 
 This will display the round details and a list of approved applications. Each application links to an application details page.
+
+### Create Round Page
+
+Create the file: `src/admin/rounds/create/page.tsx`
+
+```tsx
+"use client";
+
+import { useRouter } from "next/navigation";
+import { CreateRound } from "@allo/kit";
+
+export default function CreateRoundPage({}) {
+  const router = useRouter();
+  return (
+    <CreateRound
+      onCreated={({ id, chainId }) => router.push(`/${chainId}/rounds/${id}`)}
+    />
+  );
+}
+```
+
+This will render the form for creating a new round. When successfully created a round the user is redirected to view the round details. Later we can create a different page where Round admins can manage the round.
+
+We also need to update our ApiProvider with an upload function. This is called when the round metadata is being uploaded (either ipfs, CDN, or some other kind of data storage). This upload function is used whenever metadata is uploaded from AlloKit.
+
+Update `src/providers.tsx` with this:
+
+```tsx
+"use client";
+
+import { ApiProvider, Web3Provider } from "@allo/kit";
+
+export function AlloKitProviders({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <ApiProvider
+      api={{
+        upload: async (data) => {
+          return fetch(`/api/ipfs`, { method: "POST", body: toFormData(data) })
+            .then((r) => r.json())
+            .then((r) => r.cid);
+        },
+      }}
+    >
+      <Web3Provider>{children}</Web3Provider>
+    </ApiProvider>
+  );
+}
+
+// Normalize object into FormData
+function toFormData(data: File | Record<string, unknown> | FormData) {
+  const formData = new FormData();
+
+  if (!(data instanceof File)) {
+    const blob = new Blob([JSON.stringify(data)], {
+      type: "application/json",
+    });
+    data = new File([blob], "metadata.json");
+  }
+
+  formData.append("file", data);
+  return formData;
+}
+```
+
+And in `src/api/ipfs/route.ts`:
+
+```ts
+import { NextResponse, NextRequest } from "next/server";
+
+export async function POST(request: NextRequest) {
+  try {
+    const form = await request.formData();
+
+    const file = form.get("file") as unknown as File;
+    form.append("file", file);
+    form.append("pinataMetadata", JSON.stringify({ name: file.name }));
+
+    const { IpfsHash: cid } = await fetch(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${process.env.PINATA_JWT}` },
+        body: form,
+      }
+    ).then((r) => r.json());
+    const url = `https://${process.env.PINATA_GATEWAY_URL}/ipfs/${cid}`;
+
+    return NextResponse.json({ url, cid }, { status: 200 });
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json({ error: (e as Error).message }, { status: 500 });
+  }
+}
+```
+
+You will also need to copy the `.env.sample` to `.env.local` and configure the Pinata variables. You may also choose a different IPFS provider or any other kind of storage (Vercel Blob, AWS S3, ...).
+
+> **Why is this function not in AlloKit?**  
+> AlloKit is currently only client-side components and these upload functions run server-side.
+> In the future we might provide these functions as part of the package or even provide an endpoint for uploads as a backend service.
 
 ### Apply to Round Page
 
