@@ -63,7 +63,7 @@ export function ApplicationReviewTable({
           call?.mutate([
             applications?.map((appl) => appl.id),
             selected,
-            round?.strategy,
+            round?.strategyAddress,
             BigInt(2), // TODO: map to approved, pending, rejected
           ]);
         })}

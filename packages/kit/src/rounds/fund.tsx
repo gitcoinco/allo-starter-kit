@@ -48,7 +48,7 @@ export function getNetworkToken(round?: Round) {
       const token = (chain.tokens ?? {}).find((token) => {
         return (
           round?.chainId === chain.id &&
-          token.address === round?.matching?.token
+          token.address === round?.matchTokenAddress
         );
       });
 
@@ -81,8 +81,8 @@ export function FundRound({
         Pool amount: <PoolAmount round={data} />
       </div> */}
       <FundForm
-        funded={data?.matching.amount}
-        token={data?.matching?.token!}
+        funded={data?.matchAmount}
+        token={data?.matchTokenAddress!}
         isLoading={fund.isPending}
         autoFocus={autoFocus}
         onSubmit={(amount) => fund.mutate({ amount }, { onSuccess })}

@@ -1,7 +1,7 @@
 import { getAddress as alloAddress } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
 import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk";
 import { Address, Chain, WalletClient, getAddress } from "viem";
-import { API, Application, Round, TransactionInput } from "../../api/types";
+import { API, Application, Round } from "../../api/types";
 
 type Allocation = {
   token: `0x${string}`;
@@ -17,7 +17,7 @@ export const call = (
   signer: WalletClient,
 ) => {
   const allocations: Allocation[] = buildAllocations(
-    round.matching.token,
+    round.matchTokenAddress,
     state,
     applications,
   );
@@ -47,7 +47,7 @@ function buildAllocations(
       );
       return {
         token,
-        recipientId: getAddress(application?.recipient!),
+        recipientId: getAddress(application?.anchorAddress!),
         amount: BigInt(amount),
       };
     });

@@ -162,7 +162,7 @@ export const ApplicationSchema = z.object({
   chainId: z.number(),
   roundId: z.string(),
   projectId: z.string(),
-  status: z.enum(["APPROVED", "PENDING"]),
+  status: z.enum(["APPROVED", "PENDING", "REJECTED"]),
   totalAmountDonatedInUsd: z.number(),
   uniqueDonorsCount: z.number(),
   totalDonationsCount: z.number(),
