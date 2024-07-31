@@ -8,9 +8,9 @@ import { ApplicationStatusBadge } from "./status-badge";
 
 export function ApplicationApprovalItem({
   id,
-  name,
-  description,
-  bannerUrl,
+  project: {
+    metadata: { title, description, bannerImg },
+  },
   status,
   action,
   checked,
@@ -29,13 +29,13 @@ export function ApplicationApprovalItem({
         <div className="">
           <BackgroundImage
             className="size-12 rounded bg-gray-800"
-            src={bannerUrl}
+            src={bannerImg}
           />
         </div>
 
         <div className="">
           <h3 className="line-clamp-1 overflow-hidden text-ellipsis text-sm font-semibold text-gray-800">
-            {name}
+            {title}
           </h3>
           <p className="line-clamp-1 text-xs">{description?.slice(0, 144)}</p>
         </div>

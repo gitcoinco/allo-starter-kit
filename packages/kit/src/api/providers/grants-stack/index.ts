@@ -71,8 +71,8 @@ export const grantsStackAPI: Partial<API> = {
 };
 
 function mapSchema(schema: z.Schema, key: string) {
-  return (res: Record<string, unknown>) => {
-    const _items = res?.[key];
+  return (res: unknown) => {
+    const _items = (res as Record<string, unknown>)?.[key];
     const items = Array.isArray(_items) ? _items : [_items];
     const { data, error } = z.array(schema).safeParse(items);
 
