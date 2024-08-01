@@ -44,7 +44,7 @@ export default async function ShareRoundPage({
           </DrawerTrigger>
           <DrawerContent>
             <DrawerFooter>
-              <FundRound autoFocus id={roundId} />
+              <FundRound autoFocus id={roundId} chainId={Number(chainId)} />
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
