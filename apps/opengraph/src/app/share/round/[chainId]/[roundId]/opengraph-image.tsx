@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { QRCodeSVG } from "qrcode.react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { formatNumber, grantsStackAPI } from "@allo/kit";
+import { formatNumber, indexer } from "@allo/kit";
 import { format } from "date-fns";
 import { getChains } from "@gitcoin/gitcoin-chain-data";
 import { formatUnits, getAddress } from "viem";
@@ -22,26 +22,23 @@ export default async function Image(props: {
 
     const roundUrl = `https://${host}/share/round/${chainId}/${roundId}`;
 
-    const round = await grantsStackAPI?.roundById?.(roundId, {
+    const round = await indexer.roundById(roundId, {
       chainId,
     });
 
     if (!round) return notFound();
-    const applications = await grantsStackAPI.applications?.({
+    const applications = await indexer.applications({
       where: { roundId: { equalTo: roundId } },
       orderBy: { total_amount_donated_in_usd: "desc" },
       first: 12,
     });
 
-    console.log(applications);
     const { applicationsStartTime, donationsEndTime } = round.phases ?? {};
     const network = getChains()?.find((chain) => chain.id === Number(chainId));
 
     const token = network?.tokens.find(
       (t) => getAddress(t.address) === getAddress(round.matching.token)
     );
-    console.log(token, round.matching);
-    console.log(round.matching.amount!, token?.decimals!);
     return new ImageResponse(
       (
         <div tw="bg-white w-full h-full flex flex-col justify-center items-center">
@@ -118,12 +115,3 @@ export default async function Image(props: {
     return notFound();
   }
 }
-
-// <div key={a.id} tw="mx-.5 flex">
-// <div
-//   style={{
-//     backgroundImage: `url(${a.bannerUrl})`,
-//   }}
-//   tw="rounded-lg w-24 h-24 bg-contain bg-center"
-// />
-// </div>

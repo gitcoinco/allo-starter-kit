@@ -3,7 +3,7 @@ import {
   DiscoverRounds,
   ProjectDetails,
 } from "@allo/kit";
-import { grantsStackAPI } from "@allo/kit";
+import { indexer } from "@allo/kit";
 import { Metadata } from "next";
 
 export async function generateMetadata({
@@ -11,7 +11,7 @@ export async function generateMetadata({
 }: {
   params: { projectId: string };
 }): Promise<Metadata> {
-  const project = await grantsStackAPI.projectById?.(projectId);
+  const project = await indexer.projectById(projectId);
   if (!project) return {};
 
   return {

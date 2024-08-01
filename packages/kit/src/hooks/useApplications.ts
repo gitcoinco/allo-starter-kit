@@ -14,11 +14,11 @@ export function useApplications(query: ApplicationsQuery = defaultQuery) {
   const api = useAPI();
   return useQuery({
     queryKey: ["applications", query],
-    queryFn: async () => api.applications(query),
+    queryFn: async () => api.indexer.applications(query),
   });
 }
 
-type ApplicationByID = Parameters<API["applicationById"]>;
+type ApplicationByID = Parameters<API["indexer"]["applicationById"]>;
 export function useApplicationById(
   id: ApplicationByID[0],
   opts?: ApplicationByID[1],
@@ -26,7 +26,7 @@ export function useApplicationById(
   const api = useAPI();
   return useQuery({
     queryKey: ["application", { id, opts }],
-    queryFn: async () => api.applicationById(id, opts),
+    queryFn: async () => api.indexer.applicationById(id, opts),
     enabled: Boolean(id),
   });
 }
@@ -35,7 +35,7 @@ export function useCreateApplication() {
   const { data: client } = useWalletClient();
   return useMutation({
     mutationFn: (data: ApplicationInput) =>
-      api.createApplication(data, client!),
+      api.allo.createApplication(data, client!),
     onSuccess: () => {}, // TODO: add toast
     onError: () => {},
   });

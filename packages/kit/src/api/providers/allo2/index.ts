@@ -12,14 +12,14 @@ import {
 } from "viem";
 import { Allo, NATIVE, Registry } from "@allo-team/allo-v2-sdk/";
 import { abi as AlloABI } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
-import { API } from "../../types";
+import { API, TransactionInput } from "../../types";
 
 const createAlloOpts = (chain: Chain) => ({
   chain: chain.id,
   rpc: chain.rpcUrls.default.http[0],
 });
 
-export const allo2API: Partial<API> = {
+export const allo: API["allo"] = {
   createRound: async function (data, signer) {
     try {
       if (!signer?.account) throw new Error("Signer missing");
@@ -121,6 +121,27 @@ export const allo2API: Partial<API> = {
     }
   },
   distribute: () => {},
+
+  /* 
+A custom sendTransaction can be sent to ApiProvider. 
+<ApiProvider api={{ allo: { sendTransaction: cometh.wallet.sendTransaction } }} />
+
+The default sendTransaction uses the Viem wallet signer of the connected wallet
+*/
+  sendTransaction: async function (
+    tx: TransactionInput,
+    signer?: WalletClient,
+  ) {
+    if (!signer?.account) throw new Error("Signer missing");
+    const address = getAddress(signer.account?.address);
+
+    return signer.sendTransaction({
+      ...tx,
+      value: BigInt(tx.value),
+      account: address,
+      chain: signer.chain,
+    });
+  },
 };
 
 function createLogDecoder(
