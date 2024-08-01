@@ -18,7 +18,7 @@ export default async function Image(props: {
 
   const projectUrl = `https://${host}/share/project/${projectId}`;
 
-  const project = await indexer.projectById?.(projectId, {
+  const project = await indexer.projectById(projectId, {
     chainId,
   });
 
