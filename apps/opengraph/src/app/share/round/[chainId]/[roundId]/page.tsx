@@ -4,9 +4,14 @@ import {
   Markdown,
   RoundNetworkBadge,
   RoundStrategyBadge,
-} from "@allo/kit";
-import { indexer } from "@allo/kit";
-import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo/kit";
+} from "@allo-team/kit";
+import { indexer } from "@allo-team/kit";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerFooter,
+  DrawerTrigger,
+} from "@allo-team/kit";
 import { notFound } from "next/navigation";
 import { Applications } from "./applications";
 import { Metadata } from "next";

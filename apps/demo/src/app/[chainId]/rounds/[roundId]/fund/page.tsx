@@ -1,6 +1,6 @@
 "use client";
 
-import { FundRound } from "@allo/kit";
+import { FundRound } from "@allo-team/kit";
 
 export default function CreateApplicationPage({
   params: { roundId, chainId },

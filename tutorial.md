@@ -18,7 +18,7 @@ You can link the repo by
 2.  Navigate to `packages/kit`
 3.  Run `bun link`
 4.  Navigate to your created app (`allo-app`)
-5.  Run `bun link @allo/kit --save`
+5.  Run `bun link @allo-team/kit --save`
 
 ### Configuring Providers
 
@@ -32,7 +32,7 @@ Create a new file `src/providers.tsx`.
 ```tsx
 "use client";
 
-import { ApiProvider, Web3Provider } from "@allo/kit";
+import { ApiProvider, Web3Provider } from "@allo-team/kit";
 
 export function AlloKitProviders({
   children,
@@ -51,7 +51,7 @@ Update `src/layout.tsx` to import the css, add the providers and define a simple
 
 ```tsx
 ...
-import "@allo/kit/styles.css";
+import "@allo-team/kit/styles.css";
 
 export default function RootLayout({
   children,
@@ -82,7 +82,7 @@ https://grants-stack-indexer-v2.gitcoin.co/graphiql
 
 ```tsx
 import Link from "next/link";
-import { DiscoverRounds } from "@allo/kit";
+import { DiscoverRounds } from "@allo-team/kit";
 
 export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
   return (
@@ -126,7 +126,7 @@ import {
   BackButton,
   DiscoverApplications,
   RoundDetailsWithHook as RoundDetails,
-} from "@allo/kit";
+} from "@allo-team/kit";
 import Link from "next/link";
 
 export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
@@ -181,7 +181,7 @@ Update `src/app/layout.tsx`
 
 ```tsx
 ...
-import { ConnectButton } from "@allo/kit";
+import { ConnectButton } from "@allo-team/kit";
 
 export default function RootLayout({
   children,
@@ -210,7 +210,7 @@ Create the file: `src/admin/rounds/create/page.tsx`
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CreateRound } from "@allo/kit";
+import { CreateRound } from "@allo-team/kit";
 
 export default function CreateRoundPage({}) {
   const router = useRouter();
@@ -231,7 +231,7 @@ Update `src/providers.tsx` with this:
 ```tsx
 "use client";
 
-import { ApiProvider, Web3Provider } from "@allo/kit";
+import { ApiProvider, Web3Provider } from "@allo-team/kit";
 
 export function AlloKitProviders({
   children,
@@ -314,7 +314,7 @@ Create the file `src/rounds/[chainId]/[roundId]/apply/page.tsx`.
 "use client";
 
 import { useRouter } from "next/navigation";
-import { CreateApplication } from "@allo/kit";
+import { CreateApplication } from "@allo-team/kit";
 
 export default function CreateApplicationPage({
   params: { roundId, chainId },
@@ -352,7 +352,7 @@ import {
   Button,
   useIsRoundAdmin,
   useApproveApplication,
-} from "@allo/kit";
+} from "@allo-team/kit";
 
 export default function ApplicationDetailsPage({
   params: { chainId = 0, applicationId = "" },

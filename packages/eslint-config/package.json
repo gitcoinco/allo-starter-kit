@@ -1,5 +1,5 @@
 {
-  "name": "@allo/eslint-config",
+  "name": "@allo-team/eslint-config",
   "version": "0.0.0",
   "private": true,
   "files": [

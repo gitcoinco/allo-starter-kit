@@ -1,4 +1,4 @@
-import { ProjectDetails } from "@allo/kit";
+import { ProjectDetails } from "@allo-team/kit";
 
 export default function ProjectPage({
   params: { chainId = 0, projectId = "" },

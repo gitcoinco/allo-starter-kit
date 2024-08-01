@@ -15,8 +15,8 @@
     "dev:demo": "cd apps/demo && bun run dev"
   },
   "devDependencies": {
-    "@allo/eslint-config": "*",
-    "@allo/typescript-config": "*",
+    "@allo-team/eslint-config": "*",
+    "@allo-team/typescript-config": "*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },

@@ -2,8 +2,8 @@ import {
   DiscoverApplications,
   DiscoverRounds,
   ProjectDetails,
-} from "@allo/kit";
-import { indexer } from "@allo/kit";
+} from "@allo-team/kit";
+import { indexer } from "@allo-team/kit";
 import { Metadata } from "next";
 
 export async function generateMetadata({
