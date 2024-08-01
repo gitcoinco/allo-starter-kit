@@ -11,15 +11,6 @@ npx create-next-app@latest allo-app
 bun add @allo-team/kit
 ```
 
-**💡Package has not been published to NPM yet**  
-You can link the repo by
-
-1.  Clone the repo (`git clone git@github.com:gitcoinco/allo-starter-kit.git`)
-2.  Navigate to `packages/kit`
-3.  Run `bun link`
-4.  Navigate to your created app (`allo-app`)
-5.  Run `bun link @allo-team/kit --save`
-
 ### Configuring Providers
 
 AlloKit has two providers:
