@@ -175,6 +175,33 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
 
 This will display the round details and a list of approved applications. Each application links to an application details page.
 
+### Connecting a Wallet
+
+Update `src/app/layout.tsx`
+
+```tsx
+...
+import { ConnectButton } from "@allo/kit";
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <AlloKitProviders>
+          <main className="max-w-screen-lg mx-auto py-16">
+          <ConnectButton />
+          {children}
+          </main>
+        </AlloKitProviders>
+      </body>
+    </html>
+  );
+```
+
 ### Create Round Page
 
 Create the file: `src/admin/rounds/create/page.tsx`

@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 import { QRCodeSVG } from "qrcode.react";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-import { grantsStackAPI } from "@allo/kit";
+import { indexer } from "@allo/kit";
 
 const title = "Gitcoin";
 export const alt = title;
@@ -18,7 +18,7 @@ export default async function Image(props: {
 
   const projectUrl = `https://${host}/share/project/${projectId}`;
 
-  const project = await grantsStackAPI?.projectById?.(projectId, {
+  const project = await indexer.projectById(projectId, {
     chainId,
   });
 

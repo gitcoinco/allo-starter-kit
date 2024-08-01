@@ -86,40 +86,45 @@ export type Allocation = { id: string; amount?: number };
 export type Ballot = Record<string, Allocation>;
 
 export interface API {
-  rounds: (query: RoundsQuery) => Promise<Round[]>;
-  roundById: (id: string, opts?: QueryOpts) => Promise<Round | undefined>;
-  createRound: (
-    data: RoundInput,
-    signer: WalletClient,
-  ) => Promise<RoundCreated>;
-  projects: (query: ProjectsQuery) => Promise<Project[]>;
-  projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
-  createProject: (
-    data: ProjectInput,
-    signer: WalletClient,
-  ) => Promise<ProjectCreated>;
-  applications: (query: ApplicationsQuery) => Promise<Application[]>;
-  applicationById: (
-    id: string,
-    opts?: QueryOpts,
-  ) => Promise<Application | undefined>;
-  createApplication: (
-    data: ApplicationInput,
-    signer: WalletClient,
-  ) => Promise<ApplicationCreated>;
+  indexer: {
+    rounds: (query: RoundsQuery) => Promise<Round[]>;
+    roundById: (id: string, opts?: QueryOpts) => Promise<Round | undefined>;
+    projects: (query: ProjectsQuery) => Promise<Project[]>;
+    projectById: (id: string, opts?: QueryOpts) => Promise<Project | undefined>;
+
+    applications: (query: ApplicationsQuery) => Promise<Application[]>;
+    applicationById: (
+      id: string,
+      opts?: QueryOpts,
+    ) => Promise<Application | undefined>;
+  };
+  allo: {
+    createRound: (
+      data: RoundInput,
+      signer: WalletClient,
+    ) => Promise<RoundCreated>;
+    createProject: (
+      data: ProjectInput,
+      signer: WalletClient,
+    ) => Promise<ProjectCreated>;
+    createApplication: (
+      data: ApplicationInput,
+      signer: WalletClient,
+    ) => Promise<ApplicationCreated>;
+    allocate: (
+      tx: TransactionInput,
+      signer: WalletClient,
+    ) => Promise<Address | undefined>;
+    distribute: () => void;
+    sendTransaction: (
+      tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
+      signer?: WalletClient, // TODO: Use something more generic than WalletClient?
+    ) => Promise<Hash>;
+  };
   ballot: () => Promise<Ballot>;
   addToBallot: (ballot: Ballot) => Promise<Ballot>;
   saveBallot: (ballot: Ballot) => Promise<Ballot>;
-  allocate: (
-    tx: TransactionInput,
-    signer: WalletClient,
-  ) => Promise<Address | undefined>;
-  distribute: () => void;
   upload: (data: Record<string, unknown> | File | FormData) => Promise<string>;
-  sendTransaction: (
-    tx: { to: `0x${string}`; data: `0x${string}`; value: string | bigint },
-    signer?: WalletClient, // TODO: Use something more generic than WalletClient?
-  ) => Promise<Hash>;
 }
 // Transforms data from API into a common shape
 

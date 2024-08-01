@@ -5,7 +5,7 @@ import {
   RoundNetworkBadge,
   RoundStrategyBadge,
 } from "@allo/kit";
-import { grantsStackAPI } from "@allo/kit";
+import { indexer } from "@allo/kit";
 import { Drawer, DrawerContent, DrawerFooter, DrawerTrigger } from "@allo/kit";
 import { notFound } from "next/navigation";
 import { Applications } from "./applications";
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }: {
   params: { roundId: string; chainId: string };
 }): Promise<Metadata> {
-  const round = await grantsStackAPI.roundById?.(roundId, { chainId });
+  const round = await indexer.roundById(roundId, { chainId });
   if (!round) return {};
 
   return {
@@ -27,7 +27,7 @@ export async function generateMetadata({
 export default async function ShareRoundPage({
   params: { roundId = "", chainId = "" },
 }) {
-  const round = await grantsStackAPI.roundById?.(roundId, { chainId });
+  const round = await indexer.roundById(roundId, { chainId });
   if (!round) return notFound();
   return (
     <div>

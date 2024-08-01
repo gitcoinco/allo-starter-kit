@@ -1,7 +1,7 @@
 import { getAddress as alloAddress } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
 import { DirectGrantsLiteStrategy } from "@allo-team/allo-v2-sdk";
 import { Address, Chain, WalletClient, getAddress } from "viem";
-import { API, Application, Round, TransactionInput } from "../../api/types";
+import { API, Application, Round } from "../../api/types";
 
 type Allocation = {
   token: `0x${string}`;
@@ -13,7 +13,7 @@ export const call = (
   round: Round,
   state: Record<string, number>,
   applications: Application[],
-  api: Pick<API, "sendTransaction">,
+  api: API,
   signer: WalletClient,
 ) => {
   const allocations: Allocation[] = buildAllocations(
@@ -31,7 +31,7 @@ export const call = (
     allocations,
   );
 
-  return api.sendTransaction(tx, signer);
+  return api.allo.sendTransaction(tx, signer);
 };
 
 function buildAllocations(

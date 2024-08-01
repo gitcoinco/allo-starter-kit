@@ -15,16 +15,16 @@ export function useProjects(query: ProjectsQuery = defaultQuery) {
   const api = useAPI();
   return useQuery({
     queryKey: ["projects", query],
-    queryFn: async () => api.projects(query),
+    queryFn: async () => api.indexer.projects(query),
   });
 }
 
-type ProjectByID = Parameters<API["projectById"]>;
+type ProjectByID = Parameters<API["indexer"]["projectById"]>;
 export function useProjectById(id: ProjectByID[0], opts?: ProjectByID[1]) {
   const api = useAPI();
   return useQuery({
     queryKey: ["project", { id, opts }],
-    queryFn: async () => api.projectById(id, opts),
+    queryFn: async () => api.indexer.projectById(id, opts),
     enabled: Boolean(id),
   });
 }
@@ -33,6 +33,6 @@ export function useCreateProject() {
   const api = useAPI();
   const { data: client } = useWalletClient();
   return useMutation({
-    mutationFn: (data: ProjectInput) => api.createProject(data, client!),
+    mutationFn: (data: ProjectInput) => api.allo.createProject(data, client!),
   });
 }

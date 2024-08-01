@@ -8,7 +8,7 @@ export const call = (
   selected: string[],
   strategy: Address,
   statusValue: bigint,
-  api: Pick<API, "sendTransaction">,
+  api: API,
   signer: WalletClient,
 ) => {
   const statuses: { index: bigint; statusRow: bigint }[] = applicationIds.map(
@@ -25,5 +25,5 @@ export const call = (
     refRecipientsCounter,
   );
 
-  return api.sendTransaction(tx, signer);
+  return api.allo.sendTransaction(tx, signer);
 };

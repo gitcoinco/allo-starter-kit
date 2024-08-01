@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const form = await request.formData();
 
-    const file: File | null = form.get("file") as unknown as File;
+    const file = form.get("file") as unknown as File;
     form.append("file", file);
     form.append("pinataMetadata", JSON.stringify({ name: file.name }));
 

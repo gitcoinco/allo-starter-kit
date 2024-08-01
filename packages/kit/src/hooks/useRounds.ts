@@ -13,19 +13,18 @@ const defaultQuery: RoundsQuery = {
 
 export function useRounds(query: RoundsQuery = defaultQuery) {
   const api = useAPI();
-  console.log("use rounds", query);
   return useQuery({
     queryKey: ["rounds", query],
-    queryFn: async () => api.rounds(query),
+    queryFn: async () => api.indexer.rounds(query),
   });
 }
 
-type RoundParams = Parameters<API["roundById"]>;
+type RoundParams = Parameters<API["indexer"]["roundById"]>;
 export function useRoundById(id: RoundParams[0], opts?: RoundParams[1]) {
   const api = useAPI();
   return useQuery({
     queryKey: ["round", { id, opts }],
-    queryFn: async () => api.roundById(id, opts),
+    queryFn: async () => api.indexer.roundById(id, opts),
     enabled: Boolean(id),
   });
 }
@@ -35,7 +34,7 @@ export function useCreateRound() {
   const { toast } = useToast();
   const { data: client } = useWalletClient();
   return useMutation({
-    mutationFn: (data: RoundInput) => api.createRound(data, client!),
+    mutationFn: (data: RoundInput) => api.allo.createRound(data, client!),
     onSuccess: () => toast({ title: "Round created!" }),
     onError: (err) => toast({ variant: "destructive", title: err.toString() }),
   });

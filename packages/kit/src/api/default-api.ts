@@ -1,45 +1,48 @@
 "use client";
-import { WalletClient, getAddress } from "viem";
 
-import { grantsStackAPI } from "./providers/grants-stack";
-import { allo2API } from "./providers/allo2";
+import { indexer } from "./providers/indexer";
+import { allo } from "./providers/allo2";
 import { directGrants } from "../strategies/direct-grants";
 import { quadraticFunding } from "../strategies/quadratic-funding";
 
-import { API, TransactionInput } from "./types";
+import { API } from "./types";
 import { StrategyExtensions } from "../strategies";
 
 /*
 These are all the available methods in the API. Throws an error if not implemented.
 */
 const emptyAPI: API = {
-  rounds: async () => Promise.reject(new Error("Not Implemented: rounds")),
-  roundById: async () =>
-    Promise.reject(new Error("Not Implemented: roundById")),
-  createRound: async () =>
-    Promise.reject(new Error("Not Implemented: createRound")),
-  projects: async () => Promise.reject(new Error("Not Implemented: projects")),
-  projectById: async () =>
-    Promise.reject(new Error("Not Implemented: projectById")),
-  applications: async () =>
-    Promise.reject(new Error("Not Implemented: applications")),
-  applicationById: async () =>
-    Promise.reject(new Error("Not Implemented: applicationById")),
-  allocate: async () => Promise.reject(new Error("Not Implemented: allocate")),
-  createProject: async () =>
-    Promise.reject(new Error("Not Implemented: createProject")),
-  createApplication: async () =>
-    Promise.reject(new Error("Not Implemented: createApplication")),
-  distribute: async () =>
-    Promise.reject(new Error("Not Implemented: Distribute")),
-
+  indexer: {
+    rounds: async () => Promise.reject(new Error("Not Implemented: rounds")),
+    roundById: async () =>
+      Promise.reject(new Error("Not Implemented: roundById")),
+    projects: async () =>
+      Promise.reject(new Error("Not Implemented: projects")),
+    projectById: async () =>
+      Promise.reject(new Error("Not Implemented: projectById")),
+    applications: async () =>
+      Promise.reject(new Error("Not Implemented: applications")),
+    applicationById: async () =>
+      Promise.reject(new Error("Not Implemented: applicationById")),
+  },
+  allo: {
+    createRound: async () =>
+      Promise.reject(new Error("Not Implemented: createRound")),
+    allocate: async () =>
+      Promise.reject(new Error("Not Implemented: allocate")),
+    createProject: async () =>
+      Promise.reject(new Error("Not Implemented: createProject")),
+    createApplication: async () =>
+      Promise.reject(new Error("Not Implemented: createApplication")),
+    distribute: async () =>
+      Promise.reject(new Error("Not Implemented: Distribute")),
+    // Defines how the transaction data is sent. More details below.
+    sendTransaction: async () =>
+      Promise.reject(new Error("Not Implemented: sendTransaction")),
+  },
   // AlloKit doesn't have a server so this needs to be implemented by the client.
   // Alternatively we can provide an endpoint (See apps/demo/src/app/api/ipfs/route.ts)
   upload: async () => Promise.reject(new Error("Not Implemented: upload")),
-
-  // Defines how the transaction data is sent. More details below.
-  sendTransaction: async () =>
-    Promise.reject(new Error("Not Implemented: sendTransaction")),
 
   // The Ballot API handles could start by implementing a localStorage API
   // Works for Checkout Cart also - can we find a better name than ballot?
@@ -51,35 +54,14 @@ const emptyAPI: API = {
 };
 
 export const providers = {
-  grantsStackAPI,
-  allo2API,
+  indexer,
+  allo,
 };
 
 export const strategies = {
   directGrants,
   quadraticFunding,
 };
-
-/* 
-A custom sendTransaction can be sent to ApiProvider. 
-<ApiProvider api={{ sendTransaction: cometh.wallet.sendTransaction }} />
-
-The default sendTransaction uses the Viem wallet signer of the connected wallet
-*/
-export async function sendTransaction(
-  tx: TransactionInput,
-  signer?: WalletClient,
-) {
-  if (!signer?.account) throw new Error("Signer missing");
-  const address = getAddress(signer.account?.address);
-
-  return signer.sendTransaction({
-    ...tx,
-    value: BigInt(tx.value),
-    account: address,
-    chain: signer.chain,
-  });
-}
 
 export function mergeApi({
   api,
@@ -91,9 +73,8 @@ export function mergeApi({
   return {
     api: {
       ...emptyAPI,
-      ...grantsStackAPI,
-      ...allo2API,
-      sendTransaction,
+      indexer,
+      allo,
       ...api,
     },
     strategies: {

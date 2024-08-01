@@ -14,7 +14,7 @@ import { getAddress } from "viem";
 
 const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
 
-export const grantsStackAPI: Partial<API> = {
+export const indexer: API["indexer"] = {
   rounds: async (query) => {
     return request<{ rounds: GSRound[] }>({
       url: apiURL,
