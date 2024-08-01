@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ApplicationDetails } from "@allo/kit";
+import { ApplicationDetails } from "@allo-team/kit";
 import { application } from "@/data/applications";
 import { fn } from "@storybook/test";
-import { Button } from "@allo/kit";
+import { Button } from "@allo-team/kit";
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Applications/Details",

@@ -1,4 +1,4 @@
-import { ApplicationDetails } from "@allo/kit";
+import { ApplicationDetails } from "@allo-team/kit";
 
 export default function ApplicationPage({
   params: { chainId = 0, applicationId = "", roundId = "" },

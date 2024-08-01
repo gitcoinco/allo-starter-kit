@@ -1,5 +1,5 @@
 {
-  "extends": "@allo/typescript-config/react-library.json",
+  "extends": "@allo-team/typescript-config/react-library.json",
   "compilerOptions": {
     "lib": ["dom", "ES2020"],
     "sourceMap": true,

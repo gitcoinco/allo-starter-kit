@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { DiscoverRounds } from "@allo/kit";
+import { DiscoverRounds } from "@allo-team/kit";
 
 const meta = {
   title: "Rounds/Discover",

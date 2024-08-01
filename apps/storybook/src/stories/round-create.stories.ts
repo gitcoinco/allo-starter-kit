@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn, userEvent, within } from "@storybook/test";
-import { CreateRound, strategies } from "@allo/kit";
+import { CreateRound, strategies } from "@allo-team/kit";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
