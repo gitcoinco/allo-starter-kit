@@ -153,11 +153,11 @@ Depending on your app and use-cases you can use the kit in different ways. For e
 Example:
 
 ```tsx
-import { DiscoverRounds, useRounds, grantsStackAPI } from "@allo/kit";
+import { DiscoverRounds, useRounds, indexer } from "@allo/kit";
 
 export default function RoundsPage() {
   // Server-side
-  const rounds = await grantsStack.rounds(query);
+  const rounds = await indexer.rounds(query);
 
   // Or using hooks (remember to "use client" at top of file)
   const { data, error, isPending } = useRounds(query);
