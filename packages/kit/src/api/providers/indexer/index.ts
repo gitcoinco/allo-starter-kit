@@ -1,5 +1,11 @@
 import { request } from "graphql-request";
-import { API, Application, Project, Round, Transformers } from "../../types";
+import type {
+  API,
+  Application,
+  Project,
+  Round,
+  Transformers,
+} from "../../types";
 import {
   roundsQuery,
   applicationsQuery,
@@ -8,7 +14,7 @@ import {
   applicationsByIdQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
-import { GSRound, GSApplication, GSProject } from "./types";
+import type { GSRound, GSApplication, GSProject } from "./types";
 import { isValid } from "date-fns";
 import { getAddress } from "viem";
 

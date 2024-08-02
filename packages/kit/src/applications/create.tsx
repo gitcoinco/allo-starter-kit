@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Form } from "../ui/form";
 import { Button } from "../ui/button";
 import { useRoundById } from "../hooks/useRounds";
-import { ApplicationCreated, Round } from "../api/types";
+import type { ApplicationCreated, Round } from "../api/types";
 import { useCreateApplication } from "../hooks/useApplications";
 import { useRoundStrategyAddon } from "../strategies";
 

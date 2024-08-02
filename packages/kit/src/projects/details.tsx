@@ -1,6 +1,6 @@
 "use client";
 import { Markdown } from "..";
-import { QueryOpts } from "../api/types";
+import type { QueryOpts } from "../api/types";
 import { useProjectById } from "../hooks/useProjects";
 import { BackgroundImage } from "../ui/background-image";
 

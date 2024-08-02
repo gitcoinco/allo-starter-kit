@@ -1,5 +1,5 @@
 import { Button } from "..";
-import { Application } from "../api/types";
+import type { Application } from "../api/types";
 import { cn, formatMoney, formatNumber } from "../lib/utils";
 import { BackgroundImage } from "../ui/background-image";
 import { Card, CardContent } from "../ui/card";

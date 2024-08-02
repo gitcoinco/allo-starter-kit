@@ -1,11 +1,11 @@
-import { Address, erc20Abi, getAddress, zeroAddress } from "viem";
+import { type Address, erc20Abi, getAddress, zeroAddress } from "viem";
 import { useBalance, useReadContracts } from "wagmi";
 import { NATIVE } from "@allo-team/allo-v2-sdk";
 
 export const isNativeToken = (token?: Address) =>
   [zeroAddress, NATIVE].includes(token?.toLowerCase()!);
 
-export function useToken(tokenAddress?: Address) {
+export function useToken(tokenAddress?: Address): any {
   const address = tokenAddress ? getAddress(tokenAddress) : undefined;
   const tokenContract = { address, abi: erc20Abi };
 

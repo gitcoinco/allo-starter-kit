@@ -1,13 +1,13 @@
 "use client";
-import { PropsWithChildren, createContext, useContext } from "react";
+import { type PropsWithChildren, createContext, useContext } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
-import { API } from "./types";
+import type { API } from "./types";
 
 import { Toaster } from "../ui/toaster";
-import { StrategyExtensions } from "../strategies";
+import type { StrategyExtensions } from "../strategies";
 import { getQueryClient } from "./query-client";
 import { mergeApi } from "./default-api";
 

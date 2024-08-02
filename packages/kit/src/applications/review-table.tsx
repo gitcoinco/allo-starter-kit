@@ -1,20 +1,15 @@
 "use client";
-import { ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 import { Check } from "lucide-react";
-import {
-  Button,
-  Form,
-  FormField,
-  useForm,
-  useFormContext,
-} from "@allo-team/kit";
 import { ApplicationApprovalItem } from "../applications/approval-item";
 import { useApplications } from "../hooks/useApplications";
-import { Application } from "../api/types";
+import type { Application } from "../api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { useRoundById } from "../hooks/useRounds";
 import { useRoundStrategyAddonCall } from "../strategies";
 import { EmptyState } from "../ui/empty-state";
+import { Button } from "../ui/button";
+import { Form, FormField, useForm, useFormContext } from "../ui/form";
 
 const actionMap: Partial<Record<Application["status"], string>> = {
   APPROVED: "Reject",

@@ -1,4 +1,4 @@
-import { Badge, BadgeProps } from "../ui/badge";
+import { Badge, type BadgeProps } from "../ui/badge";
 
 export function RoundStrategyBadge({
   strategyName,

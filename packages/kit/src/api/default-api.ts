@@ -5,8 +5,8 @@ import { allo } from "./providers/allo2";
 import { directGrants } from "../strategies/direct-grants";
 import { quadraticFunding } from "../strategies/quadratic-funding";
 
-import { API } from "./types";
-import { StrategyExtensions } from "../strategies";
+import type { API } from "./types";
+import type { StrategyExtensions } from "../strategies";
 
 /*
 These are all the available methods in the API. Throws an error if not implemented.

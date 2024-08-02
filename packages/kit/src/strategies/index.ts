@@ -1,10 +1,10 @@
-import { FunctionComponent, useMemo } from "react";
+import { type FunctionComponent, useMemo } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useWalletClient } from "wagmi";
-import { Address } from "viem";
-import { TContracts } from "@gitcoin/gitcoin-chain-data";
+import type { Address } from "viem";
+import type { TContracts } from "@gitcoin/gitcoin-chain-data";
 import { supportedChains } from "../api/web3-provider";
-import { API, Round } from "../api/types";
+import type { API, Round } from "../api/types";
 import { useAPI, useStrategies } from "..";
 import z from "zod";
 

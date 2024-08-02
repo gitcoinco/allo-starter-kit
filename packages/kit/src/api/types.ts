@@ -1,4 +1,4 @@
-import { Address, Hash, WalletClient } from "viem";
+import type { Address, Hash, WalletClient } from "viem";
 
 type OrderBy = "asc" | "desc";
 
@@ -72,8 +72,8 @@ type RoundQueryWhere = {
   createdAt?: Compare;
   createdBy?: Compare;
   applicationsStartTime?: Compare;
+  applicationsEndTime?: Compare;
   donationsStartTime?: Compare;
-  donationsEndTime?: Compare;
   donationsEndTime?: Compare;
   applications?: ApplicationsQuery;
   roles?: RolesQuery;
@@ -144,7 +144,6 @@ export type Round = BaseRound & {
   name: string;
   description: string;
   eligibility: { requirements?: { requirement: string }[] };
-  bannerUrl?: string;
   chainId: number;
   applications?: { id: string }[];
   matching: { amount: bigint; token: Address };

@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { StrategyExtension } from "..";
+import type { StrategyExtension } from "..";
 import { supportedChains } from "../..";
 
 export const quadraticFunding: StrategyExtension = {

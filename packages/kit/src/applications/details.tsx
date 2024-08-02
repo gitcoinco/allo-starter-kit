@@ -1,10 +1,10 @@
 "use client";
 import { Markdown } from "../ui/markdown";
-import { QueryOpts } from "../api/types";
+import type { QueryOpts } from "../api/types";
 import { useApplicationById } from "../hooks/useApplications";
 import { BackgroundImage } from "../ui/background-image";
 import { ApplicationStatusBadge } from "./status-badge";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 type ApplicationDetailsProps = {
   id: string;

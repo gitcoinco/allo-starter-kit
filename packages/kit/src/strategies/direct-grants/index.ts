@@ -8,7 +8,7 @@ import {
 } from "./register-recipient";
 import { call as reviewRecipientsCall } from "./review-recipients";
 import { call as allocateCall } from "./allocate";
-import { StrategyExtension } from "..";
+import type { StrategyExtension } from "..";
 import { supportedChains } from "../..";
 
 export const directGrants: StrategyExtension = {
