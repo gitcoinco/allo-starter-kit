@@ -1,15 +1,16 @@
-import { defineConfig, Options } from "tsup";
+import { defineConfig, type Options } from "tsup";
 
 export default defineConfig((options: Options) => ({
-  treeshake: false,
+  ...options,
+  treeshake: true,
   splitting: false,
+  bundle: false,
   entry: ["src"],
   format: ["esm"],
-  dts: false,
+  dts: true,
   minify: !options.watch,
   clean: true,
   external: ["react"],
-  ...options,
   esbuildOptions(options) {
     options.banner = {
       js: '"use client"',

@@ -1,14 +1,22 @@
 {
-  "extends": "@allo-team/typescript-config/react-library.json",
   "compilerOptions": {
-    "lib": ["dom", "ES2020"],
-    "sourceMap": true,
-    "inlineSources": true,
-    "moduleResolution": "NodeNext",
-    "outDir": "dist"
-    // "baseUrl": "."
-    // "rootDir": "."
+    "target": "es2018",
+    "module": "ESNext",
+    "lib": ["esnext"],
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "verbatimModuleSyntax": false,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "./src",
+    "typeRoots": ["./src"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "dist", "**/__tests__/*", "src/test-utils.tsx"]
 }
