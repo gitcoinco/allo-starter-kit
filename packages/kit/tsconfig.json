@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "module": "ESNext",
-    "lib": ["esnext"],
+    "lib": ["dom", "esnext"],
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "esModuleInterop": true,
@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDir": "./src",
+    "rootDir": ".",
+    "types": [],
     "typeRoots": ["./src"]
   },
   "include": ["**/*.ts", "**/*.tsx"],

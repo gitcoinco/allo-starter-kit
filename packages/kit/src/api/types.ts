@@ -22,7 +22,7 @@ type ApplicationOrderKeys =
   | "total_amount_donated_in_usd"
   | "unique_donors_count";
 
-interface Query<T> {
+interface Query<T extends string> {
   orderBy?: Partial<Record<T, OrderBy>>;
   offset?: number;
   first?: number;
