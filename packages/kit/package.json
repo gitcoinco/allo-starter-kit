@@ -1,8 +1,8 @@
 {
   "name": "@allo-team/kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -10,7 +10,16 @@
     "dist/**"
   ],
   "exports": {
-    ".": "./src/index.tsx",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
     "./styles.css": "./dist/styles.css",
     "./button": "./src/ui/button.tsx",
     "./icons": "./src/icons.ts",
