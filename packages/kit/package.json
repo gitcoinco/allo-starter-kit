@@ -1,6 +1,6 @@
 {
   "name": "@allo-team/kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -10,16 +10,7 @@
     "dist/**"
   ],
   "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.mts",
-        "default": "./dist/index.mjs"
-      },
-      "require": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
-    },
+    ".": "./src/index.tsx",
     "./styles.css": "./dist/styles.css",
     "./button": "./src/ui/button.tsx",
     "./icons": "./src/icons.ts",
@@ -43,6 +34,7 @@
   "devDependencies": {
     "@allo-team/eslint-config": "*",
     "@allo-team/typescript-config": "*",
+    "@microsoft/api-extractor": "^7.47.4",
     "@swc/helpers": "^0.5.12",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.0",
@@ -52,6 +44,7 @@
     "@types/node": "^20.14.13",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "ajv": "^8.17.1",
     "esbuild-css-modules-plugin": "^3.1.2",
     "eslint": "^8.57.0",
     "happy-dom": "^14.12.3",

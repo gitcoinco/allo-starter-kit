@@ -14,10 +14,16 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "outDir": "dist",
-    "rootDir": ".",
+    "rootDir": "./src",
     "types": [],
     "typeRoots": ["./src"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "dist", "**/__tests__/*", "src/test-utils.tsx"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/__tests__/*",
+    "src/test-utils.tsx",
+    "**/*.css"
+  ]
 }
