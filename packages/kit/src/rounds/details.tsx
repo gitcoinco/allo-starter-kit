@@ -17,15 +17,15 @@ RoundDetails is just the view component
 */
 
 export function RoundDetailsWithHook({
-  id,
+  roundId,
   chainId,
   ...props
 }: {
-  id: string;
+  roundId: string;
   chainId: number;
   opts?: QueryOpts;
 } & PageActions) {
-  return <RoundDetails {...useRoundById(id, { chainId })} {...props} />;
+  return <RoundDetails {...useRoundById(roundId, { chainId })} {...props} />;
 }
 
 export function RoundDetails({
@@ -65,15 +65,6 @@ export function RoundDetails({
       ) : (
         <Markdown className={"prose-xl"}>{data?.description}</Markdown>
       )}
-
-      <div>
-        <h3 className="text-2xl font-semibold">Eligibility</h3>
-        <ul className="space-y-4">
-          {data?.eligibility.requirements?.map((req, i) => (
-            <li key={i}>{req.requirement}</li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }

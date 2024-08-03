@@ -19,6 +19,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { ChevronDown, ExternalLink, MoreHorizontal } from "lucide-react";
 import { ReactNode, useMemo } from "react";
+import { Badge } from "../ui/badge";
 
 type Props = {
   renderLink?: (application: Application) => ReactNode;
@@ -106,6 +107,16 @@ export function ApplicationsTable({
           <ApplicationStatusBadge status={row.getValue("status")} />
         ),
       },
+      {
+        id: "reviews",
+        header: "Reviews",
+        cell: ({ row }) => <div className="text-center">2</div>,
+      },
+      {
+        id: "score",
+        header: "Score",
+        cell: ({ row }) => <div className="text-center">90%</div>,
+      },
       ...(renderLink
         ? ([
             {
@@ -114,28 +125,28 @@ export function ApplicationsTable({
             },
           ] as ColumnDef<Application>[])
         : []),
-      {
-        id: "actions",
-        cell: ({ row }) => {
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" icon={MoreHorizontal}></Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => console.log("copy")}>
-                  Open Application
-                  <ExternalLink className="ml-2 size-4" />
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  Review selected with Checker
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        },
-      },
+      // {
+      //   id: "actions",
+      //   cell: ({ row }) => {
+      //     return (
+      //       <DropdownMenu>
+      //         <DropdownMenuTrigger asChild>
+      //           <Button variant="ghost" icon={MoreHorizontal}></Button>
+      //         </DropdownMenuTrigger>
+      //         <DropdownMenuContent align="end">
+      //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      //           <DropdownMenuItem onClick={() => console.log("copy")}>
+      //             Open Application
+      //             <ExternalLink className="ml-2 size-4" />
+      //           </DropdownMenuItem>
+      //           <DropdownMenuItem>
+      //             Review selected with Checker
+      //           </DropdownMenuItem>
+      //         </DropdownMenuContent>
+      //       </DropdownMenu>
+      //     );
+      //   },
+      // },
     ],
     [],
   );
@@ -177,12 +188,9 @@ export function ApplicationsTable({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => console.log("copy")}>
-                  Copy payment ID
+                <DropdownMenuItem onClick={() => alert("Review with Checker")}>
+                  Review selected with Checker
                 </DropdownMenuItem>
-                <DropdownMenuItem>View customer</DropdownMenuItem>
-                <DropdownMenuItem>View payment details</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

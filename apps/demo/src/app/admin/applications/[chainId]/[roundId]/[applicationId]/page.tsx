@@ -1,6 +1,7 @@
 "use client";
 import {
   ApplicationDetails,
+  BackButton,
   Button,
   Dialog,
   DialogContent,
@@ -9,8 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
   Textarea,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   useRoundById,
+  ApplicationAnswers,
 } from "@allo-team/kit";
+import Link from "next/link";
 
 export default function ApplicationPage({
   params: { chainId = 0, applicationId = "", roundId = "" },
@@ -22,7 +29,12 @@ export default function ApplicationPage({
         id={applicationId}
         chainId={chainId}
         roundId={roundId}
-        action={
+        backAction={
+          <Link href={`/admin/rounds/${chainId}/${roundId}`}>
+            <BackButton />
+          </Link>
+        }
+        primaryAction={
           <div>
             <Dialog>
               <DialogTrigger>
@@ -60,6 +72,20 @@ export default function ApplicationPage({
           </div>
         }
       />
+      <Tabs defaultValue="application">
+        <TabsList>
+          <TabsTrigger value="application">Application</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews</TabsTrigger>
+        </TabsList>
+        <TabsContent value="application">
+          <ApplicationAnswers
+            applicationId={applicationId}
+            roundId={roundId}
+            chainId={chainId}
+          />
+        </TabsContent>
+        <TabsContent value="reviews">Reviews</TabsContent>
+      </Tabs>
     </section>
   );
 }
