@@ -36,7 +36,7 @@ export function RoundDetails({
   primaryAction,
 }: Partial<UseQueryResult<Round | undefined, unknown>> & PageActions) {
   return (
-    <section>
+    <section className="space-y-6">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {backAction}
@@ -65,6 +65,15 @@ export function RoundDetails({
       ) : (
         <Markdown className={"prose-xl"}>{data?.description}</Markdown>
       )}
+
+      <div>
+        <h3 className="text-2xl font-semibold">Eligibility</h3>
+        <ul className="space-y-4">
+          {data?.eligibility.requirements?.map((req, i) => (
+            <li key={i}>{req.requirement}</li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

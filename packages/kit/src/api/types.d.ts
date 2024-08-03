@@ -37,7 +37,8 @@ export interface ApplicationsQuery extends Query<ApplicationOrderKeys> {
   where?: ApplicationQueryWhere;
 }
 export interface RolesQuery extends Query<string> {
-  where?: RolesQueryWhere;
+  some?: RolesQueryWhere;
+  every?: RolesQueryWhere;
 }
 type Compare<T = string | number> = {
   equalTo?: T;
@@ -157,6 +158,7 @@ export type Round = BaseRound & {
     donationsStartTime?: string;
     donationsEndTime?: string;
   };
+  roles: { address: Address; role: "ADMIN" | "MANAGER" }[];
 };
 
 export type RoundInput = BaseRound & {

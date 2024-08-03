@@ -34,6 +34,7 @@ export type GSRound = {
   strategyName: string;
   strategyAddress: Address;
   applications: { id: string }[];
+  roles: { address: Address; role: "ADMIN" | "MANAGER" }[];
 };
 type GSCredential = any;
 type CID = string;

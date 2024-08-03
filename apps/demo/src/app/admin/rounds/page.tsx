@@ -1,23 +1,26 @@
 "use client";
 import { DiscoverRounds } from "@allo-team/kit";
 import Link from "next/link";
+import { useAccount } from "wagmi";
 
 export default function AdminRounds() {
-  // const { address } = useAccount();
-  // if (!address) return <div>Connect your wallet</div>;
+  const { address } = useAccount();
+  if (!address) return <div>Connect your wallet</div>;
   return (
     <DiscoverRounds
       query={{
         where: {
-          strategyName: {
-            in: ["allov2.DirectGrantsLiteStrategy"],
-          },
-          // chainId: { in: [11155111] },
-          // createdBy: { in: [address!] },
           // Only rounds where we are admin or manager
-          // roles: {
-          //   address: { in: [String(address)] },
-          // },
+          roles: {
+            some: {
+              address: { in: ["0xb425ec6d420732053fdec999f8e9738cf75efdbd"] },
+            },
+          },
+          applications: {
+            where: {
+              status: { in: ["REJECTED"] },
+            },
+          },
         },
         orderBy: { created_at_block: "desc" },
         offset: 0,

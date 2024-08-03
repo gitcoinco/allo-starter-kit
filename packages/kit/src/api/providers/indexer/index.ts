@@ -115,7 +115,7 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
   round: ({
     id,
     chainId,
-    roundMetadata: { name, title, description, eligibility },
+    roundMetadata,
     matchAmount,
     matchTokenAddress,
     applications,
@@ -125,23 +125,28 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     donationsEndTime,
     strategyAddress,
     strategyName,
-  }: GSRound): Round => ({
-    id,
-    chainId,
-    name: name || title || "?",
-    description: description || eligibility?.description,
-    eligibility: eligibility,
-    applications,
-    matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
-    strategy: getAddress(strategyAddress),
-    strategyName,
-    phases: {
-      applicationsStartTime: validateDate(applicationsStartTime),
-      applicationsEndTime: validateDate(applicationsEndTime),
-      donationsStartTime: validateDate(donationsStartTime),
-      donationsEndTime: validateDate(donationsEndTime),
-    },
-  }),
+    roles,
+  }: GSRound): Round => {
+    const { name, title, description, eligibility } = roundMetadata || {};
+    return {
+      id,
+      chainId,
+      name: name || title || "?",
+      description: description || eligibility?.description,
+      eligibility: eligibility,
+      applications,
+      matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
+      strategy: getAddress(strategyAddress),
+      strategyName,
+      phases: {
+        applicationsStartTime: validateDate(applicationsStartTime),
+        applicationsEndTime: validateDate(applicationsEndTime),
+        donationsStartTime: validateDate(donationsStartTime),
+        donationsEndTime: validateDate(donationsEndTime),
+      },
+      roles,
+    };
+  },
   application: ({
     id,
     chainId,

@@ -24,7 +24,7 @@ export function queryToFilter(query: RoundsQuery) {
 
   TODO: Currently only implemented in roundsQuery. Update applicationsQuery and projectsQuery.
   */
-  const nestedKeys = ["applications", "roles", "projects"];
+  const nestedKeys = ["applications", "projects"];
   const nestedFilters = nestedKeys.reduce((acc, key) => {
     if (!filter?.[key as keyof typeof filter]) return acc;
     const { where, orderBy } = pick(filter, [key])?.[key];

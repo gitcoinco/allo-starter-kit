@@ -29,12 +29,6 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
               where: { status: { in: ["APPROVED"] } },
               orderBy: { status: "asc" },
             },
-            roles: {
-              where: {
-                role: { in: ["ADMIN"] },
-              },
-            },
-            // applicationsStartTime: { greaterThanOrEqualTo: new Date().toISOString() },
           },
 
           orderBy: { unique_donors_count: "desc" },
