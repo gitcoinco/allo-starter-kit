@@ -1,6 +1,7 @@
 "use client";
 import { QueryOpts } from "../api/types";
 import { useApplicationById } from "../hooks/useApplications";
+import { Markdown } from "../ui/markdown";
 
 type Props = {
   applicationId: string;
@@ -19,9 +20,7 @@ export function ApplicationAnswers({ applicationId, chainId, roundId }: Props) {
       {data?.answers?.map((answer) => (
         <li>
           <div className="font-semibold">{answer.question}</div>
-          <div className="whitespace-pre-wrap">
-            {answer.hidden ? "<hidden>" : answer.answer}
-          </div>
+          <Markdown>{answer.hidden ? "*<hidden>*" : answer.answer}</Markdown>
         </li>
       ))}
     </ul>
