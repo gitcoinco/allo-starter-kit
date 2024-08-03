@@ -25,7 +25,15 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }
       />
 
-      <ApplicationsTable roundId={roundId} chainId={chainId} />
+      <ApplicationsTable
+        roundId={roundId}
+        chainId={chainId}
+        renderLink={({ id }) => (
+          <Link href={`/admin/applications/${chainId}/${roundId}/${id}`}>
+            <Button variant={"ghost"}>Open</Button>
+          </Link>
+        )}
+      />
     </section>
   );
 }

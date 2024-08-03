@@ -6,12 +6,14 @@ export * from "./api/providers/mock";
 export * from "./api/web3-provider";
 export * from "./ui/drawer";
 export * from "./ui/markdown";
+export * from "./ui/dialog";
 export * from "./ui/token-amount";
 export * from "./ui/back-button";
 export * from "./connect-button";
 export * from "./ui/button";
 export * from "./ui/avatar";
 export * from "./ui/form";
+export * from "./ui/textarea";
 export * from "./ui/select";
 
 export * from "./applications/approval-item";

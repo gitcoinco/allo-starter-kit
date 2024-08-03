@@ -22,7 +22,7 @@ export function ApplicationDetails({
   action,
 }: ApplicationDetailsProps) {
   const { data, isPending } = useApplicationById(id, { roundId, chainId });
-
+  console.log("data", data);
   return (
     <div className={"space-y-4"}>
       <div className="flex items-center justify-between">
@@ -38,6 +38,18 @@ export function ApplicationDetails({
         src={data?.bannerUrl}
       />
       <Markdown>{data?.description}</Markdown>
+
+      <h3 className="text-xl font-semibold">Application answers</h3>
+      <ul className="list-decimal space-y-4 pl-4">
+        {data?.answers?.map((answer) => (
+          <li>
+            <div className="font-semibold">{answer.question}</div>
+            <div className="whitespace-pre-wrap">
+              {answer.hidden ? "<hidden>" : answer.answer}
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

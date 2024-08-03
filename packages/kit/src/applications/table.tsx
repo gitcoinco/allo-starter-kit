@@ -3,78 +3,31 @@ import { Application } from "../api/types";
 import { useApplications } from "../hooks/useApplications";
 import { DataTable } from "../ui/data-table";
 import { ColumnDef } from "@tanstack/react-table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Checkbox } from "../ui/checkbox";
 import { ApplicationStatusBadge } from "./status-badge";
 import { BackgroundImage } from "../ui/background-image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { ChevronDown, ExternalLink, MoreHorizontal } from "lucide-react";
+import { ReactNode, useMemo } from "react";
 
-export const columns: ColumnDef<Application>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "name",
-    header: "Project",
-    cell: ({ row, ...rest }) => {
-      const { name, bannerUrl, description } = row.original;
-      return (
-        <div
-          onClick={() => row.toggleSelected()}
-          className="flex flex-1 cursor-pointer gap-4"
-        >
-          <div className="">
-            <BackgroundImage
-              className="size-12 rounded bg-gray-800"
-              src={bannerUrl}
-            />
-          </div>
-
-          <div className="">
-            <h3 className="line-clamp-1 overflow-hidden text-ellipsis text-sm font-semibold text-gray-800">
-              {name}
-            </h3>
-            <p className="line-clamp-1 text-xs">{description?.slice(0, 144)}</p>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <ApplicationStatusBadge status={row.getValue("status")} />
-    ),
-  },
-];
+type Props = {
+  renderLink?: (application: Application) => ReactNode;
+};
 export function ApplicationsTableWithHook({
   roundId,
   chainId,
   ...props
-}: {
-  roundId: string;
-  chainId: number;
-}) {
+}: { roundId: string; chainId: number } & Props) {
   return (
     <ApplicationsTable
       {...useApplications({ where: { roundId: { equalTo: roundId } } })}
@@ -87,8 +40,105 @@ export function ApplicationsTable({
   data = [],
   isPending,
   error,
-}: Partial<UseQueryResult<Application[] | undefined, unknown>>) {
+  renderLink,
+}: Partial<UseQueryResult<Application[] | undefined, unknown>> & Props) {
   console.log(data, error);
+
+  const columns: ColumnDef<Application>[] = useMemo(
+    () => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "name",
+        header: "Project",
+        cell: ({ row }) => {
+          const { name, bannerUrl, description } = row.original;
+          return (
+            <div
+              onClick={() => row.toggleSelected()}
+              className="flex flex-1 cursor-pointer gap-4"
+            >
+              <div className="">
+                <BackgroundImage
+                  className="size-12 rounded bg-gray-800"
+                  src={bannerUrl}
+                />
+              </div>
+
+              <div className="">
+                <h3 className="line-clamp-1 overflow-hidden text-ellipsis text-sm font-semibold text-gray-800">
+                  {name}
+                </h3>
+                <p className="line-clamp-1 text-xs">
+                  {description?.slice(0, 144)}
+                </p>
+              </div>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => (
+          <ApplicationStatusBadge status={row.getValue("status")} />
+        ),
+      },
+      ...(renderLink
+        ? ([
+            {
+              id: "open",
+              cell: ({ row }) => renderLink(row.original),
+            },
+          ] as ColumnDef<Application>[])
+        : []),
+      {
+        id: "actions",
+        cell: ({ row }) => {
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" icon={MoreHorizontal}></Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => console.log("copy")}>
+                  Open Application
+                  <ExternalLink className="ml-2 size-4" />
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  Review selected with Checker
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
+        },
+      },
+    ],
+    [],
+  );
   return (
     <DataTable
       isLoading={isPending}
@@ -120,6 +170,21 @@ export function ApplicationsTable({
                 <TabsContent value="approved"></TabsContent>
               </TabsList>
             </Tabs>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" iconRight={ChevronDown}>
+                  Review
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => console.log("copy")}>
+                  Copy payment ID
+                </DropdownMenuItem>
+                <DropdownMenuItem>View customer</DropdownMenuItem>
+                <DropdownMenuItem>View payment details</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       }}

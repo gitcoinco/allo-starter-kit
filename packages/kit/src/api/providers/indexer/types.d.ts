@@ -54,7 +54,13 @@ type GSApplicationMetadata = {
   signature: string;
   application: {
     round: string;
-    answers: [];
+    answers: {
+      questionId: number;
+      type: string;
+      answer: string;
+      hidden: boolean;
+      question: string;
+    }[];
     project: GSProjectMetadata;
     recipient: string;
   };
@@ -64,13 +70,7 @@ export type GSApplication = {
   chainId: number;
   roundId: string;
   projectId: string;
-  answers: {
-    questionId: number;
-    type: string;
-    answer: string;
-    hidden: boolean;
-    question: string;
-  }[];
+
   status: "APPROVED" | "PENDING";
   totalAmountDonatedInUsd: number;
   uniqueDonorsCount: number;

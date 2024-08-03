@@ -16,11 +16,11 @@ export default function AdminRounds() {
               address: { in: ["0xb425ec6d420732053fdec999f8e9738cf75efdbd"] },
             },
           },
-          applications: {
-            where: {
-              status: { in: ["REJECTED"] },
-            },
-          },
+          // applications: {
+          //   where: {
+          //     status: { in: ["APPROVED"] },
+          //   },
+          // },
         },
         orderBy: { created_at_block: "desc" },
         offset: 0,
