@@ -1,3 +1,14 @@
+/*
+
+
+
+Deprecated - use applications/table instead
+
+TODO:
+- Move strategy addon logic to call reviewRecipients in ApplicationTable
+- Delete this file
+
+*/
 "use client";
 import { ReactNode, useMemo } from "react";
 import { Check } from "lucide-react";
