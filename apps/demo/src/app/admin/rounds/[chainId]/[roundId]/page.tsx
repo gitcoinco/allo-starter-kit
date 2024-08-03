@@ -1,6 +1,7 @@
 "use client";
-import { ApplicationReviewTable, Button } from "@allo-team/kit";
 import {
+  ApplicationsTableWithHook as ApplicationsTable,
+  Button,
   BackButton,
   RoundDetailsWithHook as RoundDetails,
 } from "@allo-team/kit";
@@ -24,7 +25,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }
       />
 
-      <ApplicationReviewTable roundId={roundId} chainId={chainId} />
+      <ApplicationsTable roundId={roundId} chainId={chainId} />
     </section>
   );
 }
