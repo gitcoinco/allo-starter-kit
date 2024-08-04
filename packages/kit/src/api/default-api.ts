@@ -24,6 +24,8 @@ const emptyAPI: API = {
       Promise.reject(new Error("Not Implemented: applications")),
     applicationById: async () =>
       Promise.reject(new Error("Not Implemented: applicationById")),
+    donations: async () =>
+      Promise.reject(new Error("Not Implemented: donations")),
   },
   allo: {
     createRound: async () =>
