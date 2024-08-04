@@ -25,6 +25,7 @@ export * from "./applications/discover";
 export * from "./applications/details";
 export * from "./applications/table";
 export * from "./applications/review-table";
+export * from "./donations/table";
 export * from "./projects/create";
 export * from "./projects/discover";
 export * from "./projects/details";

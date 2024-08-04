@@ -22,6 +22,8 @@ type ApplicationOrderKeys =
   | "total_amount_donated_in_usd"
   | "unique_donors_count";
 
+type DonationOrderKeys = "created_at_block" | "amount" | "amount_in_usd";
+
 interface Query<T> {
   orderBy?: Partial<Record<T, OrderBy>>;
   offset?: number;
@@ -35,6 +37,9 @@ export interface ProjectsQuery extends Query<ProjectOrderKeys> {
 }
 export interface ApplicationsQuery extends Query<ApplicationOrderKeys> {
   where?: ApplicationQueryWhere;
+}
+export interface DonationsQuery extends Query<DonationOrderKeys> {
+  where?: DonationQueryWhere;
 }
 export interface RolesQuery extends Query<string> {
   some?: RolesQueryWhere;
@@ -58,6 +63,11 @@ type ApplicationQueryWhere = {
   createdByAddress?: Compare<Address>;
   totalDonationsCount?: Compare<number>;
   totalAmountDonatedInUsd?: Compare<number>;
+};
+type DonationQueryWhere = {
+  chainId?: Compare<number>;
+  roundId?: Compare<string>;
+  projectId?: Compare<string>;
 };
 type RoundQueryWhere = {
   id?: Compare;
@@ -98,6 +108,7 @@ export interface API {
       id: string,
       opts?: QueryOpts,
     ) => Promise<Application | undefined>;
+    donations: (query: DonationsQuery) => Promise<Donation[]>;
   };
   allo: {
     createRound: (
@@ -129,10 +140,11 @@ export interface API {
 }
 // Transforms data from API into a common shape
 
-export interface Transformers<TRound, TApplication, TProject> {
+export interface Transformers<TRound, TApplication, TProject, TDonation> {
   round: (round: TRound) => Round;
   application: (application: TApplication) => Application;
   project: (project: TProject) => Project;
+  donation: (donation: TDonation) => Donation;
 }
 
 type BaseRound = {
@@ -219,6 +231,19 @@ export type Project = BaseProject & {
 export type ProjectInput = BaseProject & {};
 
 export type ProjectCreated = { id: string; chainId: number };
+
+export type Donation = {
+  roundId: string;
+  projectId: string;
+  chainId: number;
+  donorAddress: string;
+  recipientAddress: string;
+  transactionHash: string;
+  amount: string;
+  amountInUsd: string;
+  roundId: string;
+  tokenAddress: string;
+};
 
 export type AllocateInput = {
   roundId: string;

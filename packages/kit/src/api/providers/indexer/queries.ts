@@ -129,3 +129,23 @@ export const projectsQuery = gql`
     }
   }
 `;
+
+const DONATION_FRAGMENT = `
+roundId
+projectId
+chainId
+donorAddress
+recipientAddress
+transactionHash
+amount
+amountInUsd
+roundId
+tokenAddress
+`;
+export const donationsQuery = gql`
+  query Donations($first: Int, $offset: Int, $orderBy: [DonationsOrderBy!], $filter: DonationFilter) {
+    donations(first: $first, offset: $offset, orderBy: $orderBy, filter: $filter) {
+      ${DONATION_FRAGMENT}
+    }
+  }
+`;

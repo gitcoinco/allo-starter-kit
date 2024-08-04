@@ -1,14 +1,22 @@
 import { request } from "graphql-request";
-import { API, Application, Project, Round, Transformers } from "../../types";
+import {
+  API,
+  Application,
+  Donation,
+  Project,
+  Round,
+  Transformers,
+} from "../../types";
 import {
   roundsQuery,
   applicationsQuery,
   roundsByIdQuery,
   projectsQuery,
   applicationsByIdQuery,
+  donationsQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
-import { GSRound, GSApplication, GSProject } from "./types";
+import { GSRound, GSApplication, GSProject, GSDonation } from "./types";
 import { isValid } from "date-fns";
 import { getAddress } from "viem";
 
@@ -72,6 +80,13 @@ export const indexer: API["indexer"] = {
       res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
     );
   },
+  donations: (query) => {
+    return request<{ donations: GSDonation[] }>({
+      url: apiURL,
+      document: donationsQuery,
+      variables: queryToFilter(query),
+    }).then((res) => (res?.donations ?? []).map(transformers.donation));
+  },
 };
 
 function validateDate(date?: string) {
@@ -111,7 +126,12 @@ If that's too clever, we can just call it inline for each request like this:
 (res => res?.rounds?.map(round => RoundSchema.safeParse(round).data)
 
 */
-export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
+export const transformers: Transformers<
+  GSRound,
+  GSApplication,
+  GSProject,
+  GSDonation
+> = {
   round: ({
     id,
     chainId,
@@ -182,5 +202,9 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     description: metadata?.description,
     avatarUrl: ipfsGateway(metadata.logoImg),
     bannerUrl: ipfsGateway(metadata?.bannerImg),
+  }),
+
+  donation: (donation: GSDonation): Donation => ({
+    ...donation,
   }),
 };

@@ -155,6 +155,7 @@ export function ApplicationsTable({
       isLoading={isPending}
       columns={columns}
       data={data}
+      // pagination={{ pageSize: 20 }}
       renderFilter={(table) => {
         return (
           <div className="flex justify-between gap-2">

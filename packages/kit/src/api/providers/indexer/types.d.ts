@@ -92,3 +92,16 @@ export type GSProject = {
   createdByAddress: string;
   metadata: GSProjectMetadata;
 };
+
+export type GSDonation = {
+  roundId: string;
+  projectId: string;
+  chainId: number;
+  donorAddress: string;
+  recipientAddress: string;
+  transactionHash: string;
+  amount: string;
+  amountInUsd: string;
+  roundId: string;
+  tokenAddress: string;
+};
