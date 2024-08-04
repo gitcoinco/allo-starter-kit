@@ -11,7 +11,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
   return (
     <section className="space-y-8">
       <RoundDetails
-        id={roundId}
+        roundId={roundId}
         chainId={chainId}
         backAction={
           <Link href={`/${chainId}`}>
