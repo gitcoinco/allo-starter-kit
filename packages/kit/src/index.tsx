@@ -2,7 +2,6 @@ export * from "./api/provider";
 export * from "./api/types";
 export * from "./api/default-api";
 export * from "./api/providers/indexer";
-export * from "./api/providers/mock";
 export * from "./api/web3-provider";
 export * from "./ui/drawer";
 export * from "./ui/markdown";

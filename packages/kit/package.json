@@ -26,10 +26,10 @@
     "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {
-    "build": "NODE_OPTIONS='--max-old-space-size=16384' tsup",
+    "build": "tsup && node rename-types.mjs",
     "lint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "NODE_OPTIONS='--max-old-space-size=16384' tsup --watch",
+    "dev": "tsup --watch",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
