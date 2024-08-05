@@ -10,6 +10,7 @@ import { supportedChains } from "../api/web3-provider";
 import { formatUnits, getAddress, parseUnits, zeroAddress } from "viem";
 import { Button } from "../ui/button";
 import { ExternalLink } from "lucide-react";
+import { TToken } from "@gitcoin/gitcoin-chain-data";
 
 type Props = {
   query?: DonationsQuery;
@@ -19,17 +20,17 @@ export function DonationsTableWithHook({ query, ...props }: Props) {
   return <DonationsTable {...useDonations(query)} {...props} />;
 }
 
-function findToken(chainId: number, token: string) {
-  if (token === zeroAddress) return "ETH";
-  return supportedChains?.reduce((match, chain) => {
-    const t = chain.tokens.find(
-      (token) => chain.id === chainId && token.address === token,
-    );
+function findToken(chainId: number, tokenAddress: string) {
+  return supportedChains?.reduce(
+    (match, chain) => {
+      const token = chain.tokens.find(
+        (t) => chain.id === chainId && t.address === tokenAddress,
+      );
 
-    console.log("token", t, token, match);
-
-    return "asd";
-  }, "");
+      return token || match;
+    },
+    { code: "UNKNOWN", decimals: 18 } as TToken,
+  );
 }
 
 export function DonationsTable({
@@ -37,15 +38,12 @@ export function DonationsTable({
   isPending,
   error,
 }: Partial<UseQueryResult<Donation[] | undefined, unknown>> & Props) {
-  console.log(data, error);
-  console.log(supportedChains);
-
   const columns: ColumnDef<Donation>[] = useMemo(
     () => [
       {
         accessorKey: "amountInUsd",
         header: "USD",
-        cell: ({ row }) => formatMoney(row.getValue("amountInUsd"), "usd"),
+        cell: ({ row }) => formatMoney(row.getValue("amountInUsd"), "usd", 0),
       },
       {
         accessorKey: "amount",
@@ -53,14 +51,18 @@ export function DonationsTable({
         cell: ({ row }) => {
           const { tokenAddress, chainId, amount } = row.original;
           const token = findToken(chainId, tokenAddress);
-          const decimals = 18;
-          return <div>{formatUnits(BigInt(amount), decimals)} ETH</div>;
+          return (
+            <div>
+              {formatUnits(BigInt(amount), token?.decimals)} {token.code}
+            </div>
+          );
         },
       },
 
       {
         accessorKey: "donorAddress",
         header: "Donor",
+        cell: ({ row }) => <pre>{row.getValue("donorAddress")}</pre>,
       },
       {
         accessorKey: "transactionHash",
