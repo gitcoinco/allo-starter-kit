@@ -17,15 +17,15 @@ RoundDetails is just the view component
 */
 
 export function RoundDetailsWithHook({
-  id,
+  roundId,
   chainId,
   ...props
 }: {
-  id: string;
+  roundId: string;
   chainId: number;
   opts?: QueryOpts;
 } & PageActions) {
-  return <RoundDetails {...useRoundById(id, { chainId })} {...props} />;
+  return <RoundDetails {...useRoundById(roundId, { chainId })} {...props} />;
 }
 
 export function RoundDetails({
@@ -36,7 +36,7 @@ export function RoundDetails({
   primaryAction,
 }: Partial<UseQueryResult<Round | undefined, unknown>> & PageActions) {
   return (
-    <section>
+    <section className="space-y-6">
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {backAction}

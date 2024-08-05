@@ -11,7 +11,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
   return (
     <section className="space-y-8">
       <RoundDetails
-        id={roundId}
+        roundId={roundId}
         chainId={chainId}
         backAction={
           <Link href={`/${chainId}`}>
@@ -42,7 +42,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         }}
         renderItem={(application, Component) => (
           <Link
-            href={`/${chainId}/applications/${roundId}/${application.id}`}
+            href={`/${chainId}/projects/${application.projectId}`}
             key={application.id}
           >
             <Component {...application} />

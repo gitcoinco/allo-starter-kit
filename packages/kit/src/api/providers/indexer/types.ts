@@ -34,6 +34,7 @@ export type GSRound = {
   strategyName: string;
   strategyAddress: Address;
   applications: { id: string }[];
+  roles: { address: Address; role: "ADMIN" | "MANAGER" }[];
 };
 type GSCredential = any;
 type CID = string;
@@ -53,7 +54,13 @@ type GSApplicationMetadata = {
   signature: string;
   application: {
     round: string;
-    answers: [];
+    answers: {
+      questionId: number;
+      type: string;
+      answer: string;
+      hidden: boolean;
+      question: string;
+    }[];
     project: GSProjectMetadata;
     recipient: string;
   };
@@ -63,13 +70,7 @@ export type GSApplication = {
   chainId: number;
   roundId: string;
   projectId: string;
-  answers: {
-    questionId: number;
-    type: string;
-    answer: string;
-    hidden: boolean;
-    question: string;
-  }[];
+
   status: "APPROVED" | "PENDING";
   totalAmountDonatedInUsd: number;
   uniqueDonorsCount: number;
@@ -90,4 +91,16 @@ export type GSProject = {
   chainId: 10;
   createdByAddress: string;
   metadata: GSProjectMetadata;
+};
+
+export type GSDonation = {
+  roundId: string;
+  projectId: string;
+  chainId: number;
+  donorAddress: string;
+  recipientAddress: string;
+  transactionHash: string;
+  amount: string;
+  amountInUsd: string;
+  tokenAddress: string;
 };

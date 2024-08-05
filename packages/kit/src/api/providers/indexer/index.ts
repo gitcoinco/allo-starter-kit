@@ -2,6 +2,7 @@ import { request } from "graphql-request";
 import type {
   API,
   Application,
+  Donation,
   Project,
   Round,
   Transformers,
@@ -12,9 +13,10 @@ import {
   roundsByIdQuery,
   projectsQuery,
   applicationsByIdQuery,
+  donationsQuery,
 } from "./queries";
 import { ipfsGateway, queryToFilter } from "./utils";
-import type { GSRound, GSApplication, GSProject } from "./types";
+import type { GSRound, GSApplication, GSProject, GSDonation } from "./types";
 import { isValid } from "date-fns";
 import { getAddress } from "viem";
 
@@ -78,50 +80,29 @@ export const indexer: API["indexer"] = {
       res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
     );
   },
+  donations: (query) => {
+    return request<{ donations: GSDonation[] }>({
+      url: apiURL,
+      document: donationsQuery,
+      variables: queryToFilter(query),
+    }).then((res) => (res?.donations ?? []).map(transformers.donation));
+  },
 };
 
 function validateDate(date?: string) {
   return date && isValid(new Date(date)) ? date : undefined;
 }
 
-/* 
-TODO: Are these transformers really needed if we only use Grants Indexer? 
-Is it simpler and easier to just use the shape from the Indexer without re-mapping?
-
-A better approach would be to use a Zod schema that handles the validation and parsing:
-- BigInt
-- getAddress
-- validateDate
-- ipfsGateway
-
-const RoundSchema = z.object({
-  ...
-  matching: z.object({ amount: z.coerce.bigint(), token: z.string().transform(getAddress). })
-  bannerImage: z.string().transform(ipfsGateway)
-  ...
-})
-  
-And then each request simply parses the schema:
-
-}).then(mapSchema(RoundSchema, "rounds"))
-}).then(mapSchema(ApplicationSchema, "application"))
-
-const mapSchema = (schema: z.Schema, key: string) => (res) => {
-  const items = Array.isArray(res[key]) ? res[key] : [res[key]];
-  return items.map((item) => schema.safeParse(item).data);
-};
-
-
-If that's too clever, we can just call it inline for each request like this:
-
-(res => res?.rounds?.map(round => RoundSchema.safeParse(round).data)
-
-*/
-export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
+export const transformers: Transformers<
+  GSRound,
+  GSApplication,
+  GSProject,
+  GSDonation
+> = {
   round: ({
     id,
     chainId,
-    roundMetadata: { name, title, description, eligibility },
+    roundMetadata,
     matchAmount,
     matchTokenAddress,
     applications,
@@ -131,28 +112,33 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     donationsEndTime,
     strategyAddress,
     strategyName,
-  }: GSRound): Round => ({
-    id,
-    chainId,
-    name: name || title || "?",
-    description: description || eligibility?.description,
-    eligibility: eligibility,
-    applications,
-    matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
-    strategy: getAddress(strategyAddress),
-    strategyName,
-    phases: {
-      applicationsStartTime: validateDate(applicationsStartTime),
-      applicationsEndTime: validateDate(applicationsEndTime),
-      donationsStartTime: validateDate(donationsStartTime),
-      donationsEndTime: validateDate(donationsEndTime),
-    },
-  }),
+    roles,
+  }: GSRound): Round => {
+    const { name, title, description, eligibility } = roundMetadata || {};
+    return {
+      id,
+      chainId,
+      name: name || title || "?",
+      description: description || eligibility?.description,
+      eligibility: eligibility,
+      applications,
+      matching: { amount: BigInt(matchAmount), token: matchTokenAddress },
+      strategy: getAddress(strategyAddress),
+      strategyName,
+      phases: {
+        applicationsStartTime: validateDate(applicationsStartTime),
+        applicationsEndTime: validateDate(applicationsEndTime),
+        donationsStartTime: validateDate(donationsStartTime),
+        donationsEndTime: validateDate(donationsEndTime),
+      },
+      roles,
+    };
+  },
   application: ({
     id,
     chainId,
     status,
-    answers,
+    metadata,
     project,
     anchorAddress,
     totalAmountDonatedInUsd,
@@ -165,7 +151,7 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
       description: project?.metadata?.description,
       projectId: project?.id,
       status,
-      answers,
+      answers: metadata?.application?.answers,
       recipient: anchorAddress,
       avatarUrl: ipfsGateway(project?.metadata.logoImg),
       bannerUrl: ipfsGateway(project?.metadata.bannerImg),
@@ -183,5 +169,9 @@ export const transformers: Transformers<GSRound, GSApplication, GSProject> = {
     description: metadata?.description,
     avatarUrl: ipfsGateway(metadata.logoImg),
     bannerUrl: ipfsGateway(metadata?.bannerImg),
+  }),
+
+  donation: (donation: GSDonation): Donation => ({
+    ...donation,
   }),
 };

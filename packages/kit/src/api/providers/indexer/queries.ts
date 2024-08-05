@@ -19,12 +19,12 @@ strategyAddress
 `;
 export const roundsQuery = gql`
   query Rounds(
-    $first: Int, 
-    $offset: Int, 
-    $orderBy: [RoundsOrderBy!], 
-    $filter: RoundFilter, 
-    $applications_filter: ApplicationFilter, 
-    $applications_orderBy: [ApplicationsOrderBy!], 
+    $first: Int,
+    $offset: Int,
+    $orderBy: [RoundsOrderBy!],
+    $filter: RoundFilter,
+    $applications_filter: ApplicationFilter,
+    $applications_orderBy: [ApplicationsOrderBy!],
     $roles_filter: RoundRoleFilter
   ) {
     rounds(first: $first, offset: $offset, orderBy: $orderBy, filter: $filter) {
@@ -40,10 +40,20 @@ export const roundsQuery = gql`
   }
 `;
 export const roundsByIdQuery = gql`
-  query Round($id: String!, $chainId: Int!) {
+  query Round(
+    $id: String!,
+    $chainId: Int!,
+    $applications_filter: ApplicationFilter,
+    $applications_orderBy: [ApplicationsOrderBy!],
+    $roles_filter: RoundRoleFilter
+  ) {
     round(id: $id, chainId: $chainId) {
       ${ROUND_FRAGMENT}
-      applications(first: 1000, filter: { status: { equalTo: APPROVED } }) {
+      roles(first: 1000, filter: $roles_filter) {
+        address
+        role
+      }
+      applications(first: 1000, filter: $applications_filter, orderBy: $applications_orderBy) {
         id
       }
     }
@@ -116,6 +126,26 @@ export const projectsQuery = gql`
   query Projects($first: Int, $offset: Int, $orderBy: [ProjectsOrderBy!], $filter: ProjectFilter) {
     projects(first: $first, offset: $offset, orderBy: $orderBy, filter: $filter) {
       ${PROJECT_FRAGMENT}
+    }
+  }
+`;
+
+const DONATION_FRAGMENT = `
+roundId
+projectId
+chainId
+donorAddress
+recipientAddress
+transactionHash
+amount
+amountInUsd
+roundId
+tokenAddress
+`;
+export const donationsQuery = gql`
+  query Donations($first: Int, $offset: Int, $orderBy: [DonationsOrderBy!], $filter: DonationFilter) {
+    donations(first: $first, offset: $offset, orderBy: $orderBy, filter: $filter) {
+      ${DONATION_FRAGMENT}
     }
   }
 `;
