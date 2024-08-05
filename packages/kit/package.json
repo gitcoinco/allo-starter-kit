@@ -26,7 +26,7 @@
     "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {
-    "build": "tsup && node rename-types.mjs",
+    "build": "tsup && tsc --emitDeclarationOnly --declaration --jsx react-jsx",
     "lint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup --watch",

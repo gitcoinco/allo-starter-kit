@@ -9,7 +9,7 @@ export default defineConfig((options: Options) => ({
   format: ["esm"],
   dts: false,
   minify: !options.watch,
-  experimentalDts: true,
+  experimentalDts: false,
   clean: true,
   external: ["react"],
 }));
