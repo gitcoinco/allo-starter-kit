@@ -84,7 +84,13 @@ export default function ApplicationPage({
             chainId={chainId}
           />
         </TabsContent>
-        <TabsContent value="reviews">Reviews</TabsContent>
+        <TabsContent value="reviews">
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="py-8 bg-gray-100 rounded"></div>
+            ))}
+          </div>
+        </TabsContent>
       </Tabs>
     </section>
   );

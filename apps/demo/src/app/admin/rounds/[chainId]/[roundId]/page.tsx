@@ -37,7 +37,7 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
           chainId={chainId}
           renderLink={({ id }) => (
             <Link href={`/admin/applications/${chainId}/${roundId}/${id}`}>
-              <Button variant={"ghost"}>Open</Button>
+              <Button variant={"ghost"}>View</Button>
             </Link>
           )}
         />
