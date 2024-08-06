@@ -16,7 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useCreateRound } from "../hooks/useRounds";
-import { getAddress, zeroAddress } from "viem";
+import { Address, getAddress, isAddress, zeroAddress } from "viem";
 import { type RoundCreated } from "../api/types";
 
 import { type PropsWithChildren, createElement, useState } from "react";
@@ -53,11 +53,13 @@ const baseRoundSchema = z.object({
   managers: z
     .string()
     .optional()
-    .transform((v) =>
-      v
-        ?.split(",")
-        .map((v) => v.trim())
-        .map(getAddress),
+    .transform(
+      (v) =>
+        (v ?? "")
+          .split(/[\s,]+/)
+          .map((v) => v.trim())
+          .map((addr) => (isAddress(addr) ? getAddress(addr) : false))
+          .filter(Boolean) as Address[],
     ),
 });
 
@@ -192,6 +194,7 @@ function CreateRoundForm({
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="bannerUrl"
@@ -202,6 +205,24 @@ function CreateRoundForm({
                 <ImageUpload {...field} />
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Round description</FormLabel>
+              <FormControl>
+                <Textarea
+                  rows={8}
+                  placeholder="Round description..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+              <FormDescription>Markdown is supported</FormDescription>
             </FormItem>
           )}
         />
@@ -334,32 +355,16 @@ function CreateRoundForm({
             <FormItem className="">
               <FormLabel>Round managers</FormLabel>
               <FormControl>
-                {/* TODO: Use component with better UX */}
-                <Input placeholder="0x...123, 0x...456, 0x...789" {...field} />
+                <Textarea
+                  rows={8}
+                  placeholder="Enter your list of addresses here (comma or space separated)"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
               <FormDescription>
                 These will have access to make changes to the round.
               </FormDescription>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Round description</FormLabel>
-              <FormControl>
-                <Textarea
-                  rows={8}
-                  placeholder="Round description..."
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-              <FormDescription>Markdown is supported</FormDescription>
             </FormItem>
           )}
         />
