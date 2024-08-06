@@ -7,8 +7,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Checkbox } from "../ui/checkbox";
@@ -17,9 +15,8 @@ import { BackgroundImage } from "../ui/background-image";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { ChevronDown, ExternalLink, MoreHorizontal } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { ReactNode, useMemo } from "react";
-import { Badge } from "../ui/badge";
 
 type Props = {
   renderLink?: (application: Application) => ReactNode;
@@ -107,16 +104,6 @@ export function ApplicationsTable({
           <ApplicationStatusBadge status={row.getValue("status")} />
         ),
       },
-      {
-        id: "reviews",
-        header: "Reviews",
-        cell: ({ row }) => <div className="text-center">2</div>,
-      },
-      {
-        id: "score",
-        header: "Score",
-        cell: ({ row }) => <div className="text-center">90%</div>,
-      },
       ...(renderLink
         ? ([
             {
@@ -125,28 +112,6 @@ export function ApplicationsTable({
             },
           ] as ColumnDef<Application>[])
         : []),
-      // {
-      //   id: "actions",
-      //   cell: ({ row }) => {
-      //     return (
-      //       <DropdownMenu>
-      //         <DropdownMenuTrigger asChild>
-      //           <Button variant="ghost" icon={MoreHorizontal}></Button>
-      //         </DropdownMenuTrigger>
-      //         <DropdownMenuContent align="end">
-      //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-      //           <DropdownMenuItem onClick={() => console.log("copy")}>
-      //             Open Application
-      //             <ExternalLink className="ml-2 size-4" />
-      //           </DropdownMenuItem>
-      //           <DropdownMenuItem>
-      //             Review selected with Checker
-      //           </DropdownMenuItem>
-      //         </DropdownMenuContent>
-      //       </DropdownMenu>
-      //     );
-      //   },
-      // },
     ],
     [],
   );
@@ -155,7 +120,7 @@ export function ApplicationsTable({
       isLoading={isPending}
       columns={columns}
       data={data}
-      // pagination={{ pageSize: 20 }}
+      pagination={{ pageSize: 20 }}
       renderFilter={(table) => {
         return (
           <div className="flex justify-between gap-2">
