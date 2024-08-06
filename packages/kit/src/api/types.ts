@@ -156,7 +156,10 @@ export type Round = BaseRound & {
   id: string;
   name: string;
   description: string;
-  eligibility: { requirements?: { requirement: string }[] };
+  eligibility: {
+    description: string;
+    requirements?: { requirement: string }[];
+  };
   chainId: number;
   applications?: { id: string }[];
   matching: { amount: bigint; token: Address };
