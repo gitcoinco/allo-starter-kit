@@ -1,8 +1,8 @@
 "use client";
 
-import { Project, RoundsQuery } from "../api/types";
+import type { Project, RoundsQuery } from "../api/types";
 import { useProjects } from "../hooks/useProjects";
-import { Grid, GridProps } from "../ui/grid";
+import { Grid, type GridProps } from "../ui/grid";
 
 export function DiscoverProjects({
   query,
@@ -13,10 +13,10 @@ export function DiscoverProjects({
 }
 function ProjectItem({ name }: Project) {
   return (
-    <div className="border rounded-xl overflow-hidden">
-      <div className="bg-gray-100 h-24" />
+    <div className="overflow-hidden rounded-xl border">
+      <div className="h-24 bg-gray-100" />
       <div className="p-2">
-        <h3 className="font-semibold text-lg text-gray-800">{name}</h3>
+        <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
+import type { QueryOpts } from "../api/types";
 import { Avatar, AvatarFallback, AvatarImage, Markdown } from "..";
-import { QueryOpts } from "../api/types";
 import { useProjectById } from "../hooks/useProjects";
 import { BackgroundImage } from "../ui/background-image";
 

@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { Button } from "./ui/button";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 

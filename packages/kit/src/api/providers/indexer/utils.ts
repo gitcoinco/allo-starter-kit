@@ -1,4 +1,4 @@
-import { RoundsQuery } from "../../types";
+import type { RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) => {
   if (!cid) return "";

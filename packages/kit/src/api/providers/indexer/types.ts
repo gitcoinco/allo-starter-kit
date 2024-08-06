@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import type { Address } from "viem";
 
 type GSRoundMetadata = {
   name: string;
@@ -102,6 +102,5 @@ export type GSDonation = {
   transactionHash: string;
   amount: string;
   amountInUsd: string;
-  roundId: string;
   tokenAddress: string;
 };

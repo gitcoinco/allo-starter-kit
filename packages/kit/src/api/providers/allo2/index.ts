@@ -1,18 +1,18 @@
 import {
-  PublicClient,
+  type PublicClient,
+  type WalletClient,
   encodePacked,
   getAddress,
   publicActions,
   keccak256,
   zeroAddress,
-  WalletClient,
   decodeEventLog,
   type Address,
   type Chain,
 } from "viem";
 import { Allo, NATIVE, Registry } from "@allo-team/allo-v2-sdk/";
 import { abi as AlloABI } from "@allo-team/allo-v2-sdk/dist/Allo/allo.config";
-import { API, TransactionInput } from "../../types";
+import type { API, TransactionInput } from "../../types";
 
 const createAlloOpts = (chain: Chain) => ({
   chain: chain.id,

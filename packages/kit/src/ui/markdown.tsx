@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import ReactMarkdown from "react-markdown";
 import { cn } from "../lib/utils";
 

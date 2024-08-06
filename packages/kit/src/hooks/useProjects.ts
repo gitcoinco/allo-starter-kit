@@ -2,7 +2,7 @@
 import { useWalletClient } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAPI } from "..";
-import { API, ProjectInput, ProjectsQuery } from "../api/types";
+import type { API, ProjectInput, ProjectsQuery } from "../api/types";
 
 const defaultQuery: ProjectsQuery = {
   where: {},

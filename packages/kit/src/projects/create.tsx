@@ -15,7 +15,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import { ProjectCreated } from "../api/types";
+import type { ProjectCreated } from "../api/types";
 import { useCreateProject } from "../hooks/useProjects";
 
 const baseProjectSchema = z.object({

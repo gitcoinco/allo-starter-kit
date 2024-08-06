@@ -17,15 +17,15 @@ import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useCreateRound } from "../hooks/useRounds";
 import { getAddress, zeroAddress } from "viem";
-import { RoundCreated } from "../api/types";
+import { type RoundCreated } from "../api/types";
 
-import { PropsWithChildren, createElement, useState } from "react";
+import { type PropsWithChildren, createElement, useState } from "react";
 import { ImageUpload } from "../ui/image-upload";
 import { useUpload } from "../hooks/useUpload";
 import { EthAddressSchema } from "../schemas";
 import {
-  StrategyExtensions,
-  StrategyType,
+  type StrategyExtensions,
+  type StrategyType,
   useStrategyAddon,
 } from "../strategies";
 import { EnsureCorrectNetwork } from "../ui/correct-network";
@@ -38,7 +38,7 @@ import {
 } from "../ui/select";
 import { supportedChains, useStrategies } from "..";
 import { useNetwork } from "../hooks/useNetwork";
-import { TContracts } from "@gitcoin/gitcoin-chain-data";
+import { type TContracts } from "@gitcoin/gitcoin-chain-data";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {

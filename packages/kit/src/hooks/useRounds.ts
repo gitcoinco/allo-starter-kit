@@ -1,7 +1,7 @@
 "use client";
 import { useWalletClient } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { API, RoundInput, RoundsQuery } from "../api/types";
+import type { API, RoundInput, RoundsQuery } from "../api/types";
 import { useAPI } from "..";
 import { useToast } from "../ui/use-toast";
 

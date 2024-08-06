@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Project } from "../api/types";
+import type { Project } from "../api/types";
 import { BackgroundImage } from "../ui/background-image";
 import { Card, CardContent } from "../ui/card";
 import { cn } from "..";

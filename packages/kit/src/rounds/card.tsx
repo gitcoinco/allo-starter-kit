@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { isAfter, formatDistanceToNow } from "date-fns";
-import { Round } from "../api/types";
+import type { Round } from "../api/types";
 import { TokenAmount } from "../ui/token-amount";
 import { BackgroundImage } from "../ui/background-image";
 import { Badge } from "../ui/badge";

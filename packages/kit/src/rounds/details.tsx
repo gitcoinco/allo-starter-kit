@@ -1,10 +1,10 @@
 "use client";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Markdown } from "..";
-import { QueryOpts, Round } from "../api/types";
+import type { QueryOpts, Round } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
 import { RoundNetworkBadge } from "./network-badge";
-import { UseQueryResult } from "@tanstack/react-query";
+import type { UseQueryResult } from "@tanstack/react-query";
 import { Skeleton } from "../ui/skeleton";
 
 type PageActions = { backAction?: ReactNode; primaryAction?: ReactNode };

@@ -1,4 +1,4 @@
-import { Address, Hash, WalletClient } from "viem";
+import type { Address, Hash, WalletClient } from "viem";
 
 type OrderBy = "asc" | "desc";
 
@@ -24,7 +24,7 @@ type ApplicationOrderKeys =
 
 type DonationOrderKeys = "created_at_block" | "amount" | "amount_in_usd";
 
-interface Query<T> {
+interface Query<T extends string> {
   orderBy?: Partial<Record<T, OrderBy>>;
   offset?: number;
   first?: number;
@@ -83,8 +83,8 @@ type RoundQueryWhere = {
   createdAt?: Compare;
   createdBy?: Compare;
   applicationsStartTime?: Compare;
+  applicationsEndTime?: Compare;
   donationsStartTime?: Compare;
-  donationsEndTime?: Compare;
   donationsEndTime?: Compare;
   applications?: ApplicationsQuery;
   roles?: RolesQuery;
@@ -157,7 +157,6 @@ export type Round = BaseRound & {
   name: string;
   description: string;
   eligibility: { requirements?: { requirement: string }[] };
-  bannerUrl?: string;
   chainId: number;
   applications?: { id: string }[];
   matching: { amount: bigint; token: Address };
@@ -241,7 +240,6 @@ export type Donation = {
   transactionHash: string;
   amount: string;
   amountInUsd: string;
-  roundId: string;
   tokenAddress: string;
 };
 

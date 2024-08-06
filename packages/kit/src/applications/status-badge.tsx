@@ -1,4 +1,4 @@
-import { Application } from "../api/types";
+import type { Application } from "../api/types";
 import { cn } from "../lib/utils";
 import { Badge } from "../ui/badge";
 
