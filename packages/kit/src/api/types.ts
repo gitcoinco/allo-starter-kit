@@ -123,6 +123,11 @@ export interface API {
       data: ApplicationInput,
       signer: WalletClient,
     ) => Promise<ApplicationCreated>;
+    getProfile: (signer: WalletClient) => Promise<Address | null>;
+    createProfile: (
+      data: ProfileInput,
+      signer: WalletClient,
+    ) => Promise<ProfileCreated>;
     allocate: (
       tx: TransactionInput,
       signer: WalletClient,
@@ -176,6 +181,7 @@ export type Round = BaseRound & {
 };
 
 export type RoundInput = BaseRound & {
+  profileId: Address;
   metadata: { protocol: bigint; pointer: string };
   initStrategyData?: Address;
   amount?: bigint;
@@ -256,3 +262,9 @@ export type TransactionInput = {
   data: `0x${string}`;
   value: string | bigint;
 };
+
+export type ProfileInput = {
+  metadata: { protocol: bigint; pointer: string };
+};
+
+export type ProfileCreated = {};

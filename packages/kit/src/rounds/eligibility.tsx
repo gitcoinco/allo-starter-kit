@@ -25,7 +25,7 @@ export function RoundEligibility({
   return (
     <div>
       <ul className="space-y-4">
-        {data?.eligibility.requirements?.map((req, i) => (
+        {data?.eligibility?.requirements?.map((req, i) => (
           <li key={i}>{req.requirement}</li>
         ))}
       </ul>

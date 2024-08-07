@@ -41,6 +41,11 @@ const emptyAPI: API = {
     // Defines how the transaction data is sent. More details below.
     sendTransaction: async () =>
       Promise.reject(new Error("Not Implemented: sendTransaction")),
+
+    getProfile: async () =>
+      Promise.reject(new Error("Not Implemented: getProfile")),
+    createProfile: async () =>
+      Promise.reject(new Error("Not Implemented: createProfile")),
   },
   // AlloKit doesn't have a server so this needs to be implemented by the client.
   // Alternatively we can provide an endpoint (See apps/demo/src/app/api/ipfs/route.ts)

@@ -27,9 +27,6 @@ export const allo: API["allo"] = {
       const allo = new Allo(createAlloOpts(signer.chain!));
 
       const client = signer.extend(publicActions);
-      // Profile must be created to deploy a pool
-      // TODO: Should we move this outside of this function and pass the profileId in data?
-      const profileId = await getOrCreateProfile(signer);
 
       const {
         amount = BigInt(0),
@@ -37,6 +34,7 @@ export const allo: API["allo"] = {
         strategy,
         token,
         managers = [],
+        profileId,
         initStrategyData = "0x",
       } = data;
       if (typeof initStrategyData !== "string")
@@ -112,6 +110,48 @@ export const allo: API["allo"] = {
       throw error;
     }
   },
+  getProfile: async function (signer) {
+    try {
+      const registry = new Registry(createAlloOpts(signer.chain!));
+      const profile = await registry?.getProfileById(
+        getProfileId(signer.account?.address!),
+      );
+
+      if (profile?.anchor === zeroAddress) return null;
+
+      return profile.id;
+    } catch (error) {
+      return null;
+    }
+  },
+  createProfile: async function ({ metadata }, signer) {
+    try {
+      if (!signer?.account) throw new Error("Signer missing");
+
+      // Profile must be created to deploy a pool
+      const registry = new Registry(createAlloOpts(signer.chain!));
+      const address = getAddress(signer.account?.address!);
+      const { to, data } = registry.createProfile({
+        nonce: PROFILE_NONCE,
+        members: [address],
+        owner: address,
+        metadata,
+        name: "allo-kit-profile",
+      });
+      const hash = await signer.sendTransaction({
+        to,
+        data,
+        account: address,
+        chain: signer.chain,
+      });
+      return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
+        "ProfileCreated",
+      ]).then((logs) => (logs?.[0]?.args as { profileId: Address })?.profileId);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
   allocate: async function (tx, signer) {
     try {
       return await this.sendTransaction?.(tx, signer);
@@ -165,42 +205,13 @@ function createLogDecoder(
     });
 }
 
+const PROFILE_NONCE = BigInt(1);
 export function dateToUint64(date: Date) {
   return BigInt(Math.round(Number(date) / 1000));
 }
 
-/*
-Temporary until profile requirement is fixed in Allo
-*/
-async function getOrCreateProfile(signer: WalletClient) {
-  const registry = new Registry(createAlloOpts(signer.chain!));
-  const address = getAddress(signer.account?.address!);
-  return registry
-    ?.getProfileById(getProfileId(signer.account?.address!))
-    .then(async (profile) => {
-      if (profile?.anchor === zeroAddress) {
-        const { to, data } = registry.createProfile({
-          nonce: BigInt(0),
-          members: [address],
-          owner: address,
-          metadata: { protocol: BigInt(1), pointer: "" },
-          name: "",
-        });
-        const hash = await signer.sendTransaction({
-          to,
-          data,
-          account: address,
-          chain: signer.chain,
-        });
-        return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
-          "ProfileCreated",
-        ]).then(
-          (logs) => (logs?.[0]?.args as { profileId: Address })?.profileId,
-        );
-      }
-      return profile.id;
-    });
-}
 function getProfileId(address: Address): Address {
-  return keccak256(encodePacked(["uint256", "address"], [BigInt(0), address]));
+  return keccak256(
+    encodePacked(["uint256", "address"], [PROFILE_NONCE, address]),
+  );
 }

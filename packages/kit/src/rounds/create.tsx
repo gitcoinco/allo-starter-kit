@@ -36,7 +36,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { supportedChains, useStrategies } from "..";
+import {
+  CreateProfileButton,
+  supportedChains,
+  useProfile,
+  useStrategies,
+} from "..";
 import { useNetwork } from "../hooks/useNetwork";
 import { type TContracts } from "@gitcoin/gitcoin-chain-data";
 
@@ -71,9 +76,11 @@ function CreateButton({
 
   return (
     <EnsureCorrectNetwork chainId={chainId}>
-      <Button type="submit" isLoading={isLoading}>
-        {children}
-      </Button>
+      <CreateProfileButton>
+        <Button type="submit" isLoading={isLoading}>
+          {children}
+        </Button>
+      </CreateProfileButton>
     </EnsureCorrectNetwork>
   );
 }
@@ -133,6 +140,7 @@ function CreateRoundForm({
 
   const network = useNetwork();
 
+  const profile = useProfile();
   return (
     <Form {...form}>
       <form
@@ -164,7 +172,7 @@ function CreateRoundForm({
             };
 
             create.mutate(
-              { ...values, strategy, metadata },
+              { ...values, strategy, metadata, profileId: profile.data! },
               { onSuccess: onCreated },
             );
           },
