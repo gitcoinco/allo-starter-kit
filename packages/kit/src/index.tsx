@@ -58,6 +58,8 @@ export * from "./projects/create";
 export * from "./projects/details";
 export * from "./projects/discover";
 
+export * from "./profile/create";
+
 export * from "./rounds/allocate";
 export * from "./rounds/card";
 export * from "./rounds/create";
