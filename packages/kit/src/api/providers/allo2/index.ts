@@ -112,6 +112,7 @@ export const allo: API["allo"] = {
   },
   getProfile: async function (signer) {
     try {
+      if (!signer?.account) throw new Error("Signer missing");
       const registry = new Registry(createAlloOpts(signer.chain!));
       const profile = await registry?.getProfileById(
         getProfileId(signer.account?.address!),

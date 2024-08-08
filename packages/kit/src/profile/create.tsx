@@ -17,6 +17,7 @@ export function useProfile() {
   return useQuery({
     queryKey: ["profile"],
     queryFn: async () => api.allo.getProfile(client!),
+    enabled: Boolean(client),
   });
 }
 export function CreateProfileButton({ children }: PropsWithChildren) {
@@ -25,7 +26,6 @@ export function CreateProfileButton({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
   const profile = useProfile();
 
-  console.log("profile", profile.data);
   const create = useMutation({
     mutationFn: async () => {
       const pointer = await api.upload({
