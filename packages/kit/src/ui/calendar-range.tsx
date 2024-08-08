@@ -14,7 +14,6 @@ export function RangeCalendar<
   children,
   field,
 }: PropsWithChildren<{ field: ControllerRenderProps<TFieldValues, TName> }>) {
-  console.log("field", field);
   const { value, onChange } = field;
   const { from, to } = value ?? { from: null, to: null };
   return (
