@@ -13,18 +13,10 @@ export default function AdminRounds() {
           // Only rounds where we are admin or manager
           roles: {
             some: {
-              address: { in: ["0xb425ec6d420732053fdec999f8e9738cf75efdbd"] },
+              address: { in: [address.toLowerCase()] },
             },
           },
-          // applications: {
-          //   where: {
-          //     status: { in: ["APPROVED"] },
-          //   },
-          // },
         },
-        orderBy: { created_at_block: "desc" },
-        offset: 0,
-        first: 12,
       }}
       renderItem={(round, Component) => (
         <Link
