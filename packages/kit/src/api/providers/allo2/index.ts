@@ -21,145 +21,116 @@ const createAlloOpts = (chain: Chain) => ({
 
 export const allo: API["allo"] = {
   createRound: async function (data, signer) {
-    try {
-      if (!signer?.account) throw new Error("Signer missing");
+    if (!signer?.account) throw new Error("Signer missing");
 
-      const allo = new Allo(createAlloOpts(signer.chain!));
+    const allo = new Allo(createAlloOpts(signer.chain!));
 
-      const client = signer.extend(publicActions);
+    const client = signer.extend(publicActions);
 
-      const {
-        amount = BigInt(0),
-        metadata,
-        strategy,
-        token,
-        managers = [],
-        profileId,
-        initStrategyData = "0x",
-      } = data;
-      if (typeof initStrategyData !== "string")
-        throw new Error("initStrategyData must be a bytes string.");
+    const {
+      amount = BigInt(0),
+      metadata,
+      strategy,
+      token,
+      managers = [],
+      profileId,
+      initStrategyData = "0x",
+    } = data;
+    if (typeof initStrategyData !== "string")
+      throw new Error("initStrategyData must be a bytes string.");
 
-      const tx = allo.createPool({
-        profileId,
-        strategy,
-        // Set token address to native token if empty or zero address
-        token: !token || token === zeroAddress ? (NATIVE as Address) : token,
-        managers,
-        amount,
-        metadata,
-        initStrategyData,
-      });
+    const tx = allo.createPool({
+      profileId,
+      strategy,
+      // Set token address to native token if empty or zero address
+      token: !token || token === zeroAddress ? (NATIVE as Address) : token,
+      managers,
+      amount,
+      metadata,
+      initStrategyData,
+    });
 
-      const hash = await this.sendTransaction?.(tx, signer);
+    const hash = await this.sendTransaction?.(tx, signer);
 
-      // Wait for PoolCreated event and return poolId
-      return createLogDecoder(AlloABI, client)(hash!, ["PoolCreated"]).then(
-        (logs) => {
-          const id = String((logs?.[0]?.args as { poolId: bigint }).poolId);
-          return { id, chainId: signer.chain?.id as number };
-        },
-      );
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    // Wait for PoolCreated event and return poolId
+    return createLogDecoder(AlloABI, client)(hash!, ["PoolCreated"]).then(
+      (logs) => {
+        const id = String((logs?.[0]?.args as { poolId: bigint }).poolId);
+        return { id, chainId: signer.chain?.id as number };
+      },
+    );
   },
   createApplication: async function (data, signer) {
-    try {
-      if (!signer?.account) throw new Error("Signer missing");
-      const allo = new Allo(createAlloOpts(signer.chain!));
+    if (!signer?.account) throw new Error("Signer missing");
+    const allo = new Allo(createAlloOpts(signer.chain!));
 
-      const client = signer.extend(publicActions);
+    const client = signer.extend(publicActions);
 
-      const { roundId, strategyData = "0x" } = data;
+    const { roundId, strategyData = "0x" } = data;
 
-      const tx = allo.registerRecipient(roundId, strategyData);
+    const tx = allo.registerRecipient(roundId, strategyData);
 
-      const hash = await this.sendTransaction?.(tx, signer);
+    const hash = await this.sendTransaction?.(tx, signer);
 
-      // Wait for PoolCreated event and return poolId
-      return createLogDecoder(AlloABI, client)(hash!, [
-        "UpdatedRegistration",
-      ]).then((logs) => {
-        const id = String(
-          (logs?.[0]?.args as { recipientId: Address }).recipientId,
-        );
-        return { id, chainId: signer.chain?.id as number };
-      });
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    // Wait for PoolCreated event and return poolId
+    return createLogDecoder(AlloABI, client)(hash!, [
+      "UpdatedRegistration",
+    ]).then((logs) => {
+      const id = String(
+        (logs?.[0]?.args as { recipientId: Address }).recipientId,
+      );
+      return { id, chainId: signer.chain?.id as number };
+    });
   },
   createProject: async function (data, signer) {
-    try {
-      if (!signer?.account) throw new Error("Signer missing");
-      const address = getAddress(signer.account?.address);
-      const allo = new Allo(createAlloOpts(signer.chain!));
+    if (!signer?.account) throw new Error("Signer missing");
+    const address = getAddress(signer.account?.address);
+    const allo = new Allo(createAlloOpts(signer.chain!));
 
-      const client = signer.extend(publicActions);
+    const client = signer.extend(publicActions);
 
-      const { name, description } = data;
+    const { name, description } = data;
 
-      const chainId = signer.chain?.id as number;
-      throw new Error("Create Project not implemented yet");
-      return { id: "id", chainId };
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    const chainId = signer.chain?.id as number;
+    throw new Error("Create Project not implemented yet");
+    return { id: "id", chainId };
   },
   getProfile: async function (signer) {
-    try {
-      if (!signer?.account) throw new Error("Signer missing");
-      const registry = new Registry(createAlloOpts(signer.chain!));
-      const profile = await registry?.getProfileById(
-        getProfileId(signer.account?.address!),
-      );
+    if (!signer?.account) throw new Error("Signer missing");
+    const registry = new Registry(createAlloOpts(signer.chain!));
+    const profile = await registry?.getProfileById(
+      getProfileId(signer.account?.address!),
+    );
 
-      if (profile?.anchor === zeroAddress) return null;
+    if (profile?.anchor === zeroAddress) return null;
 
-      return profile.id;
-    } catch (error) {
-      return null;
-    }
+    return profile.id;
   },
   createProfile: async function ({ metadata }, signer) {
-    try {
-      if (!signer?.account) throw new Error("Signer missing");
+    if (!signer?.account) throw new Error("Signer missing");
 
-      // Profile must be created to deploy a pool
-      const registry = new Registry(createAlloOpts(signer.chain!));
-      const address = getAddress(signer.account?.address!);
-      const { to, data } = registry.createProfile({
-        nonce: PROFILE_NONCE,
-        members: [address],
-        owner: address,
-        metadata,
-        name: "allo-kit-profile",
-      });
-      const hash = await signer.sendTransaction({
-        to,
-        data,
-        account: address,
-        chain: signer.chain,
-      });
-      return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
-        "ProfileCreated",
-      ]).then((logs) => (logs?.[0]?.args as { profileId: Address })?.profileId);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    // Profile must be created to deploy a pool
+    const registry = new Registry(createAlloOpts(signer.chain!));
+    const address = getAddress(signer.account?.address!);
+    const { to, data } = registry.createProfile({
+      nonce: PROFILE_NONCE,
+      members: [address],
+      owner: address,
+      metadata,
+      name: "allo-kit-profile",
+    });
+    const hash = await signer.sendTransaction({
+      to,
+      data,
+      account: address,
+      chain: signer.chain,
+    });
+    return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
+      "ProfileCreated",
+    ]).then((logs) => (logs?.[0]?.args as { profileId: Address })?.profileId);
   },
   allocate: async function (tx, signer) {
-    try {
-      return await this.sendTransaction?.(tx, signer);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    return await this.sendTransaction?.(tx, signer);
   },
   distribute: () => {},
 
