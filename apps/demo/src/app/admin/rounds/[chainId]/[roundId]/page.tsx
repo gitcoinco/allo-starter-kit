@@ -15,9 +15,14 @@ export default function RoundPage({ params: { chainId = 0, roundId = "" } }) {
         roundId={roundId}
         chainId={chainId}
         primaryAction={
-          <Link href={`/admin/rounds/${chainId}/${roundId}/allocate`}>
-            <Button>Allocate</Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link href={`/${chainId}/rounds/${roundId}`}>
+              <Button variant="outline">View Round</Button>
+            </Link>
+            <Link href={`/admin/rounds/${chainId}/${roundId}/allocate`}>
+              <Button>Allocate</Button>
+            </Link>
+          </div>
         }
         backAction={
           <Link href={`/admin/rounds`}>
