@@ -69,7 +69,6 @@ export const allo: API["allo"] = {
     const { roundId, strategyData = "0x" } = data;
 
     const tx = allo.registerRecipient(roundId, strategyData);
-
     const hash = await this.sendTransaction?.(tx, signer);
 
     // Wait for PoolCreated event and return poolId
@@ -130,6 +129,7 @@ export const allo: API["allo"] = {
     ]).then((logs) => (logs?.[0]?.args as { profileId: Address })?.profileId);
   },
   allocate: async function (tx, signer) {
+    if (!signer?.account) throw new Error("Signer missing");
     return await this.sendTransaction?.(tx, signer);
   },
   distribute: () => {},

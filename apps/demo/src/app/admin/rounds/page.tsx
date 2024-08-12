@@ -13,7 +13,7 @@ export default function AdminRounds() {
           // Only rounds where we are admin or manager
           roles: {
             some: {
-              address: { in: [address.toLowerCase()] },
+              address: { in: [address.toLowerCase() as `0x${string}`] },
             },
           },
         },

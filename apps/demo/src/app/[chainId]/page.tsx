@@ -24,6 +24,7 @@ export default function DiscoverRoundsPage({ params: { chainId = 1 } }) {
         - with first and offset we can paginate the results and decide how many to show */
           where: {
             chainId: { in: [Number(chainId)] },
+            strategyName: { in: ["allov2.DirectGrantsLiteStrategy"] },
             // Approved applications
             applications: {
               where: { status: { in: ["APPROVED"] } },
