@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
+import { formatDistanceToNow } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -35,3 +36,6 @@ export function formatMoney(val = 0, currency?: string, decimals = 2) {
     maximumFractionDigits: decimals,
   });
 }
+
+export const toNow = (date?: string) =>
+  date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;

@@ -11,6 +11,7 @@ import z from "zod";
 // These represent the different function calls in Allo Protocol
 export type StrategyComponentType =
   | "createRound"
+  | "roundDetails"
   | "registerRecipient"
   | "reviewRecipients"
   | "allocate";

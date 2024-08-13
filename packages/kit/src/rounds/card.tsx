@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { isAfter, formatDistanceToNow } from "date-fns";
 import type { Round } from "../api/types";
 import { TokenAmount } from "../ui/token-amount";
 import { BackgroundImage } from "../ui/background-image";
@@ -9,21 +8,7 @@ import { Card, CardContent } from "../ui/card";
 import { Avatar } from "../ui/avatar";
 import { cn, supportedChains } from "..";
 import { RoundStrategyBadge } from "./strategy-badge";
-
-const toNow = (date?: string) =>
-  date ? formatDistanceToNow(date, { addSuffix: true }) : undefined;
-
-const getRoundTime = (phases: Round["phases"] = {}): string => {
-  const now = new Date();
-
-  if (isAfter(phases.applicationsStartTime!, now))
-    return `Starts ${toNow(phases.applicationsStartTime)}`;
-  if (isAfter(now, phases.donationsEndTime!))
-    return `Ended ${toNow(phases.donationsEndTime)}`;
-  if (isAfter(phases.donationsEndTime!, now))
-    return `Ends ${toNow(phases.donationsEndTime)}`;
-  return "";
-};
+import { getRoundTime } from "./utils";
 
 const getNetwork = (chainId: number) =>
   supportedChains?.find((chain) => chain.id === chainId);
@@ -45,6 +30,7 @@ export function RoundCard({
   isLoading,
 }: RoundCard) {
   const network = useMemo(() => getNetwork(chainId), [chainId]);
+
   return (
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {

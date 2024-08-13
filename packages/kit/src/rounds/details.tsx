@@ -1,10 +1,12 @@
 "use client";
-import type { ReactNode } from "react";
-import { Markdown } from "..";
+import type { PropsWithChildren, ReactNode } from "react";
+import { formatDateRange } from "little-date";
+import type { UseQueryResult } from "@tanstack/react-query";
+
 import type { QueryOpts, Round } from "../api/types";
 import { useRoundById } from "../hooks/useRounds";
 import { RoundNetworkBadge } from "./network-badge";
-import type { UseQueryResult } from "@tanstack/react-query";
+import { Markdown } from "../ui/markdown";
 import { Skeleton } from "../ui/skeleton";
 
 type PageActions = { backAction?: ReactNode; primaryAction?: ReactNode };
@@ -56,6 +58,7 @@ export function RoundDetails({
         </div>
         <div>{primaryAction}</div>
       </div>
+      <RoundPhases {...data?.phases} />
       {isPending ? (
         <div className="flex flex-col gap-2">
           <Skeleton className="h-5 w-full" />
@@ -66,5 +69,41 @@ export function RoundDetails({
         <Markdown className={"prose-xl"}>{data?.description}</Markdown>
       )}
     </section>
+  );
+}
+
+function RoundPhases({
+  applicationsStartTime,
+  applicationsEndTime,
+  donationsStartTime,
+  donationsEndTime,
+}: Round["phases"]) {
+  return (
+    <div className="flex gap-6">
+      <DateRange from={applicationsStartTime} to={applicationsEndTime}>
+        Registration
+      </DateRange>
+      <DateRange from={donationsStartTime} to={donationsEndTime}>
+        Donations
+      </DateRange>
+    </div>
+  );
+}
+
+function DateRange({
+  from,
+  to,
+  children,
+}: PropsWithChildren<{ from?: string; to?: string }>) {
+  if (!from) return null;
+  return (
+    <div className="text-sm">
+      {children}:{" "}
+      <span className="font-medium">
+        {from &&
+          to &&
+          formatDateRange(new Date(from), new Date(to), { includeTime: false })}
+      </span>
+    </div>
   );
 }

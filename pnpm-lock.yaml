@@ -302,6 +302,9 @@ importers:
       ky:
         specifier: ^1.5.0
         version: 1.5.0
+      little-date:
+        specifier: ^0.0.13
+        version: 0.0.13
       lucide-react:
         specifier: ^0.381.0
         version: 0.381.0(react@18.3.1)
@@ -15191,6 +15194,13 @@ packages:
       '@lit/reactive-element': 1.6.3
       lit-element: 3.3.3
       lit-html: 2.8.0
+    dev: false
+
+  /little-date@0.0.13:
+    resolution: {integrity: sha512-9MFPHm1Jti+4WI8GvL21yb69L0ehvZHHskTTysNcQZvxLtvwTVLvGwImmbyNUC9fUxN1Iva9/vUt6iBbNUtWcA==}
+    engines: {node: '>=10'}
+    dependencies:
+      date-fns: 2.30.0
     dev: false
 
   /load-tsconfig@0.2.5:
