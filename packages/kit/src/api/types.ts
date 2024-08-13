@@ -115,10 +115,6 @@ export interface API {
       data: RoundInput,
       signer: WalletClient,
     ) => Promise<RoundCreated>;
-    createProject: (
-      data: ProjectInput,
-      signer: WalletClient,
-    ) => Promise<ProjectCreated>;
     createApplication: (
       data: ApplicationInput,
       signer: WalletClient,
@@ -236,7 +232,6 @@ export type Project = BaseProject & {
   id: string;
   chainId: number;
 };
-export type ProjectInput = BaseProject & {};
 
 export type ProjectCreated = { id: string; chainId: number };
 
@@ -264,6 +259,7 @@ export type TransactionInput = {
 };
 
 export type ProfileInput = {
+  name: string;
   metadata: { protocol: bigint; pointer: string };
 };
 

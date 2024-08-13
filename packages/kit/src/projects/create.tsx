@@ -15,12 +15,12 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
-import type { ProjectCreated } from "../api/types";
+import type { ProfileCreated, ProjectCreated } from "../api/types";
 import { useCreateProject } from "../hooks/useProjects";
 
 const baseProjectSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  title: z.string().min(2, {
+    message: "Title must be at least 2 characters.",
   }),
   description: z.string().optional(),
 });
@@ -28,13 +28,13 @@ const baseProjectSchema = z.object({
 export function CreateProject({
   onCreated,
 }: {
-  onCreated: (project: ProjectCreated) => void;
+  onCreated: (project: ProfileCreated) => void;
 }) {
   const schema = baseProjectSchema;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: "",
+      title: "",
       description: "",
     },
   });
@@ -57,7 +57,7 @@ export function CreateProject({
         </div>
         <FormField
           control={form.control}
-          name="name"
+          name="title"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Project name</FormLabel>

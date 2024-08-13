@@ -28,17 +28,16 @@ export function CreateProfileButton({ children }: PropsWithChildren) {
 
   const create = useMutation({
     mutationFn: async () => {
-      const pointer = await api.upload({
-        name: "allo-kit-profile",
-        type: "program",
-      });
+      const name = "allo-kit-profile";
+      const pointer = await api.upload({ name, type: "program" });
       return api.allo.createProfile(
-        { metadata: { pointer, protocol: BigInt(1) } },
+        { metadata: { pointer, protocol: BigInt(1) }, name },
         client!,
       );
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["profile"] }),
   });
+
   if (profile.data) return <>{children}</>;
   return (
     <div className="flex items-center gap-2">

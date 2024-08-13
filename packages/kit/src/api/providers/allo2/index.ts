@@ -81,19 +81,7 @@ export const allo: API["allo"] = {
       return { id, chainId: signer.chain?.id as number };
     });
   },
-  createProject: async function (data, signer) {
-    if (!signer?.account) throw new Error("Signer missing");
-    const address = getAddress(signer.account?.address);
-    const allo = new Allo(createAlloOpts(signer.chain!));
 
-    const client = signer.extend(publicActions);
-
-    const { name, description } = data;
-
-    const chainId = signer.chain?.id as number;
-    throw new Error("Create Project not implemented yet");
-    return { id: "id", chainId };
-  },
   getProfile: async function (signer) {
     if (!signer?.account) throw new Error("Signer missing");
     const registry = new Registry(createAlloOpts(signer.chain!));
@@ -105,18 +93,19 @@ export const allo: API["allo"] = {
 
     return profile.id;
   },
-  createProfile: async function ({ metadata }, signer) {
+  createProfile: async function ({ metadata, name }, signer) {
     if (!signer?.account) throw new Error("Signer missing");
 
     // Profile must be created to deploy a pool
     const registry = new Registry(createAlloOpts(signer.chain!));
     const address = getAddress(signer.account?.address!);
+
     const { to, data } = registry.createProfile({
       nonce: PROFILE_NONCE,
-      members: [address],
+      members: [],
       owner: address,
       metadata,
-      name: "allo-kit-profile",
+      name,
     });
     const hash = await signer.sendTransaction({
       to,
@@ -177,7 +166,7 @@ function createLogDecoder(
     });
 }
 
-const PROFILE_NONCE = BigInt(1);
+const PROFILE_NONCE = BigInt(10);
 export function dateToUint64(date: Date) {
   return BigInt(Math.round(Number(date) / 1000));
 }

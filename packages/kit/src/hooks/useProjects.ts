@@ -2,7 +2,7 @@
 import { useWalletClient } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAPI } from "..";
-import type { API, ProjectInput, ProjectsQuery } from "../api/types";
+import type { API, ProfileInput, ProjectsQuery } from "../api/types";
 
 const defaultQuery: ProjectsQuery = {
   where: {},
@@ -33,6 +33,12 @@ export function useCreateProject() {
   const api = useAPI();
   const { data: client } = useWalletClient();
   return useMutation({
-    mutationFn: (data: ProjectInput) => api.allo.createProject(data, client!),
+    mutationFn: async (data: { title: string; description?: string }) => {
+      const pointer = await api.upload({ ...data, type: "project" });
+      return api.allo.createProfile(
+        { metadata: { pointer, protocol: BigInt(1) }, name: data.title },
+        client!,
+      );
+    },
   });
 }
