@@ -32,6 +32,6 @@ describe("DirectGrants Strategy - Register Recipient", async () => {
         parseAbiParameters("address, address, (uint256, string)"),
         actual,
       ),
-    ).toEqual([recipientAddress, recipientAddress, [1n, "ipfs-hash"]]);
+    ).toEqual([recipientAddress, recipientAddress, [BigInt(1), "ipfs-hash"]]);
   });
 });
