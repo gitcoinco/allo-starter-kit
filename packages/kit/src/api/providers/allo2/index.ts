@@ -71,7 +71,7 @@ export const allo: API["allo"] = {
     const tx = allo.registerRecipient(roundId, strategyData);
     const hash = await this.sendTransaction?.(tx, signer);
 
-    // Wait for PoolCreated event and return poolId
+    // TODO: UpdatedRegistration is not in AlloABI. Where and how do we parse this?
     return createLogDecoder(AlloABI, client)(hash!, [
       "UpdatedRegistration",
     ]).then((logs) => {

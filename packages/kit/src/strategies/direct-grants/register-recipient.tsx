@@ -2,7 +2,7 @@
 
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import { encodeAbiParameters, parseAbiParameters } from "viem";
+import { encodeAbiParameters, parseAbiParameters, zeroAddress } from "viem";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -35,7 +35,7 @@ export const createSchema: StrategyCreateSchemaFn = (api) =>
 
       return encodeAbiParameters(
         parseAbiParameters("address, address, (uint256, string)"),
-        [recipientAddress, recipientAddress, [BigInt(1), pointer]],
+        [zeroAddress, recipientAddress, [BigInt(1), pointer]],
       );
     });
 
