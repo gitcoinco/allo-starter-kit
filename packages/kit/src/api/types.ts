@@ -268,4 +268,7 @@ export type ProfileInput = {
   metadata: { protocol: bigint; pointer: string };
 };
 
-export type ProfileCreated = {};
+export type ProfileCreated = {
+  id: string;
+  chainId: number;
+};

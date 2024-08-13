@@ -115,7 +115,10 @@ export const allo: API["allo"] = {
     });
     return createLogDecoder(AlloABI, signer.extend(publicActions))(hash, [
       "ProfileCreated",
-    ]).then((logs) => (logs?.[0]?.args as { profileId: Address })?.profileId);
+    ]).then((logs) => {
+      const id = (logs?.[0]?.args as { profileId: Address })?.profileId;
+      return { id, chainId: signer.chain?.id as number };
+    });
   },
   allocate: async function (tx, signer) {
     if (!signer?.account) throw new Error("Signer missing");
