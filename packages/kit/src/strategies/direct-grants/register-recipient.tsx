@@ -39,7 +39,6 @@ export const createSchema: StrategyCreateSchemaFn = (api) =>
       );
     });
 
-// };
 export function RegisterRecipientForm() {
   const { control, setValue } = useFormContext();
   const { address } = useAccount();
