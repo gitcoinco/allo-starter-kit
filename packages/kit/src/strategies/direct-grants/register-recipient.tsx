@@ -2,7 +2,12 @@
 
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import { encodeAbiParameters, parseAbiParameters, zeroAddress } from "viem";
+import {
+  Address,
+  encodeAbiParameters,
+  parseAbiParameters,
+  zeroAddress,
+} from "viem";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -17,7 +22,15 @@ import {
 import { EthAddressSchema } from "../../schemas";
 import { Input } from "../../ui/input";
 import { StrategyCreateSchemaFn } from "..";
-import { Textarea } from "../../ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../ui/select";
+import { useProjects } from "../../hooks/useProjects";
+import { Round } from "../../api/types";
 
 export const createSchema: StrategyCreateSchemaFn = (api) =>
   z
@@ -25,8 +38,10 @@ export const createSchema: StrategyCreateSchemaFn = (api) =>
       __internal__: z.object({
         recipientAddress: EthAddressSchema,
         metadata: z.object({
-          name: z.string(),
-          description: z.string(),
+          application: z.object({
+            round: z.string(),
+            recipient: z.string(),
+          }),
         }),
       }),
     })
@@ -39,40 +54,67 @@ export const createSchema: StrategyCreateSchemaFn = (api) =>
       );
     });
 
-export function RegisterRecipientForm() {
-  const { control, setValue } = useFormContext();
-  const { address } = useAccount();
+export function RegisterRecipientForm({ round }: { round: Round }) {
+  const { control, watch, setValue } = useFormContext();
+  const { address, chainId } = useAccount();
+  const lowercaseAddress = address?.toLocaleLowerCase() as Address;
+  const { data: projects, error } = useProjects(
+    {
+      first: 10,
+      where: {
+        createdByAddress: { equalTo: lowercaseAddress },
+        chainId: { equalTo: chainId },
+      },
+    },
+    { enabled: Boolean(lowercaseAddress) },
+  );
+
   useEffect(() => {
     // Initialize with connected wallet address
-    setValue("strategyData.__internal__.recipientAddress", address);
+    setValue(
+      "strategyData.__internal__.metadata.application.recipient",
+      address,
+    );
+    setValue("strategyData.__internal__.metadata.application.round", round.id);
   }, [address]);
   return (
     <>
       <FormField
         control={control}
         name="strategyData.__internal__.recipientAddress"
-        render={({ field }) => {
-          return (
-            <FormItem className="flex flex-col">
-              <FormLabel>Project address</FormLabel>
+        render={({ field }) => (
+          <FormItem className="min-w-48">
+            <FormLabel>Project</FormLabel>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <Input placeholder="0x..." {...field} />
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a project" />
+                </SelectTrigger>
               </FormControl>
-              <FormDescription>
-                Payouts will be transferred to this address.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
+              <SelectContent>
+                {projects?.map((project) => (
+                  <SelectItem key={project.id} value={project.anchorAddress}>
+                    {project.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FormDescription>
+              Payouts will be transferred to this project.
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
       />
+      <pre>{watch("strategyData.__internal__.recipientAddress")}</pre>
+
       <FormField
         control={control}
-        name="strategyData.__internal__.metadata.name"
+        name="strategyData.__internal__.metadata.application.recipient"
         render={({ field }) => {
           return (
             <FormItem className="flex flex-col">
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Recipient</FormLabel>
               <FormControl>
                 <Input placeholder="..." {...field} />
               </FormControl>
@@ -83,13 +125,13 @@ export function RegisterRecipientForm() {
       />
       <FormField
         control={control}
-        name="strategyData.__internal__.metadata.description"
+        name="strategyData.__internal__.metadata.application.round"
         render={({ field }) => {
           return (
             <FormItem className="flex flex-col">
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Round ID</FormLabel>
               <FormControl>
-                <Textarea placeholder="..." {...field} />
+                <Input placeholder="..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

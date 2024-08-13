@@ -1,8 +1,13 @@
 "use client";
 import { useWalletClient } from "wagmi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryObserverOptions,
+  useMutation,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { useAPI } from "..";
-import type { API, ProfileInput, ProjectsQuery } from "../api/types";
+import type { API, Project, ProjectsQuery } from "../api/types";
 
 const defaultQuery: ProjectsQuery = {
   where: {},
@@ -11,9 +16,13 @@ const defaultQuery: ProjectsQuery = {
   orderBy: { created_at_block: "asc" } as const,
 };
 
-export function useProjects(query: ProjectsQuery = defaultQuery) {
+export function useProjects(
+  query: ProjectsQuery = defaultQuery,
+  opts?: Partial<UseQueryOptions<Project[]>>,
+) {
   const api = useAPI();
   return useQuery({
+    ...opts,
     queryKey: ["projects", query],
     queryFn: async () => api.indexer.projects(query),
   });

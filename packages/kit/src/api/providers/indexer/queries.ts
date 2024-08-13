@@ -120,6 +120,7 @@ name
 projectType
 chainId
 createdByAddress
+anchorAddress
 metadata
 `;
 export const projectsQuery = gql`

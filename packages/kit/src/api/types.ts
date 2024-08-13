@@ -33,7 +33,7 @@ export interface RoundsQuery extends Query<RoundOrderKeys> {
   where?: RoundQueryWhere;
 }
 export interface ProjectsQuery extends Query<ProjectOrderKeys> {
-  where?: RoundQueryWhere;
+  where?: ProjectQueryWhere;
 }
 export interface ApplicationsQuery extends Query<ApplicationOrderKeys> {
   where?: ApplicationQueryWhere;
@@ -91,6 +91,10 @@ type RoundQueryWhere = {
   and?: RoundQueryWhere[];
 };
 
+type ProjectQueryWhere = {
+  chainId?: Compare<number>;
+  createdByAddress?: Compare<Address>;
+};
 // For passing random data to the request in API provider (for example chainId)
 export type QueryOpts = Record<string, string | number>;
 export type Allocation = { id: string; amount?: number };
@@ -230,6 +234,7 @@ type BaseProject = {
 };
 export type Project = BaseProject & {
   id: string;
+  anchorAddress: string;
   chainId: number;
 };
 

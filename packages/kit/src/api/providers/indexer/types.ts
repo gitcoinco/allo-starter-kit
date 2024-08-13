@@ -90,6 +90,7 @@ export type GSProject = {
   projectType: "CANONICAL";
   chainId: 10;
   createdByAddress: string;
+  anchorAddress: Address;
   metadata: GSProjectMetadata;
 };
 

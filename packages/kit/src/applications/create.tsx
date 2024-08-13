@@ -10,6 +10,7 @@ import { useRoundById } from "../hooks/useRounds";
 import type { ApplicationCreated, Round } from "../api/types";
 import { useCreateApplication } from "../hooks/useApplications";
 import { useRoundStrategyAddon } from "../strategies";
+import { useAccount } from "wagmi";
 
 const baseApplicationSchema = z.object({
   roundId: z.coerce.bigint(),
@@ -56,7 +57,7 @@ function ApplicationForm({
           </Button>
         </div>
         {/* Render Strategy-specific form elements */}
-        {addon?.component && createElement(addon.component)}
+        {addon?.component && createElement(addon.component, { round })}
       </form>
     </Form>
   );
@@ -71,6 +72,7 @@ export function CreateApplication({
   roundId: string;
   onCreated?: (application: ApplicationCreated) => void;
 }) {
+  const { address } = useAccount();
   const { data: round, isPending } = useRoundById(roundId, { chainId });
 
   if (isPending) return <div>loading round...</div>;

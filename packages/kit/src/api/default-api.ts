@@ -32,8 +32,6 @@ const emptyAPI: API = {
       Promise.reject(new Error("Not Implemented: createRound")),
     allocate: async () =>
       Promise.reject(new Error("Not Implemented: allocate")),
-    createProject: async () =>
-      Promise.reject(new Error("Not Implemented: createProject")),
     createApplication: async () =>
       Promise.reject(new Error("Not Implemented: createApplication")),
     distribute: async () =>

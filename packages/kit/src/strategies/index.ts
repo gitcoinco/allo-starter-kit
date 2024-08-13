@@ -27,7 +27,7 @@ export type StrategyExtension = {
       Partial<{
         createSchema: StrategyCreateSchemaFn;
         defaultValues: unknown;
-        component: FunctionComponent | null;
+        component: FunctionComponent<any> | null;
         call?: Function;
       }>
     >

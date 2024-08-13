@@ -61,11 +61,11 @@ export const indexer: API["indexer"] = {
     );
   },
   projects: (query) => {
-    return request<{ rounds: GSProject[] }>({
+    return request<{ projects: GSProject[] }>({
       url: apiURL,
       document: projectsQuery,
       variables: queryToFilter(query),
-    }).then((res) => (res?.rounds ?? []).map(transformers.project));
+    }).then((res) => (res?.projects ?? []).map(transformers.project));
   },
   projectById: (id, opts) => {
     return request<{ projects: GSProject[] }>({
@@ -162,12 +162,19 @@ export const transformers: Transformers<
     };
   },
 
-  project: ({ id, chainId, name, metadata }: GSProject): Project => ({
+  project: ({
     id,
     chainId,
     name,
+    anchorAddress,
+    metadata,
+  }: GSProject): Project => ({
+    id,
+    chainId,
+    name,
+    anchorAddress,
     description: metadata?.description,
-    avatarUrl: ipfsGateway(metadata.logoImg),
+    avatarUrl: ipfsGateway(metadata?.logoImg),
     bannerUrl: ipfsGateway(metadata?.bannerImg),
   }),
 

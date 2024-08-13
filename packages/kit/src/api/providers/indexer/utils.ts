@@ -1,11 +1,11 @@
-import type { RoundsQuery } from "../../types";
+import type { ProjectsQuery, RoundsQuery } from "../../types";
 
 export const ipfsGateway = (cid: string) => {
   if (!cid) return "";
   return cid?.includes("http") ? cid : `https://ipfs.io/ipfs/${cid}`;
 };
 
-export function queryToFilter(query: RoundsQuery) {
+export function queryToFilter(query: RoundsQuery | ProjectsQuery) {
   const filter = query.where;
 
   /* 
