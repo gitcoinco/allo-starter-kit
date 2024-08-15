@@ -6,7 +6,7 @@ import { mockRound } from "../../api/providers/mock";
 
 describe("Round Details", async () => {
   test("render", async () => {
-    render(<RoundDetailsWithHook id="id" chainId={10} />);
+    render(<RoundDetailsWithHook roundId="id" chainId={10} />);
     const { name, eligibility } = mockRound.data.round.roundMetadata;
 
     expect(await screen.findByText(name)).toBeDefined();

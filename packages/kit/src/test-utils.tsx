@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, ReactElement } from "react";
 import { render, renderHook, RenderOptions } from "@testing-library/react";
-import { vi } from "vitest";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { graphql, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
@@ -31,7 +31,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <ApiProvider
       api={{
-        createRound: mockCreateRound,
+        allo: {
+          createRound: mockCreateRound,
+        },
       }}
     >
       <Web3Provider>{children}</Web3Provider>

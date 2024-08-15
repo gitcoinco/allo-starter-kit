@@ -8,5 +8,8 @@ export default defineConfig({
     globals: true,
     environment: "happy-dom",
     setupFiles: ["./vitest-setup.js"],
+    coverage: {
+      provider: "v8", // or 'istanbul'
+    },
   },
 });

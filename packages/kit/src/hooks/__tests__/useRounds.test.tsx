@@ -13,6 +13,10 @@ describe("Round Hooks", async () => {
       token: undefined,
       metadata: { protocol: BigInt(1), pointer: "cid" },
       managers: [],
+
+      profileId: "0x",
+      // initStrategyData?: Address;
+      // amount?: bigint;
     });
 
     expect(mockCreateRound).toHaveBeenCalled();
