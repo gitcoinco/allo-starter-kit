@@ -1,30 +1,41 @@
 "use client";
 import { Markdown } from "../ui/markdown";
-import type { QueryOpts } from "../api/types";
+import type { Application, QueryOpts } from "../api/types";
 import { useApplicationById } from "../hooks/useApplications";
 import { BackgroundImage } from "../ui/background-image";
 import { ApplicationStatusBadge } from "./status-badge";
 import type { ReactNode } from "react";
 import { Skeleton } from "../ui/skeleton";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type PageActions = { backAction?: ReactNode; primaryAction?: ReactNode };
 
-type ApplicationDetailsProps = {
+export function ApplicationDetailsWithHook({
+  id,
+  roundId,
+  chainId,
+  ...props
+}: {
   id: string;
   roundId: string;
   chainId: number;
   opts?: QueryOpts;
-};
+} & PageActions) {
+  return (
+    <ApplicationDetails
+      {...useApplicationById(id, { chainId, roundId })}
+      {...props}
+    />
+  );
+}
 
 export function ApplicationDetails({
-  id,
-  chainId,
-  roundId,
-  opts,
+  data,
+  isPending,
+  error,
   backAction,
   primaryAction,
-}: ApplicationDetailsProps & PageActions) {
-  const { data, isPending } = useApplicationById(id, { roundId, chainId });
+}: Partial<UseQueryResult<Application | undefined, unknown>> & PageActions) {
   return (
     <div className={"space-y-4"}>
       <div className="flex items-center justify-between">

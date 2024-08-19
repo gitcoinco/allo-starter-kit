@@ -1,6 +1,6 @@
 "use client";
 import {
-  ApplicationDetails,
+  ApplicationDetailsWithHook,
   BackButton,
   Button,
   Dialog,
@@ -25,7 +25,7 @@ export default function ApplicationPage({
   const round = useRoundById(roundId, { chainId });
   return (
     <section className="space-y-8">
-      <ApplicationDetails
+      <ApplicationDetailsWithHook
         id={applicationId}
         chainId={chainId}
         roundId={roundId}

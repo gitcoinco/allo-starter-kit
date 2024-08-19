@@ -1,17 +1,19 @@
 import React from "react";
 import { describe, test, expect } from "vitest";
 import { render, screen } from "../../test-utils";
-import { RoundDetailsWithHook } from "../details";
-import { mockRound } from "../../api/providers/mock";
+import { ApplicationDetailsWithHook } from "../details";
+import { mockApplications } from "../../api/providers/mock";
 
 describe("Round Details", async () => {
   test("render", async () => {
-    render(<RoundDetailsWithHook roundId="id" chainId={10} />);
-    const { name, eligibility } = mockRound.data.round.roundMetadata;
+    render(
+      <ApplicationDetailsWithHook id="id" roundId="roundId" chainId={10} />,
+    );
+    const application = mockApplications.data.applications[0];
+    const { title } = application.project.metadata;
 
-    expect(await screen.findByText(name)).toBeDefined();
-    expect(await screen.findByText(eligibility.description)).toBeDefined();
-    expect(await screen.findByText("optimism")).toBeDefined();
+    expect(await screen.findByText(title)).toBeDefined();
+    expect(await screen.findByText("approved")).toBeDefined();
 
     screen.debug();
   });
