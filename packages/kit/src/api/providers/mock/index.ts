@@ -1,5 +1,6 @@
 import mockApplications from "./data/applications.json";
+import mockProjects from "./data/projects.json";
 import mockRound from "./data/round.json";
 import mockRounds from "./data/rounds.json";
 
-export { mockApplications, mockRound, mockRounds };
+export { mockApplications, mockProjects, mockRound, mockRounds };

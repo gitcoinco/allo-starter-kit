@@ -1,18 +1,32 @@
 "use client";
-import type { QueryOpts } from "../api/types";
+import type { Project, QueryOpts } from "../api/types";
 import { Avatar, AvatarFallback, AvatarImage, Markdown } from "..";
 import { useProjectById } from "../hooks/useProjects";
 import { BackgroundImage } from "../ui/background-image";
+import { ReactNode } from "react";
+import { UseQueryResult } from "@tanstack/react-query";
 
-type ProjectDetailsProps = {
+type PageActions = { backAction?: ReactNode; primaryAction?: ReactNode };
+
+export function ProjectDetailsWithHook({
+  id,
+  chainId,
+  ...props
+}: {
   id: string;
-  chainId?: number;
+  chainId: number;
   opts?: QueryOpts;
-};
+} & PageActions) {
+  return <ProjectDetails {...useProjectById(id)} {...props} />;
+}
 
-export function ProjectDetails({ id, chainId, opts }: ProjectDetailsProps) {
-  const { data, isPending } = useProjectById(id);
-
+export function ProjectDetails({
+  data,
+  isPending,
+  error,
+  backAction,
+  primaryAction,
+}: Partial<UseQueryResult<Project | undefined, unknown>> & PageActions) {
   return (
     <div className={"space-y-4"}>
       <h1 className="text-2xl font-semibold">{data?.name}</h1>

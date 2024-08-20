@@ -5,7 +5,12 @@ import { graphql, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
 import { ApiProvider, Web3Provider } from ".";
-import { mockApplications, mockRound, mockRounds } from "./api/providers/mock";
+import {
+  mockApplications,
+  mockProjects,
+  mockRound,
+  mockRounds,
+} from "./api/providers/mock";
 
 vi.mock("posthog-js/react", () => {
   return { PostHogProvider: ({ children }: PropsWithChildren) => children };
@@ -20,6 +25,12 @@ Docs: https://mswjs.io/docs/network-behavior/graphql
 const server = setupServer(
   graphql.query("Round", ({ query }) => HttpResponse.json(mockRound)),
   graphql.query("Rounds", ({ query }) => HttpResponse.json(mockRounds)),
+  graphql.query("Project", ({ query }) =>
+    HttpResponse.json({
+      data: { application: mockProjects.data?.projects[0] },
+    }),
+  ),
+  graphql.query("Projects", ({ query }) => HttpResponse.json(mockProjects)),
   graphql.query("Application", ({ query }) =>
     HttpResponse.json({
       data: { application: mockApplications.data?.applications[0] },
