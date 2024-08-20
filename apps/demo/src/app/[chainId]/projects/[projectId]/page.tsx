@@ -1,11 +1,11 @@
-import { DonationsTableWithHook, ProjectDetails } from "@allo-team/kit";
+import { DonationsTableWithHook, ProjectDetailsWithHook } from "@allo-team/kit";
 
 export default function ProjectPage({
   params: { chainId = 0, projectId = "" },
 }) {
   return (
     <section className="space-y-8">
-      <ProjectDetails id={projectId} chainId={chainId} />
+      <ProjectDetailsWithHook id={projectId} chainId={chainId} />
       <div>
         <h3 className="text-xl font-semibold">Donations</h3>
         <DonationsTableWithHook

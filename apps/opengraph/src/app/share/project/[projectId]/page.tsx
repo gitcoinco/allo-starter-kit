@@ -1,7 +1,7 @@
 import {
   DiscoverApplications,
   DiscoverRounds,
-  ProjectDetails,
+  ProjectDetailsWithHook,
 } from "@allo-team/kit";
 import { indexer } from "@allo-team/kit";
 import { Metadata } from "next";
@@ -22,7 +22,7 @@ export async function generateMetadata({
 export default async function ShareProjectPage({ params: { projectId = "" } }) {
   return (
     <div>
-      <ProjectDetails id={projectId} />
+      <ProjectDetailsWithHook id={projectId} />
     </div>
   );
 }
