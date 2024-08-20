@@ -55,7 +55,7 @@ export const allo: API["allo"] = {
     // Wait for PoolCreated event and return poolId
     return createLogDecoder(AlloABI, client)(hash!, ["PoolCreated"]).then(
       (logs) => {
-        const id = String((logs?.[0]?.args as { poolId: bigint }).poolId);
+        const id = String((logs?.[0]?.args as { poolId: bigint })?.poolId);
         return { id, chainId: signer.chain?.id as number };
       },
     );
@@ -76,7 +76,7 @@ export const allo: API["allo"] = {
       "UpdatedRegistration",
     ]).then((logs) => {
       const id = String(
-        (logs?.[0]?.args as { recipientId: Address }).recipientId,
+        (logs?.[0]?.args as { recipientId: Address })?.recipientId,
       );
       return { id, chainId: signer.chain?.id as number };
     });
@@ -174,7 +174,7 @@ export function dateToUint64(date: Date) {
   return BigInt(Math.round(Number(date) / 1000));
 }
 
-function getProfileId(address: Address): Address {
+export function getProfileId(address: Address): Address {
   return keccak256(
     encodePacked(["uint256", "address"], [PROFILE_NONCE, address]),
   );
