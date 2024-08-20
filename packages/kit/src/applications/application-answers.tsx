@@ -15,6 +15,7 @@ export function ApplicationAnswers({ applicationId, chainId, roundId }: Props) {
     roundId,
     chainId,
   });
+
   return (
     <ul className="list-decimal space-y-4 pl-4">
       {data?.answers?.map((answer) => (
