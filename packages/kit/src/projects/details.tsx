@@ -14,7 +14,7 @@ export function ProjectDetailsWithHook({
   ...props
 }: {
   id: string;
-  chainId: number;
+  chainId?: number;
   opts?: QueryOpts;
 } & PageActions) {
   return <ProjectDetails {...useProjectById(id)} {...props} />;
