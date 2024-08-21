@@ -1,6 +1,6 @@
 "use client";
 import type { Project, QueryOpts } from "../api/types";
-import { Avatar, AvatarFallback, AvatarImage, Markdown } from "..";
+import { Avatar, AvatarFallback, AvatarImage, Markdown, Skeleton } from "..";
 import { useProjectById } from "../hooks/useProjects";
 import { BackgroundImage } from "../ui/background-image";
 import { ReactNode } from "react";
@@ -28,8 +28,20 @@ export function ProjectDetails({
   primaryAction,
 }: Partial<UseQueryResult<Project | undefined, unknown>> & PageActions) {
   return (
-    <div className={"space-y-4"}>
-      <h1 className="text-2xl font-semibold">{data?.name}</h1>
+    <section className="space-y-6">
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {backAction}
+          <div className="">
+            {isPending ? (
+              <Skeleton className="mb-2 h-10 w-96" />
+            ) : (
+              <h1 className="text-3xl font-medium">{data?.name}</h1>
+            )}
+          </div>
+          <div>{primaryAction}</div>
+        </div>
+      </div>
       <div className="">
         <BackgroundImage
           className="h-64 rounded-xl bg-gray-100"
@@ -44,6 +56,6 @@ export function ProjectDetails({
         </div>
       </div>
       <Markdown>{data?.description}</Markdown>
-    </div>
+    </section>
   );
 }
