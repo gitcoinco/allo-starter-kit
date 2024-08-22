@@ -123,21 +123,6 @@ export function RegisterRecipientForm({ round }: { round: Round }) {
           );
         }}
       />
-      <FormField
-        control={control}
-        name="strategyData.__internal__.metadata.application.round"
-        render={({ field }) => {
-          return (
-            <FormItem className="flex flex-col">
-              <FormLabel>Round ID</FormLabel>
-              <FormControl>
-                <Input placeholder="..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
     </>
   );
 }
