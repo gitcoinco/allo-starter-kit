@@ -39,3 +39,9 @@ export function ProjectCard({
     </Card>
   );
 }
+
+/*
+TODO: Export ProjectTitle and ProjectDescription components
+
+See: rounds/card.tsx
+*/

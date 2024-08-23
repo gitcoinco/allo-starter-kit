@@ -79,3 +79,12 @@ function ContributionIcon() {
     </svg>
   );
 }
+
+/*
+TODO: Export ApplicationTitle and ApplicationDescription components
+
+See: rounds/card.tsx
+
+Also figure out a good way to handle different slots in the card footer
+(add_button, contributors)
+*/

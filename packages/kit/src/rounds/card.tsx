@@ -9,6 +9,7 @@ import { Avatar } from "../ui/avatar";
 import { cn, supportedChains } from "..";
 import { RoundStrategyBadge } from "./strategy-badge";
 import { getRoundTime } from "./utils";
+import { createComponent } from "../ui";
 
 const getNetwork = (chainId: number) =>
   supportedChains?.find((chain) => chain.id === chainId);
@@ -38,13 +39,12 @@ export function RoundCard({
       })}
     >
       <div className="">
-        <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
-        <h3 className="-mt-8 truncate pl-1 text-2xl font-medium text-gray-100">
-          {name}
-        </h3>
+        <RoundBanner src={bannerUrl} />
+        <RoundHeader>{name}</RoundHeader>
       </div>
       <CardContent className="space-y-2 p-4">
-        <p className="line-clamp-4 h-24 text-base leading-6">{description}</p>
+        <RoundDescription>{description}</RoundDescription>
+
         <div className="flex flex-1 items-center justify-between text-xs">
           <div className="w-1/2 truncate font-mono">{getRoundTime(phases)}</div>
           <div className="flex w-1/2 justify-end">
@@ -80,3 +80,20 @@ export function RoundCard({
     </Card>
   );
 }
+
+export function RoundBanner({ src = "" }) {
+  return <BackgroundImage className="h-32 bg-gray-800" src={src} />;
+}
+
+export const RoundHeader = createComponent(
+  "h3",
+  "-mt-8 truncate pl-1 text-2xl font-medium text-gray-100",
+);
+
+export const RoundDescription = createComponent(
+  "p",
+  "line-clamp-4 h-24 text-base leading-6",
+  {
+    variants: { variant: { red: "text-red-600" } },
+  },
+);
