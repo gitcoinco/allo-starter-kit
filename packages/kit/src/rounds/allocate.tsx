@@ -7,19 +7,13 @@ import { BackgroundImage } from "../ui/background-image";
 import { Input } from "../ui/input";
 import { Button } from "..";
 import { useRef } from "react";
+import { useAllocate, useAllocateState } from "../hooks/useAllocate";
 
 type AllocateProps = {
   roundId: string;
   chainId: number;
 };
 
-function useAllocateState() {
-  const state = useRef<Record<string, number>>({}).current;
-  function set(id: string, amount: number) {
-    state[id] = amount;
-  }
-  return { state, set };
-}
 export function Allocate({ roundId, chainId }: AllocateProps) {
   const { data: round } = useRoundById(roundId, { chainId });
   const { data: applications, isPending } = useApplications({
@@ -30,7 +24,7 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
     },
   });
 
-  const strategyAddon = useRoundStrategyAddon("allocate", round);
+  const allocate = useAllocate(round);
   const { state, set } = useAllocateState();
 
   return (
@@ -38,10 +32,23 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
       <div className="mb-2 flex justify-between">
         <div />
         <Button
-          isLoading={strategyAddon?.call?.isPending}
+          isLoading={allocate.isPending}
           onClick={() => {
             console.log("call", round, state, applications);
-            strategyAddon?.call?.mutate([round, state, applications]);
+            /* 
+            TODO: What data do we need to send to the allocate function?
+            
+            Different strategies expect different data structure. For example:
+            - DirectGrants - Array of allocations
+            _allocate([{ amount, token, recipientId }])
+            
+            - QF (DonationVotingMerkleDistribution) - single recipientId + permit2 
+            _allocation({ recipientId, permit })
+            
+            Perhaps best option is to send all the approved applications + state of recipientId and amount
+            Each Strategy Allocate function can then create the data the contract needs.
+            */
+            allocate.mutate({ state, applications });
           }}
         >
           Allocate
