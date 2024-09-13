@@ -44,41 +44,12 @@ https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
 
 You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
 
-<details>
-<summary>using npm</summary>
-
-```sh
-npm install @allo-team/kit
-```
-
-</details>
-
-<details>
-<summary>using yarn</summary>
-
-```
-yarn add @allo-team/kit
-```
-
-</details>
-
-<details>
-<summary>using pnpm</summary>
-
-```sh
-pnpm add @allo-team/kit
-```
-
-</details>
-
-<details>
-<summary>using bun</summary>
-
 ```sh
 bun add @allo-team/kit
+pnpm add @allo-team/kit
+yarn add @allo-team/kit
+npm install @allo-team/kit --save
 ```
-
-</details>
 
 ### Link AlloKit to your project
 
