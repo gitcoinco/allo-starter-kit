@@ -9,13 +9,14 @@ import {
 import { call as reviewRecipientsCall } from "./review-recipients";
 import { call as allocateCall } from "./allocate";
 import type { StrategyExtension } from "..";
-import { supportedChains } from "../..";
+
+import { getChains } from "@gitcoin/gitcoin-chain-data";
 
 export const directGrants: StrategyExtension = {
   name: "Direct Grants Lite",
   type: "directGrants",
   // Deployed strategy contract address for all supported networks
-  contracts: supportedChains?.reduce(
+  contracts: getChains()?.reduce(
     (acc, x) => ({ ...acc, [x.id]: x.contracts.directGrants }),
     {},
   ),

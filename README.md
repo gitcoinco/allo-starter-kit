@@ -42,10 +42,6 @@ https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
 
 ### Install AlloKit in your project
 
-💡 **PACKAGE NOT PUBLISHED YET!**
-
-💡 **While we publish the package clone the repo and link it to your project. [Link to your project](#link-allokit-to-your-project)**
-
 You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
 
 <details>
@@ -86,11 +82,12 @@ bun add @allo-team/kit
 
 ### Link AlloKit to your project
 
-If the package is not yet published or if you want to modify AlloKit while including it in your project, you can link the package:
+In local development you can link the package to automatically update any changes made to the codebase. You first need to clone this repo.
 
 1. Link the package from the AlloKit project:
 
    ```sh
+    cd packages/kit
     bun run link
    ```
 
@@ -101,8 +98,6 @@ If the package is not yet published or if you want to modify AlloKit while inclu
    ```
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
-
-**Note:** Do not link AlloKit if you have already installed it using the previous step.
 
 ### Usage
 
