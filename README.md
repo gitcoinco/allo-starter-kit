@@ -99,6 +99,20 @@ In local development you can link the package to automatically update any change
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
 
+### Vite
+
+If you're using Vite to bundle your app you will need to add `graphql-request` to your `vite.config.ts`:
+
+```ts
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  optimizeDeps: {
+    include: ["graphql-request"],
+  },
+});
+```
+
 ### Usage
 
 Create a simple grants app [tutorial](./tutorial.md).
