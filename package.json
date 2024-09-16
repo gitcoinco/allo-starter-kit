@@ -14,6 +14,9 @@
     "predev:demo": "bun run build:kit",
     "dev:demo": "cd apps/demo && bun run dev"
   },
+  "dependencies": {
+    "@tanstack/react-query": "^5.51.21"
+  },
   "devDependencies": {
     "@allo-team/eslint-config": "*",
     "@allo-team/typescript-config": "*",

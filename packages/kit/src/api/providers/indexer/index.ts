@@ -1,4 +1,3 @@
-import { request } from "graphql-request";
 import type {
   API,
   Application,
@@ -20,72 +19,76 @@ import type { GSRound, GSApplication, GSProject, GSDonation } from "./types";
 import { isValid } from "date-fns";
 import { getAddress } from "viem";
 
-const apiURL = "https://grants-stack-indexer-v2.gitcoin.co/graphql";
+import {
+  AnyVariables,
+  Client,
+  DocumentInput,
+  cacheExchange,
+  fetchExchange,
+} from "@urql/core";
 
+const client = new Client({
+  url: "https://grants-stack-indexer-v2.gitcoin.co/graphql",
+  exchanges: [cacheExchange, fetchExchange],
+});
+
+function indexerQuery<T>(query: DocumentInput<T>, variables: AnyVariables) {
+  return client
+    .query<T>(query, variables)
+    .toPromise()
+    .then((r) => r.data);
+}
 export const indexer: API["indexer"] = {
   rounds: async (query) => {
-    return request<{ rounds: GSRound[] }>({
-      url: apiURL,
-      document: roundsQuery,
-      variables: queryToFilter(query),
-    }).then((res) => (res?.rounds ?? []).map(transformers.round));
+    return indexerQuery<{ rounds: GSRound[] }>(
+      roundsQuery,
+      queryToFilter(query),
+    ).then((res) => (res?.rounds ?? []).map(transformers.round));
   },
   roundById: (id, opts) => {
-    return request<{ round: GSRound }>({
-      url: apiURL,
-      document: roundsByIdQuery,
-      variables: {
-        id,
-        chainId: Number(opts?.chainId),
-      },
-    }).then((res) => (res.round ? transformers.round(res.round) : undefined));
+    return indexerQuery<{ round: GSRound }>(roundsByIdQuery, {
+      id,
+      chainId: Number(opts?.chainId),
+    }).then((res) => (res?.round ? transformers.round(res.round) : undefined));
   },
   applications: (query) => {
-    return request<{ applications: GSApplication[] }>({
-      url: apiURL,
-      document: applicationsQuery,
-      variables: queryToFilter(query),
-    }).then((res) => (res?.applications ?? []).map(transformers.application));
+    return indexerQuery<{ applications: GSApplication[] }>(
+      applicationsQuery,
+      queryToFilter(query),
+    ).then((res) => (res?.applications ?? []).map(transformers.application));
   },
   applicationById: (id, opts) => {
-    return request<{ application: GSApplication }>({
-      url: apiURL,
-      document: applicationsByIdQuery,
-      variables: {
-        id,
-        chainId: Number(opts?.chainId),
-        roundId: opts?.roundId,
-      },
+    return indexerQuery<{ application: GSApplication }>(applicationsByIdQuery, {
+      id,
+      chainId: Number(opts?.chainId),
+      roundId: opts?.roundId,
     }).then((res) =>
-      res.application ? transformers.application(res.application) : undefined,
+      res?.application ? transformers.application(res.application) : undefined,
     );
   },
   projects: (query) => {
-    return request<{ projects: GSProject[] }>({
-      url: apiURL,
-      document: projectsQuery,
-      variables: queryToFilter(query),
-    }).then((res) => (res?.projects ?? []).map(transformers.project));
+    return indexerQuery<{ projects: GSProject[] }>(
+      projectsQuery,
+      queryToFilter(query),
+    ).then((res) => (res?.projects ?? []).map(transformers.project));
   },
   projectById: (id, opts) => {
-    return request<{ projects: GSProject[] }>({
-      url: apiURL,
-      // Query projectById requires chainId and doesn't always match with the rounds chainId
-      document: projectsQuery,
-      variables: {
+    return indexerQuery<{ projects: GSProject[] }>(
+      projectsQuery,
+      // Query projectById requires chainId and doesn't always match with the rounds chainI projectsQuery,
+      {
         first: 1,
         filter: { id: { equalTo: id }, projectType: { equalTo: "CANONICAL" } },
       },
-    }).then((res) =>
-      res.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
+    ).then((res) =>
+      res?.projects?.[0] ? transformers.project(res.projects?.[0]) : undefined,
     );
   },
   donations: (query) => {
-    return request<{ donations: GSDonation[] }>({
-      url: apiURL,
-      document: donationsQuery,
-      variables: queryToFilter(query),
-    }).then((res) => (res?.donations ?? []).map(transformers.donation));
+    return indexerQuery<{ donations: GSDonation[] }>(
+      donationsQuery,
+      queryToFilter(query),
+    ).then((res) => (res?.donations ?? []).map(transformers.donation));
   },
 };
 
