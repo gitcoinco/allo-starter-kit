@@ -1,6 +1,6 @@
 {
   "name": "@allo-team/kit",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": false,
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -26,7 +26,7 @@
     "./connect-button": "./src/connect-button.tsx"
   },
   "scripts": {
-    "build": "tsup && tsc --emitDeclarationOnly --declaration --jsx react-jsx",
+    "build": "tsup && tsc --emitDeclarationOnly --declaration --jsx react-jsx && node fix-mjs-imports.js",
     "lint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup --watch",
