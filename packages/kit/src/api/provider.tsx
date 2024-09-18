@@ -30,7 +30,7 @@ export function ApiProvider({
 }: PropsWithChildren<{
   api?: Partial<API>;
   strategies?: StrategyExtensions;
-  queryClient: QueryClient;
+  queryClient?: QueryClient;
 }>) {
   const value = mergeApi({ api, strategies });
   return (
