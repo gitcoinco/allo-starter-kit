@@ -31,14 +31,8 @@ function fileExists(filePath) {
 function updateDirectoryOrDotImport(fromKeyword, importPath, quote, fullPath) {
   const indexPath = path.join(fullPath, "index.mjs");
   if (fileExists(indexPath)) {
-    console.log(
-      `Updating import: ${fromKeyword}${importPath}${quote} to ${fromKeyword}${importPath}/index.mjs${quote}`,
-    );
     return `${fromKeyword}${importPath}/index.mjs${quote}`;
   } else {
-    console.log(
-      `Import path ${importPath} does not have an index.mjs file: ${fromKeyword}${importPath}${quote}`,
-    );
     return `${fromKeyword}${importPath}${quote}`;
   }
 }
@@ -47,20 +41,29 @@ function updateDirectoryOrDotImport(fromKeyword, importPath, quote, fullPath) {
 function updateFileImport(fromKeyword, importPath, quote, fullPath) {
   const mjsPath = `${fullPath}.mjs`;
   if (fileExists(mjsPath)) {
-    console.log(
-      `Updating import: ${fromKeyword}${importPath}${quote} to ${fromKeyword}${importPath}.mjs${quote}`,
-    );
     return `${fromKeyword}${importPath}.mjs${quote}`;
   } else {
-    console.log(
-      `File does not exist or is not a .mjs file: ${fromKeyword}${importPath}${quote}`,
-    );
     return `${fromKeyword}${importPath}${quote}`;
   }
 }
 
+// Function to update specific import statements
+function updateSpecificImports(fromKeyword, importPath, quote) {
+  if (importPath === "posthog-js/react") {
+    return `${fromKeyword}posthog-js/react/dist/esm/index.js${quote}`;
+  } else if (importPath === "@allo-team/allo-v2-sdk/dist/Allo/allo.config") {
+    return `${fromKeyword}@allo-team/allo-v2-sdk/dist/Allo/allo.config.js${quote}`;
+  }
+  return null;
+}
+
 // Function to update import statements
 function updateImportStatement(fromKeyword, importPath, quote, filePath) {
+  const specificImport = updateSpecificImports(fromKeyword, importPath, quote);
+  if (specificImport) {
+    return specificImport;
+  }
+
   const fullPath = resolveFullPath(filePath, importPath);
 
   if (importPath === ".." || importPath === "." || isDirectory(fullPath)) {
@@ -74,22 +77,17 @@ function updateImportStatement(fromKeyword, importPath, quote, filePath) {
 
 // Main function to update imports in .mjs files
 function updateImports(filePath) {
-  console.log("Processing file:", filePath);
   const contents = readFileContents(filePath);
 
   const updatedContents = contents.replace(
-    /(from\s+['"])(\.\.?\/[^'"\s]+|\.|..)(['"])/g,
+    /(from\s+['"])(\.\.?\/[^'"\s]+|\.|..|posthog-js\/react|@allo-team\/allo-v2-sdk\/dist\/Allo\/allo.config)(['"])/g,
     (match, fromKeyword, importPath, quote) => {
-      console.log(`Found import: ${match}`);
       return updateImportStatement(fromKeyword, importPath, quote, filePath);
     },
   );
 
   if (contents !== updatedContents) {
-    console.log(`Updating file: ${filePath}`);
     writeFileContents(filePath, updatedContents);
-  } else {
-    console.log(`No changes needed for file: ${filePath}`);
   }
 }
 
