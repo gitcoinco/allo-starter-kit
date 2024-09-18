@@ -1,6 +1,6 @@
 "use client";
 import { type PropsWithChildren, createContext, useContext } from "react";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 
@@ -24,15 +24,15 @@ const Context = createContext({} as ProviderAPI);
 export function ApiProvider({
   children,
   api,
+  queryClient = getQueryClient(),
   strategies,
   ...props
 }: PropsWithChildren<{
   api?: Partial<API>;
   strategies?: StrategyExtensions;
+  queryClient: QueryClient;
 }>) {
-  const queryClient = getQueryClient();
   const value = mergeApi({ api, strategies });
-
   return (
     <PostHogProvider client={posthog}>
       <QueryClientProvider client={queryClient}>
