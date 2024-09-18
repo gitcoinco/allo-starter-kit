@@ -8,8 +8,8 @@ export default defineConfig((options: Options) => ({
   entry: ["src"],
   format: ["esm"],
   dts: false,
-  minify: !options.watch,
+  minify: false,
   experimentalDts: false,
   clean: true,
-  external: ["react"],
+  external: ["react", "react-dom"],
 }));
