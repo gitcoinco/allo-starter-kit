@@ -8,6 +8,7 @@ AlloKit is a collection of functions, hooks, and components for interacting with
 2. [Stack](#stack)
 3. [Using AlloKit in your project](#using-allokit-in-your-project)
    - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
+   - [Peer Dependencies](#peer-dependencies)
    - [Usage](#usage)
      - [Add Component Styles](#add-component-styles)
      - [Add AlloKit Providers](#add-allokit-providers)
@@ -69,6 +70,17 @@ In local development you can link the package to automatically update any change
    ```
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
+
+### Peer Dependencies
+
+AlloKit has the following peer dependencies that you need to install in your project:
+
+- `react` (version ^18.0.0)
+- `react-dom` (version ^18.0.0)
+- `@rainbow-me/rainbowkit` (version ^2.1.4)
+- `wagmi` (version ^2.12.2)
+
+Make sure these packages are installed in your project.
 
 ### Usage
 

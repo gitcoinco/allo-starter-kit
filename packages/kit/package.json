@@ -3,6 +3,7 @@
   "version": "0.1.12",
   "private": false,
   "main": "./dist/index.mjs",
+  "readme": "../../README.md",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "repository": {
