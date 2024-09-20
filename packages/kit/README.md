@@ -5,20 +5,15 @@ AlloKit is a collection of functions, hooks, and components for interacting with
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Stack](#stack)
-3. [Using AlloKit in your project](#using-allokit-in-your-project)
-   - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
+2. [Using AlloKit in your project](#using-allokit-in-your-project)
+   - [Installation](#installation)
+   - [Peer Dependencies](#peer-dependencies)
    - [Usage](#usage)
      - [Add Component Styles](#add-component-styles)
      - [Add AlloKit Providers](#add-allokit-providers)
      - [Import & Use Components](#import--use-components)
      - [Example usage in your project](#example-usage-in-your-project)
-4. [Local Development](#local-development)
-   - [Setup](#setup)
-   - [Running the project](#running-the-project)
-   - [Running the Demo App Standalone](#running-the-demo-app-standalone)
-   - [Running Storybook Standalone](#running-storybook-standalone)
-5. [Strategy Extensions](#strategy-extensions)
+3. [Strategy Extensions](#strategy-extensions)
 
 ## Introduction
 
@@ -40,39 +35,31 @@ https://www.loom.com/share/e7932c4da2e54902a3d9b66b69285f5e
 
 ## Using AlloKit in your project
 
-### Install AlloKit in your project
+### Installation
 
-You can install it using either _npm_, _pnpm_, _yarn_ **or** _bun_
+Install using your preferred package manager:
 
 ```sh
 bun add @allo-team/kit
 pnpm add @allo-team/kit
 yarn add @allo-team/kit
-npm install @allo-team/kit --save
+npm install @allo-team/kit
 ```
 
-### Link AlloKit to your project
+### Peer Dependencies
 
-In local development you can link the package to automatically update any changes made to the codebase. You first need to clone this repo.
+AlloKit has the following peer dependencies that you need to install in your project:
 
-1. Link the package from the AlloKit project:
+- `react` (version ^18.0.0)
+- `react-dom` (version ^18.0.0)
+- `@rainbow-me/rainbowkit` (version ^2.1.4)
+- `wagmi` (version ^2.12.2)
 
-   ```sh
-    cd packages/kit
-    bun run link
-   ```
-
-2. Link the package to your project:
-   ```sh
-    cd /path/to/your-project
-    bun link @allo-team/kit --save
-   ```
-
-This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
+Make sure these packages are installed in your project.
 
 ### Usage
 
-Create a simple grants app [tutorial](./packages/kit/tutorial.md).
+Create a simple grants app [tutorial](./tutorial.md).
 
 #### Add Component Styles
 
@@ -101,8 +88,8 @@ export function AlloKitProviders({ children }: PropsWithChildren) {
 // See `apps/demo/src/app/api/ipfs/route.ts` for example implementation
 async function upload(data) {
   return fetch(`/api/ipfs`, { method: "POST", body: data })
-    .then(r => r.json())
-    .then(r => r.cid);
+    .then((r) => r.json())
+    .then((r) => r.cid);
 }
 ```
 
@@ -113,7 +100,7 @@ Depending on your app and use-cases you can use the kit in different ways. For e
 - **Direct function call** - This is useful when you want to query the indexer server-side
 - **React Hooks** - Function calls are wrapped in ReactQuery hooks for loading & error states (plus more!)
 - **React Components** - Ready-made components for common uses
-  - **UI** - Simple design primitives like buttons and forms (see `packages/kit/src/ui`)
+  - **UI** - Simple design primitives like buttons and forms (see `src/ui`)
   - **Features** - Larger components often with a complete feature (CreateRound, DiscoverProjects, etc)
 
 Example:
@@ -156,100 +143,6 @@ const query = {
 ```
 
 See Storybook for more components: https://allo-starter-kit-storybook.vercel.app
-
-### Example usage in your project
-
-See `apps/demo`
-
-#### Demo App
-
-The Demo App shows most of the basic usage.
-
-Link: https://allo-starter-kit-demo.vercel.app
-
-Explore code:
-
-- [AlloKit Providers](./apps/demo/src/app/providers.tsx)
-- [Discover Rounds page](./apps/demo/src/app/%5BchainId%5D/page.tsx)
-- [Round Details page + Discover Applications](./apps/demo/src/app/%5BchainId%5D/rounds/%5BroundId%5D/page.tsx)
-- [Project Details page](./apps/demo/src/app/%5BchainId%5D/projects/%5BprojectId%5D/page.tsx)
-- [Create Application / Apply to Round](./apps/demo/src/app/%5BchainId%5D/rounds/%5BroundId%5D/apply/page.tsx)
-- [Create Round](./apps/demo/src/app/admin/rounds/create/page.tsx)
-- [Review Applications](./apps/demo/src/app/admin/rounds/%5BchainId%5D/%5BroundId%5D/page.tsx)
-- [Metadata Upload API](./apps/demo/src/app/api/ipfs/route.ts)
-
-## Local Development
-
-### Setup
-
-#### Clone the Repository
-
-```sh
-git clone https://github.com/gitcoinco/allo-starter-kit
-cd allo-starter-kit
-```
-
-#### Install bun
-
-```sh
-curl -fsSL https://bun.sh/install | bash
-```
-
-#### Install Dependencies
-
-```sh
-bun install
-```
-
-### Running the project
-
-This will run the apps and the kit build in parallel
-
-```sh
-bun run dev
-```
-
-#### Open Demo App in your browser
-
-```sh
-open http://localhost:3000
-```
-
-#### Open Storybook in your browser
-
-```sh
-open http://localhost:6006
-```
-
-### Running the Demo App Standalone
-
-This section covers how to run the demo app independently for local development.
-
-#### Run Demo App
-
-This will build the kit and run the demo app.
-
-```sh
-bun run dev:demo
-```
-
-#### Open Demo App in your browser
-
-```sh
-open http://localhost:3000
-```
-
-### Running Storybook Standalone
-
-This section covers how to run Storybook independently for local development.
-
-#### Run Storybook
-
-This will build the kit and run storybook.
-
-```sh
-bun run storybook
-```
 
 ## Strategy Extensions
 
