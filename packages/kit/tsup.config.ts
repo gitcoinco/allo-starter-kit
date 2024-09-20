@@ -2,7 +2,7 @@ import { defineConfig, type Options } from "tsup";
 
 export default defineConfig((options: Options) => ({
   ...options,
-  treeshake: true,
+  treeshake: false,
   splitting: false,
   bundle: false,
   entry: ["src"],
