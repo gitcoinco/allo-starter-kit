@@ -1,10 +1,15 @@
 {
   "name": "@allo-team/kit",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": false,
   "main": "./dist/index.mjs",
+  "readme": "../../README.md",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gitcoinco/allo-starter-kit.git"
+  },
   "sideEffects": false,
   "files": [
     "dist/**"
@@ -40,6 +45,7 @@
     "@allo-team/eslint-config": "*",
     "@allo-team/typescript-config": "*",
     "@microsoft/api-extractor": "^7.47.5",
+    "@rainbow-me/rainbowkit": "^2.1.4",
     "@swc/helpers": "^0.5.12",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.0.0",
@@ -60,11 +66,14 @@
     "react-test-renderer": "^18.3.1",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
-    "vitest": "^2.0.5"
+    "vitest": "^2.0.5",
+    "wagmi": "^2.12.2"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "@rainbow-me/rainbowkit": "^2.1.4",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "wagmi": "^2.12.2"
   },
   "dependencies": {
     "@allo-team/allo-v2-sdk": "^1.0.78",
@@ -81,7 +90,6 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
-    "@rainbow-me/rainbowkit": "^2.1.4",
     "@tailwindcss/typography": "^0.5.13",
     "@tanstack/react-table": "^8.20.1",
     "@urql/core": "^5.0.6",
@@ -94,7 +102,6 @@
     "little-date": "^0.0.13",
     "lucide-react": "^0.381.0",
     "msw": "^2.3.5",
-    "posthog-js": "^1.154.2",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "radix-ui": "^1.0.1",
@@ -107,7 +114,6 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.1",
     "viem": "^2.13.1",
-    "wagmi": "^2.12.2",
     "zod": "^3.23.8"
   }
 }

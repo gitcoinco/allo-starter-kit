@@ -11,5 +11,5 @@ export default defineConfig((options: Options) => ({
   minify: false,
   experimentalDts: false,
   clean: true,
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom", "wagmi", "@rainbow-me/rainbowkit"],
 }));

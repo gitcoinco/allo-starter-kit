@@ -1,8 +1,6 @@
 "use client";
 import { type PropsWithChildren, createContext, useContext } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import posthog from "posthog-js";
-import { PostHogProvider } from "posthog-js/react";
 
 import type { API } from "./types";
 
@@ -10,13 +8,6 @@ import { Toaster } from "../ui/toaster";
 import type { StrategyExtensions } from "../strategies";
 import { getQueryClient } from "./query-client";
 import { mergeApi } from "./default-api";
-
-if (typeof window !== "undefined") {
-  posthog.init("phc_MkecAopGBhofBbwLqvcvV0iyHBZWSlemr7krp6lxLjl", {
-    api_host: "https://us.i.posthog.com",
-    person_profiles: "always",
-  });
-}
 
 type ProviderAPI = { api: API; strategies: StrategyExtensions };
 const Context = createContext({} as ProviderAPI);
@@ -34,14 +25,12 @@ export function ApiProvider({
 }>) {
   const value = mergeApi({ api, strategies });
   return (
-    <PostHogProvider client={posthog}>
-      <QueryClientProvider client={queryClient}>
-        <Context.Provider value={value}>
-          {children}
-          <Toaster />
-        </Context.Provider>
-      </QueryClientProvider>
-    </PostHogProvider>
+    <QueryClientProvider client={queryClient}>
+      <Context.Provider value={value}>
+        {children}
+        <Toaster />
+      </Context.Provider>
+    </QueryClientProvider>
   );
 }
 

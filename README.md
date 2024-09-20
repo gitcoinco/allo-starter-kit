@@ -8,6 +8,7 @@ AlloKit is a collection of functions, hooks, and components for interacting with
 2. [Stack](#stack)
 3. [Using AlloKit in your project](#using-allokit-in-your-project)
    - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
+   - [Peer Dependencies](#peer-dependencies)
    - [Usage](#usage)
      - [Add Component Styles](#add-component-styles)
      - [Add AlloKit Providers](#add-allokit-providers)
@@ -70,23 +71,20 @@ In local development you can link the package to automatically update any change
 
 This will link the AlloKit package from the cloned repository to the project where you want to use it, allowing you to use it as if it were installed from npm package manager.
 
-### Vite
+### Peer Dependencies
 
-If you're using Vite to bundle your app you will need to add `graphql-request` to your `vite.config.ts`:
+AlloKit has the following peer dependencies that you need to install in your project:
 
-```ts
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  optimizeDeps: {
-    include: ["graphql-request"],
-  },
-});
-```
+- `react` (version ^18.0.0)
+- `react-dom` (version ^18.0.0)
+- `@rainbow-me/rainbowkit` (version ^2.1.4)
+- `wagmi` (version ^2.12.2)
+
+Make sure these packages are installed in your project.
 
 ### Usage
 
-Create a simple grants app [tutorial](./tutorial.md).
+Create a simple grants app [tutorial](./packages/kit/tutorial.md).
 
 #### Add Component Styles
 
@@ -115,8 +113,8 @@ export function AlloKitProviders({ children }: PropsWithChildren) {
 // See `apps/demo/src/app/api/ipfs/route.ts` for example implementation
 async function upload(data) {
   return fetch(`/api/ipfs`, { method: "POST", body: data })
-    .then((r) => r.json())
-    .then((r) => r.cid);
+    .then(r => r.json())
+    .then(r => r.cid);
 }
 ```
 
