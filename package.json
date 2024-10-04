@@ -3,30 +3,28 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "build:kit": "cd packages/kit && bun run build",
+    "build:kit": "cd packages/kit && pnpm run build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "prelink": "bun run build:kit",
-    "link": "cd packages/kit && bun link",
-    "prestorybook": "bun run build:kit",
-    "storybook": "cd apps/storybook && bun run dev",
-    "predev:demo": "bun run build:kit",
-    "dev:demo": "cd apps/demo && bun run dev"
+    "prelink": "pnpm run build:kit",
+    "link": "cd packages/kit && pnpm link --global",
+    "prestorybook": "pnpm run build:kit",
+    "storybook": "cd apps/storybook && pnpm run dev"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.21"
   },
   "devDependencies": {
-    "@allo-team/eslint-config": "*",
-    "@allo-team/typescript-config": "*",
+    "@allo-team/eslint-config": "workspace:*",
+    "@allo-team/typescript-config": "workspace:*",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "bun@1.1.20",
+  "packageManager": "pnpm@9.6.0",
   "workspaces": [
     "apps/*",
     "packages/*"

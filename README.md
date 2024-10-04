@@ -4,22 +4,34 @@ AlloKit is a collection of functions, hooks, and components for interacting with
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Stack](#stack)
-3. [Using AlloKit in your project](#using-allokit-in-your-project)
-   - [Install AlloKit in your project](#install-allokit-in-your-project) **OR** [Link AlloKit to your project](#link-allokit-to-your-project)
-   - [Peer Dependencies](#peer-dependencies)
-   - [Usage](#usage)
-     - [Add Component Styles](#add-component-styles)
-     - [Add AlloKit Providers](#add-allokit-providers)
-     - [Import & Use Components](#import--use-components)
-     - [Example usage in your project](#example-usage-in-your-project)
-4. [Local Development](#local-development)
-   - [Setup](#setup)
-   - [Running the project](#running-the-project)
-   - [Running the Demo App Standalone](#running-the-demo-app-standalone)
-   - [Running Storybook Standalone](#running-storybook-standalone)
-5. [Strategy Extensions](#strategy-extensions)
+- [Allo Kit](#allo-kit)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Building a simple Discover Rounds app](#building-a-simple-discover-rounds-app)
+  - [Stack](#stack)
+  - [Using AlloKit in your project](#using-allokit-in-your-project)
+    - [Install AlloKit in your project](#install-allokit-in-your-project)
+    - [Link AlloKit to your project](#link-allokit-to-your-project)
+    - [Peer Dependencies](#peer-dependencies)
+    - [Usage](#usage)
+      - [Add Component Styles](#add-component-styles)
+      - [Add AlloKit Providers](#add-allokit-providers)
+      - [Import \& Use Components](#import--use-components)
+    - [Example usage in your project](#example-usage-in-your-project)
+      - [Demo App](#demo-app)
+  - [Local Development](#local-development)
+    - [Setup](#setup)
+      - [Clone the Repository](#clone-the-repository)
+      - [Install pnpm](#install-pnpm)
+      - [Install Dependencies](#install-dependencies)
+    - [Running the project](#running-the-project)
+      - [Open Demo App in your browser](#open-demo-app-in-your-browser)
+      - [Open Storybook in your browser](#open-storybook-in-your-browser)
+    - [Running the Demo App Standalone](#running-the-demo-app-standalone)
+    - [Running Storybook Standalone](#running-storybook-standalone)
+      - [Run Storybook](#run-storybook)
+  - [Strategy Extensions](#strategy-extensions)
+    - [Building a Strategy Extension](#building-a-strategy-extension)
 
 ## Introduction
 
@@ -201,16 +213,16 @@ git clone https://github.com/gitcoinco/allo-starter-kit
 cd allo-starter-kit
 ```
 
-#### Install bun
+#### Install pnpm
 
 ```sh
-curl -fsSL https://bun.sh/install | bash
+brew install pnpm
 ```
 
 #### Install Dependencies
 
 ```sh
-bun install
+pnpm i
 ```
 
 ### Running the project
@@ -218,7 +230,8 @@ bun install
 This will run the apps and the kit build in parallel
 
 ```sh
-bun run dev
+pnpm run build
+pnpm run dev
 ```
 
 #### Open Demo App in your browser
@@ -237,20 +250,6 @@ open http://localhost:6006
 
 This section covers how to run the demo app independently for local development.
 
-#### Run Demo App
-
-This will build the kit and run the demo app.
-
-```sh
-bun run dev:demo
-```
-
-#### Open Demo App in your browser
-
-```sh
-open http://localhost:3000
-```
-
 ### Running Storybook Standalone
 
 This section covers how to run Storybook independently for local development.
@@ -260,7 +259,7 @@ This section covers how to run Storybook independently for local development.
 This will build the kit and run storybook.
 
 ```sh
-bun run storybook
+pnpm run storybook
 ```
 
 ## Strategy Extensions
