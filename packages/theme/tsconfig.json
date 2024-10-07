@@ -1,0 +1,9 @@
+{
+  "extends": "@allo-team/typescript-config/react-library.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "outDir": "dist"
+  },
+  "include": ["tailwind.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}
