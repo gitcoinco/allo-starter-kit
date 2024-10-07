@@ -10,7 +10,7 @@
     "prelink": "pnpm run build:kit",
     "link": "cd packages/kit && pnpm link --global",
     "prestorybook": "pnpm run build:kit",
-    "storybook": "cd apps/storybook && pnpm run dev"
+    "storybook": "cd storybook && pnpm run dev"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.51.21"
@@ -26,7 +26,10 @@
   },
   "packageManager": "pnpm@9.6.0",
   "workspaces": [
-    "apps/*",
+    "storybook/*",
     "packages/*"
-  ]
+  ],
+  "volta": {
+    "node": "20.18.0"
+  }
 }
