@@ -42,8 +42,8 @@
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@allo-team/eslint-config": "*",
-    "@allo-team/typescript-config": "*",
+    "@allo-team/eslint-config": "workspace:*",
+    "@allo-team/typescript-config": "workspace:*",
     "@microsoft/api-extractor": "^7.47.5",
     "@rainbow-me/rainbowkit": "^2.1.4",
     "@swc/helpers": "^0.5.12",

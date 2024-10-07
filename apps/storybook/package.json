@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bunx storybook dev -p 6006",
-    "start": "bunx storybook dev -p 6006",
-    "build": "bunx storybook build",
+    "dev": "pnpm exec storybook dev -p 6006",
+    "start": "pnpm exec storybook dev -p 6006",
+    "build": "pnpm exec storybook build",
     "test": "npm run test-storybook"
   },
   "dependencies": {
