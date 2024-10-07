@@ -6,11 +6,7 @@ node_modules
 .pnp.js
 
 # Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*
 
 # Testing
 coverage
@@ -26,7 +22,9 @@ coverage
 out/
 build
 dist
-
+dist-ssr
+server/dist
+public/dist
 
 # Debug
 npm-debug.log*
@@ -42,3 +40,5 @@ yarn-error.log*
 .idea
 
 storybook-static
+*.log*
+.cache
