@@ -1,8 +1,8 @@
 import React from "react";
 import { describe, expect, test } from "vitest";
-import { render, screen } from "../../test-utils";
+import { render, screen } from "../../../test-utils";
 import { DiscoverRounds } from "../discover";
-import { mockRounds } from "../../api/providers/mock";
+import { mockRounds } from "../../../services/providers/mock";
 
 describe("DiscoverRounds", async () => {
   test("render", async () => {

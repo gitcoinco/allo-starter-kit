@@ -1,5 +1,11 @@
 import React from "react";
 import type { Preview } from "@storybook/react";
+import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import { initialize, mswLoader } from "msw-storybook-addon";
+import { handlers } from "../src/mocks/handlers";
+
+initialize();
+
 import "../src/styles.css";
 
 import { ApiProvider, Web3Provider } from "../src";
@@ -12,25 +18,17 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    options: {
-      storySort: {
-        method: "",
-        order: ["UI"],
-        locales: "",
-      },
+    msw: {
+      handlers,
     },
-    // We can use MSW to mock data fetching
-    // msw: {
-    //   handlers: [
-    //     graphql.query("Rounds", ({}) => {
-    //       return HttpResponse.json({ data: { rounds } });
-    //     }),
-    //   ],
-    // },
   },
-  // loaders: [mswLoader],
-
+  loaders: [mswLoader],
   decorators: [
+    withThemeByDataAttribute({
+      defaultTheme: "light",
+      themes: { light: "light", dark: "dark" },
+      attributeName: "data-mode",
+    }),
     (Story, { parameters: { theme = "light" } }) => {
       return (
         <ApiProvider>
@@ -42,5 +40,12 @@ const preview: Preview = {
     },
   ],
 };
+
+// NOTE: Example of global loaders
+// export const loaders = [
+//   async () => ({
+//     userData: await fetch('/api/user').then((res) => res.json()),
+//   }),
+// ];
 
 export default preview;

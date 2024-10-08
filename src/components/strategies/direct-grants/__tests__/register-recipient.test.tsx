@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import { createSchema } from "../register-recipient";
-import { API } from "../../../api/types";
+import { API } from "../../../services/types";
 import { decodeAbiParameters, parseAbiParameters, zeroAddress } from "viem";
 
 describe("DirectGrants Strategy - Register Recipient", async () => {
@@ -30,10 +30,7 @@ describe("DirectGrants Strategy - Register Recipient", async () => {
 
     // Verify we can decode it to the correct params
     expect(
-      decodeAbiParameters(
-        parseAbiParameters("address, address, (uint256, string)"),
-        actual,
-      ),
+      decodeAbiParameters(parseAbiParameters("address, address, (uint256, string)"), actual),
     ).toEqual([zeroAddress, recipientAddress, [BigInt(1), "ipfs-hash"]]);
   });
 });

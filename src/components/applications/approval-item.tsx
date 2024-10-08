@@ -1,6 +1,6 @@
 "use client";
 
-import type { Application } from "../../api/types";
+import type { Application } from "../../services/types";
 import { BackgroundImage } from "../../ui/background-image";
 import { Checkbox } from "../../ui/checkbox";
 import type { ReactNode } from "react";
@@ -27,10 +27,7 @@ export function ApplicationApprovalItem({
       </div>
       <label htmlFor={id} className="flex flex-1 cursor-pointer gap-4">
         <div className="">
-          <BackgroundImage
-            className="size-12 rounded bg-gray-800"
-            src={bannerUrl}
-          />
+          <BackgroundImage className="size-12 rounded bg-gray-800" src={bannerUrl} />
         </div>
 
         <div className="">

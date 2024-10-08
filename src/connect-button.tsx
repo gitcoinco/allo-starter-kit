@@ -1,19 +1,13 @@
 "use client";
-import type { PropsWithChildren } from "react";
+
+import React, { type PropsWithChildren } from "react";
 import { Button } from "./ui/button";
 import { ConnectButton as RainbowConnectButton } from "@rainbow-me/rainbowkit";
 
 export function ConnectButton({ children }: PropsWithChildren) {
   return (
     <RainbowConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        mounted,
-      }) => {
+      {({ account, chain, openAccountModal, openChainModal, openConnectModal, mounted }) => {
         const connected = mounted && account && chain;
 
         return (
@@ -29,9 +23,7 @@ export function ConnectButton({ children }: PropsWithChildren) {
           >
             {(() => {
               if (!connected) {
-                return (
-                  <Button onClick={openConnectModal}>Connect Wallet</Button>
-                );
+                return <Button onClick={openConnectModal}>Connect Wallet</Button>;
               }
 
               if (chain.unsupported) {
@@ -42,9 +34,7 @@ export function ConnectButton({ children }: PropsWithChildren) {
                 children || (
                   <Button onClick={openAccountModal}>
                     {account.displayName}
-                    {account.displayBalance
-                      ? ` (${account.displayBalance})`
-                      : ""}
+                    {account.displayBalance ? ` (${account.displayBalance})` : ""}
                   </Button>
                 )
               );

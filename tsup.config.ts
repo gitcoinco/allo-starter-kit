@@ -1,13 +1,13 @@
 import { defineConfig } from "tsup";
 
-export default defineConfig(options => ({
+export default defineConfig((options) => ({
   ...options,
   treeshake: false,
   splitting: false,
   bundle: false,
-  entry: ["src/index.ts"],
+  entry: ["src"],
   format: ["esm"],
-  dts: true,
+  dts: false,
   minify: false,
   experimentalDts: false,
   clean: true,

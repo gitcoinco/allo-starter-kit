@@ -1,12 +1,8 @@
-import type { Application } from "../../api/types";
+import type { Application } from "../../services/types";
 import { cn } from "../../lib/utils";
 import { Badge } from "../../ui/badge";
 
-export function ApplicationStatusBadge({
-  status,
-}: {
-  status?: Application["status"];
-}) {
+export function ApplicationStatusBadge({ status }: { status?: Application["status"] }) {
   if (!status) return null;
   return (
     <Badge variant={statusMap[status]} className={cn("capitalize")}>

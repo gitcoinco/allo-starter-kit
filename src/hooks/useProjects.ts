@@ -6,8 +6,8 @@ import {
   useQuery,
   UseQueryOptions,
 } from "@tanstack/react-query";
-import { useAPI } from "..";
-import type { API, Project, ProjectsQuery } from "../api/types";
+import { useAPI } from "../services/provider";
+import type { API, Project, ProjectsQuery } from "../services/types";
 
 const defaultQuery: ProjectsQuery = {
   where: {},

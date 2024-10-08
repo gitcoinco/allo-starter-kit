@@ -1,13 +1,6 @@
 "use client";
-import type { Project, QueryOpts } from "../../api/types";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  BackgroundImage,
-  Markdown,
-  Skeleton,
-} from "../../ui";
+import type { Project, QueryOpts } from "../../services/types";
+import { Avatar, AvatarFallback, AvatarImage, BackgroundImage, Markdown, Skeleton } from "../../ui";
 import { useProjectById } from "../../hooks/useProjects";
 import { ReactNode } from "react";
 import { UseQueryResult } from "@tanstack/react-query";

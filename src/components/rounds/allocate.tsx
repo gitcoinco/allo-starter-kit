@@ -5,8 +5,7 @@ import { useRoundById } from "../../hooks/useRounds";
 import { useRoundStrategyAddon } from "../strategies";
 import { BackgroundImage } from "../../ui/background-image";
 import { Input } from "../../ui/input";
-import { Button } from "../..";
-import { useRef } from "react";
+import { Button } from "../../ui/button";
 import { useAllocate, useAllocateState } from "../../hooks/useAllocate";
 
 type AllocateProps = {
@@ -49,17 +48,15 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
             Each Strategy Allocate function can then create the data the contract needs.
             */
             allocate.mutate({ state, applications });
-          }}>
+          }}
+        >
           Allocate
         </Button>
       </div>
       <div className="divide-y">
-        {applications?.map(application => (
+        {applications?.map((application) => (
           <div key={application.id} className="flex items-center gap-2 py-2">
-            <BackgroundImage
-              className="size-12 rounded bg-gray-100"
-              src={application.avatarUrl}
-            />
+            <BackgroundImage className="size-12 rounded bg-gray-100" src={application.avatarUrl} />
             <h3 className="flex-1 text-lg">{application.name}</h3>
 
             <div>
@@ -68,11 +65,9 @@ export function Allocate({ roundId, chainId }: AllocateProps) {
                 allowNegative={false}
                 allowLeadingZeros={false}
                 thousandSeparator=","
-                customInput={p => (
-                  <Input className="w-32 text-center" {...p} min={0} />
-                )}
+                customInput={(p) => <Input className="w-32 text-center" {...p} min={0} />}
                 value={state[application.id] ?? 0}
-                onBlur={e => {
+                onBlur={(e) => {
                   e.preventDefault();
                   const value = parseFloat(e.target.value);
                   console.log(value);

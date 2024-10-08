@@ -1,8 +1,8 @@
 import React from "react";
 import { describe, expect, test } from "vitest";
-import { render, screen, waitFor } from "../../test-utils";
+import { render, screen, waitFor } from "../../../test-utils";
 import { DiscoverApplications } from "../discover";
-import { mockApplications } from "../../api/providers/mock";
+import { mockApplications } from "../../../services/providers/mock";
 import { ApplicationCard } from "../card";
 
 describe("DiscoverApplications", async () => {

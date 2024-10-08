@@ -1,5 +1,5 @@
-import { Button } from "../..";
-import type { Application } from "../../api/types";
+import { Button } from "../../ui/button";
+import type { Application } from "../../services/types";
 import { cn, formatMoney, formatNumber } from "../../lib/utils";
 import { BackgroundImage } from "../../ui/background-image";
 import { Card, CardContent } from "../../ui/card";
@@ -22,7 +22,8 @@ export function ApplicationCard({
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
         ["animate-pulse"]: isLoading,
-      })}>
+      })}
+    >
       <BackgroundImage className="h-32 bg-gray-100" src={bannerUrl} />
 
       <CardContent className="space-y-2 p-4">
@@ -40,9 +41,7 @@ export function ApplicationCard({
                 <ContributionIcon />
                 {formatMoney(contributors?.amount, "usd", 0)}
               </div>
-              <div className="text-xs">
-                {formatNumber(contributors?.count)} contributors
-              </div>
+              <div className="text-xs">{formatNumber(contributors?.count)} contributors</div>
             </div>
           )}
           {components.includes("add_button") && <Button size="sm">Add</Button>}
@@ -54,12 +53,7 @@ export function ApplicationCard({
 
 function ContributionIcon() {
   return (
-    <svg
-      width="14"
-      height="12"
-      viewBox="0 0 14 12"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg">
+    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
       <ellipse
         cx="4.00969"
         cy="4.75145"

@@ -2,7 +2,7 @@ import { getAddress as alloAddress } from "@allo-team/allo-v2-sdk/dist/Allo/allo
 import { DonationVotingMerkleDistributionStrategy } from "@allo-team/allo-v2-sdk";
 import type { Address, Chain, WalletClient } from "viem";
 import { getAddress } from "viem";
-import type { API, Application, Round } from "../../../api/types";
+import type { API, Application, Round } from "../../../services/types";
 import {
   Permit2Data,
   PermitType,
@@ -19,13 +19,9 @@ export const call = (
   state: Record<string, number>,
   applications: Application[],
   api: API,
-  signer: WalletClient
+  signer: WalletClient,
 ) => {
-  const allocations: Allocation[] = buildAllocations(
-    round.matching.token,
-    state,
-    applications
-  );
+  const allocations: Allocation[] = buildAllocations(round.matching.token, state, applications);
   const [[recipientId, amount]] = Object.entries(state);
 
   /*
@@ -43,19 +39,18 @@ export const call = (
     permit,
     signature,
   };
-  const tx =
-    DonationVotingMerkleDistributionStrategy.prototype.getAllocateData.call(
-      {
-        poolId: BigInt(round.id),
-        checkPoolId: Function,
-        allo: { address: () => alloAddress({ id: round.chainId } as Chain) },
-      },
-      {
-        recipientId: getAddress(recipientId),
-        permitType: PermitType.Permit2,
-        permit2Data,
-      }
-    );
+  const tx = DonationVotingMerkleDistributionStrategy.prototype.getAllocateData.call(
+    {
+      poolId: BigInt(round.id),
+      checkPoolId: Function,
+      allo: { address: () => alloAddress({ id: round.chainId } as Chain) },
+    },
+    {
+      recipientId: getAddress(recipientId),
+      permitType: PermitType.Permit2,
+      permit2Data,
+    },
+  );
 
   return api.allo.sendTransaction(tx, signer);
 };
@@ -63,14 +58,12 @@ export const call = (
 function buildAllocations(
   token: Address,
   state: Record<string, number>,
-  applications: Application[]
+  applications: Application[],
 ) {
   return Object.entries(state)
     .filter(([_, amount]) => amount > 0)
     .map(([projectId, amount]) => {
-      const application = applications.find(
-        appl => appl.projectId === projectId
-      );
+      const application = applications.find((appl) => appl.projectId === projectId);
       return {
         token,
         recipientId: getAddress(application?.recipient!),

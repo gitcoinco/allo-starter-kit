@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { DonationsQuery } from "../api/types";
-import { useAPI } from "..";
+import { DonationsQuery } from "../services/types";
+import { useAPI } from "../services/provider";
 
 const defaultQuery: DonationsQuery = {
   where: {},

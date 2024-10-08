@@ -1,8 +1,8 @@
-export * from "./api/provider";
-export * from "./api/types";
-export * from "./api/default-api";
-export * from "./api/providers/indexer";
-export * from "./api/web3-provider";
+export * from "./services/provider";
+export * from "./services/types";
+export * from "./services/default-api";
+export * from "./services/providers/indexer";
+export * from "./services/web3-provider";
 export * from "./connect-button";
 
 export * from "./ui";

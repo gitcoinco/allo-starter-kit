@@ -1,8 +1,8 @@
 "use client";
 
-import { type PropsWithChildren } from "react";
+import React, { type PropsWithChildren } from "react";
 import { useAccount, useChainId, useSwitchChain } from "wagmi";
-import { Button } from "../ui/button";
+import { Button } from "./button";
 import { ConnectButton } from "../connect-button";
 
 export function EnsureCorrectNetwork({

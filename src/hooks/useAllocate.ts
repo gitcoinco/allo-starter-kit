@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { Application, Round } from "../api/types";
+import { Application, Round } from "../services/types";
 import { useRoundStrategyAddon } from "../components/strategies";
 import { useRef } from "react";
 

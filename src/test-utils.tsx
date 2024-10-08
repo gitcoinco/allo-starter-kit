@@ -5,18 +5,13 @@ import { graphql, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
 import { ApiProvider, Web3Provider } from ".";
-import {
-  mockApplications,
-  mockProjects,
-  mockRound,
-  mockRounds,
-} from "./api/providers/mock";
+import { mockApplications, mockProjects, mockRound, mockRounds } from "./services/providers/mock";
 
 vi.mock("posthog-js/react", () => {
   return { PostHogProvider: ({ children }: PropsWithChildren) => children };
 });
 
-/* 
+/*
 TODO: Add more mocks
 Copy graphql response from the network tab in the browser and save in providers/mock/data.
 
@@ -36,9 +31,7 @@ const server = setupServer(
       data: { application: mockApplications.data?.applications[0] },
     }),
   ),
-  graphql.query("Applications", ({ query }) =>
-    HttpResponse.json(mockApplications),
-  ),
+  graphql.query("Applications", ({ query }) => HttpResponse.json(mockApplications)),
 );
 
 beforeAll(() => server.listen());
@@ -62,10 +55,8 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">,
-) => render(ui, { wrapper: Providers, ...options });
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) =>
+  render(ui, { wrapper: Providers, ...options });
 
 const customRenderHook = <Props, Result>(
   hook: (initialProps: Props) => Result,

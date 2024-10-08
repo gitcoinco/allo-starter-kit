@@ -17,33 +17,20 @@ import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
 import { useCreateRound } from "../../hooks/useRounds";
 import { Address, getAddress, isAddress, zeroAddress } from "viem";
-import { type RoundCreated } from "../../api/types";
+import { type RoundCreated } from "../../services/types";
 
 import { type PropsWithChildren, createElement, useState } from "react";
 import { ImageUpload } from "../../ui/image-upload";
 import { useUpload } from "../../hooks/useUpload";
 import { EthAddressSchema } from "../../schemas";
-import {
-  type StrategyExtensions,
-  type StrategyType,
-  useStrategyAddon,
-} from "../strategies";
+import { type StrategyExtensions, type StrategyType, useStrategyAddon } from "../strategies";
 import { EnsureCorrectNetwork } from "../../ui/correct-network";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../ui/select";
-import {
-  CreateProfileButton,
-  supportedChains,
-  useProfile,
-  useStrategies,
-} from "../..";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
 import { useNetwork } from "../../hooks/useNetwork";
 import { type TContracts } from "@gitcoin/gitcoin-chain-data";
+import { CreateProfileButton, useProfile } from "../profile";
+import { useStrategies } from "../../services/provider";
+import { supportedChains } from "../../services/web3-provider";
 
 const baseRoundSchema = z.object({
   name: z.string().min(2, {
@@ -59,19 +46,16 @@ const baseRoundSchema = z.object({
     .string()
     .optional()
     .transform(
-      v =>
+      (v) =>
         (v ?? "")
           .split(/[\s,]+/)
-          .map(v => v.trim())
-          .map(addr => (isAddress(addr) ? getAddress(addr) : false))
-          .filter(Boolean) as Address[]
+          .map((v) => v.trim())
+          .map((addr) => (isAddress(addr) ? getAddress(addr) : false))
+          .filter(Boolean) as Address[],
     ),
 });
 
-function CreateButton({
-  isLoading,
-  children,
-}: PropsWithChildren<{ isLoading: boolean }>) {
+function CreateButton({ isLoading, children }: PropsWithChildren<{ isLoading: boolean }>) {
   const chainId = Number(useFormContext().watch("chainId"));
 
   return (
@@ -85,15 +69,9 @@ function CreateButton({
   );
 }
 
-export function CreateRound({
-  onCreated,
-}: {
-  onCreated?: (round: RoundCreated) => void;
-}) {
+export function CreateRound({ onCreated }: { onCreated?: (round: RoundCreated) => void }) {
   const strategies = useStrategies();
-  const [strategy, setStrategy] = useState<StrategyType>(
-    Object.values(strategies)[0]?.type!
-  );
+  const [strategy, setStrategy] = useState<StrategyType>(Object.values(strategies)[0]?.type!);
 
   return (
     <CreateRoundForm
@@ -144,40 +122,37 @@ function CreateRoundForm({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(
-          async ({ name, description, ...values }) => {
-            console.log("create round", values);
+        onSubmit={form.handleSubmit(async ({ name, description, ...values }) => {
+          console.log("create round", values);
 
-            // Get the strategy address based on selected network
-            const strategy = getAddress(
-              strategies[selected]?.contracts[values.chainId]!
-            );
+          // Get the strategy address based on selected network
+          const strategy = getAddress(strategies[selected]?.contracts[values.chainId]!);
 
-            const pointer = await upload.mutateAsync({
-              // TODO: This is GrantsStack-specific
-              // Do we want to move this to the provider to build the metadata shape?
-              // Could also use a transformer - api.transformers.roundMetadata({ name, description })
-              round: {
-                name,
-                description,
-                roundType: "public",
-                quadraticFundingConfig: {
-                  matchingFundsAvailable: 0,
-                },
+          const pointer = await upload.mutateAsync({
+            // TODO: This is GrantsStack-specific
+            // Do we want to move this to the provider to build the metadata shape?
+            // Could also use a transformer - api.transformers.roundMetadata({ name, description })
+            round: {
+              name,
+              description,
+              roundType: "public",
+              quadraticFundingConfig: {
+                matchingFundsAvailable: 0,
               },
-            });
-            const metadata = {
-              protocol: BigInt(1),
-              pointer: pointer as string,
-            };
+            },
+          });
+          const metadata = {
+            protocol: BigInt(1),
+            pointer: pointer as string,
+          };
 
-            create.mutate(
-              { ...values, strategy, metadata, profileId: profile.data! },
-              { onSuccess: onCreated }
-            );
-          }
-        )}
-        className="mx-auto max-w-screen-sm space-y-4">
+          create.mutate(
+            { ...values, strategy, metadata, profileId: profile.data! },
+            { onSuccess: onCreated },
+          );
+        })}
+        className="mx-auto max-w-screen-sm space-y-4"
+      >
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-semibold">Create round</h3>
           <CreateButton isLoading={upload.isPending || create.isPending}>
@@ -222,11 +197,7 @@ function CreateRoundForm({
             <FormItem>
               <FormLabel>Round description</FormLabel>
               <FormControl>
-                <Textarea
-                  rows={8}
-                  placeholder="Round description..."
-                  {...field}
-                />
+                <Textarea rows={8} placeholder="Round description..." {...field} />
               </FormControl>
               <FormMessage />
               <FormDescription>Markdown is supported</FormDescription>
@@ -240,20 +211,19 @@ function CreateRoundForm({
             render={({ field }) => (
               <FormItem className="min-w-48">
                 <FormLabel>Network</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={String(field.value)}>
+                <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
                   <FormControl>
                     <SelectTrigger className="capitalize">
                       <SelectValue placeholder="Select a network" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {supportedChains?.map(network => (
+                    {supportedChains?.map((network) => (
                       <SelectItem
                         key={network.id}
                         value={String(network.id)}
-                        className="capitalize">
+                        className="capitalize"
+                      >
                         {network.name}
                       </SelectItem>
                     ))}
@@ -276,14 +246,15 @@ function CreateRoundForm({
 
                     onChangeStrategy(value);
                   }}
-                  defaultValue={field.value}>
+                  defaultValue={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a strategy" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {Object.values(strategies)?.map(strategy => (
+                    {Object.values(strategies)?.map((strategy) => (
                       <SelectItem key={strategy.type} value={strategy.type}>
                         {strategy.name}
                       </SelectItem>
@@ -308,16 +279,14 @@ function CreateRoundForm({
               <FormItem className="flex-1">
                 {/* TODO: Dropdown with token names */}
                 <FormLabel>Token</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select a token" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {(network?.tokens ?? []).map(token => (
+                    {(network?.tokens ?? []).map((token) => (
                       <SelectItem key={token.address} value={token.address}>
                         {token.code}
                       </SelectItem>
@@ -335,16 +304,9 @@ function CreateRoundForm({
               <FormItem className="flex-1">
                 <FormLabel>Initial funding amount</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    disabled={true}
-                    type="number"
-                    value={Number(field.value)}
-                  />
+                  <Input {...field} disabled={true} type="number" value={Number(field.value)} />
                 </FormControl>
-                <FormDescription>
-                  TODO: handle decimals from selected token
-                </FormDescription>
+                <FormDescription>TODO: handle decimals from selected token</FormDescription>
                 <FormMessage />
               </FormItem>
             )}

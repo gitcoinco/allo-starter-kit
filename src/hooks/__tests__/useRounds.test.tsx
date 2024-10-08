@@ -1,8 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { mockCreateRound, renderHook, screen, waitFor } from "../../test-utils";
-import { useCreateRound } from "../..";
 
 import { zeroAddress } from "viem";
+import { useCreateRound } from "../useRounds";
+
 describe("Round Hooks", async () => {
   test("useCreateRound", async () => {
     const { result } = renderHook(() => useCreateRound());

@@ -1,5 +1,5 @@
 import { isAfter } from "date-fns";
-import type { Round } from "../../api/types";
+import type { Round } from "../../services/types";
 import { toNow } from "../../lib/utils";
 
 export const getRoundTime = (phases: Round["phases"] = {}): string => {
@@ -7,9 +7,7 @@ export const getRoundTime = (phases: Round["phases"] = {}): string => {
 
   if (isAfter(phases.applicationsStartTime!, now))
     return `Starts ${toNow(phases.applicationsStartTime)}`;
-  if (isAfter(now, phases.donationsEndTime!))
-    return `Ended ${toNow(phases.donationsEndTime)}`;
-  if (isAfter(phases.donationsEndTime!, now))
-    return `Ends ${toNow(phases.donationsEndTime)}`;
+  if (isAfter(now, phases.donationsEndTime!)) return `Ended ${toNow(phases.donationsEndTime)}`;
+  if (isAfter(phases.donationsEndTime!, now)) return `Ends ${toNow(phases.donationsEndTime)}`;
   return "";
 };

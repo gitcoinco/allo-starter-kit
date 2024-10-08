@@ -4,12 +4,21 @@ const path = require("path");
 
 // Function to read file contents
 function readFileContents(filePath) {
-  return fs.readFileSync(filePath, "utf8");
+  try {
+    return fs.readFileSync(filePath, "utf8");
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error);
+    return null;
+  }
 }
 
 // Function to write updated contents back to the file
 function writeFileContents(filePath, contents) {
-  fs.writeFileSync(filePath, contents, "utf8");
+  try {
+    fs.writeFileSync(filePath, contents, "utf8");
+  } catch (error) {
+    console.error(`Error writing file ${filePath}:`, error);
+  }
 }
 
 // Function to resolve the full path of the import
@@ -67,9 +76,13 @@ function updateImportStatement(fromKeyword, importPath, quote, filePath) {
   const fullPath = resolveFullPath(filePath, importPath);
 
   if (importPath === ".." || importPath === "." || isDirectory(fullPath)) {
-    return updateDirectoryOrDotImport(fromKeyword, importPath, quote, fullPath);
+    const updatedImport = updateDirectoryOrDotImport(fromKeyword, importPath, quote, fullPath);
+
+    return updatedImport;
   } else if (!importPath.endsWith(".mjs")) {
-    return updateFileImport(fromKeyword, importPath, quote, fullPath);
+    const updatedImport = updateFileImport(fromKeyword, importPath, quote, fullPath);
+
+    return updatedImport;
   }
 
   return `${fromKeyword}${importPath}${quote}`;
@@ -78,12 +91,15 @@ function updateImportStatement(fromKeyword, importPath, quote, filePath) {
 // Main function to update imports in .mjs files
 function updateImports(filePath) {
   const contents = readFileContents(filePath);
+  if (!contents) {
+    return;
+  }
 
   const updatedContents = contents.replace(
     /(from\s+['"])(\.\.?\/[^'"\s]+|\.|..|posthog-js\/react|@allo-team\/allo-v2-sdk\/dist\/Allo\/allo.config)(['"])/g,
     (match, fromKeyword, importPath, quote) => {
       return updateImportStatement(fromKeyword, importPath, quote, filePath);
-    }
+    },
   );
 
   if (contents !== updatedContents) {
