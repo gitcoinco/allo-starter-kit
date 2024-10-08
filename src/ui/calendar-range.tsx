@@ -1,19 +1,16 @@
 import { CalendarIcon } from "lucide-react";
-import { Button, FormControl } from "..";
+import { Button, FormControl } from "./";
 import { cn } from "../lib/utils";
 import { Popover, PopoverTrigger, PopoverContent } from "./popover";
 import { Calendar } from "./calendar";
 import { format } from "date-fns";
 import { ControllerRenderProps, FieldPath, FieldValues } from "react-hook-form";
-import { PropsWithChildren } from "react";
+import React, { type PropsWithChildren } from "react";
 
 export function RangeCalendar<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({
-  children,
-  field,
-}: PropsWithChildren<{ field: ControllerRenderProps<TFieldValues, TName> }>) {
+>({ children, field }: PropsWithChildren<{ field: ControllerRenderProps<TFieldValues, TName> }>) {
   const { value, onChange } = field;
   const { from, to } = value ?? { from: null, to: null };
   return (
@@ -22,10 +19,7 @@ export function RangeCalendar<
         <FormControl>
           <Button
             variant={"outline"}
-            className={cn(
-              "pl-3 text-left font-normal",
-              !value && "text-muted-foreground",
-            )}
+            className={cn("pl-3 text-left font-normal", !value && "text-muted-foreground")}
           >
             {value ? formatDateRange({ from, to }) : children}
             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

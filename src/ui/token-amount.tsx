@@ -1,8 +1,9 @@
 "use client";
+
+import React from "react";
 import { Address, formatUnits } from "viem";
 import { formatNumber } from "../lib/utils";
 import { useToken } from "../hooks/useToken";
-
 export function TokenAmount({
   amount = BigInt(0),
   token,
@@ -16,8 +17,7 @@ export function TokenAmount({
 
   return (
     <>
-      {formatNumber(Number(formatUnits(amount, data?.decimals)))}{" "}
-      {symbol && data?.symbol}
+      {formatNumber(Number(formatUnits(amount, data?.decimals)))} {symbol && data?.symbol}
     </>
   );
 }

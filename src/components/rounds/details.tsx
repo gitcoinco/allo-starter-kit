@@ -3,7 +3,7 @@ import type { PropsWithChildren, ReactNode } from "react";
 import { formatDateRange } from "little-date";
 import type { UseQueryResult } from "@tanstack/react-query";
 
-import type { QueryOpts, Round } from "../../api/types";
+import type { QueryOpts, Round } from "../../services/types";
 import { useRoundById } from "../../hooks/useRounds";
 import { RoundNetworkBadge } from "./network-badge";
 import { Markdown } from "../../ui/markdown";
@@ -90,19 +90,13 @@ function RoundPhases({
   );
 }
 
-function DateRange({
-  from,
-  to,
-  children,
-}: PropsWithChildren<{ from?: string; to?: string }>) {
+function DateRange({ from, to, children }: PropsWithChildren<{ from?: string; to?: string }>) {
   if (!from) return null;
   return (
     <div className="text-sm">
       {children}:{" "}
       <span className="font-medium">
-        {from &&
-          to &&
-          formatDateRange(new Date(from), new Date(to), { includeTime: false })}
+        {from && to && formatDateRange(new Date(from), new Date(to), { includeTime: false })}
       </span>
     </div>
   );

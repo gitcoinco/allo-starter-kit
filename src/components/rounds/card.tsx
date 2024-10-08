@@ -1,18 +1,18 @@
 import { useMemo } from "react";
-import type { Round } from "../../api/types";
+import type { Round } from "../../services/types";
 import { TokenAmount } from "../../ui/token-amount";
 import { BackgroundImage } from "../../ui/background-image";
 import { Badge } from "../../ui/badge";
 import { Separator } from "../../ui/separator";
 import { Card, CardContent } from "../../ui/card";
 import { Avatar } from "../../ui/avatar";
-import { cn, supportedChains } from "../..";
 import { RoundStrategyBadge } from "./strategy-badge";
 import { getRoundTime } from "./utils";
 import { createComponent } from "../../lib/createComponent";
+import { supportedChains } from "../../services/web3-provider";
+import { cn } from "../../lib/utils";
 
-const getNetwork = (chainId: number) =>
-  supportedChains?.find(chain => chain.id === chainId);
+const getNetwork = (chainId: number) => supportedChains?.find((chain) => chain.id === chainId);
 
 export type RoundCard = Round & {
   // components?: RoundComponent[];
@@ -36,7 +36,8 @@ export function RoundCard({
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
         ["animate-pulse"]: isLoading,
-      })}>
+      })}
+    >
       <div className="">
         <RoundBanner src={bannerUrl} />
         <RoundHeader>{name}</RoundHeader>
@@ -56,9 +57,7 @@ export function RoundCard({
             <div>
               <div className="flex gap-2">
                 {applications && (
-                  <Badge variant={"secondary"}>
-                    {applications?.length} projects
-                  </Badge>
+                  <Badge variant={"secondary"}>{applications?.length} projects</Badge>
                 )}
                 {matching && (
                   <Badge variant={"secondary"}>
@@ -68,10 +67,7 @@ export function RoundCard({
               </div>
             </div>
             <Avatar className="size-8">
-              <div
-                className="size-8"
-                dangerouslySetInnerHTML={{ __html: network?.icon! }}
-              />
+              <div className="size-8" dangerouslySetInnerHTML={{ __html: network?.icon! }} />
             </Avatar>
           </div>
         </div>
@@ -86,13 +82,9 @@ export function RoundBanner({ src = "" }) {
 
 export const RoundHeader = createComponent(
   "h3",
-  "-mt-8 truncate pl-1 text-2xl font-medium text-gray-100"
+  "-mt-8 truncate pl-1 text-2xl font-medium text-gray-100",
 );
 
-export const RoundDescription = createComponent(
-  "p",
-  "line-clamp-4 h-24 text-base leading-6",
-  {
-    variants: { variant: { red: "text-red-600" } },
-  }
-);
+export const RoundDescription = createComponent("p", "line-clamp-4 h-24 text-base leading-6", {
+  variants: { variant: { red: "text-red-600" } },
+});

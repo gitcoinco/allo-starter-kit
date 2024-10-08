@@ -1,12 +1,13 @@
 "use client";
+
+import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import clsx from "clsx";
 import { ImageIcon } from "lucide-react";
 import { type ComponentProps, useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { Button } from "..";
+import { Button } from "./button";
 import { useUpload } from "../hooks/useUpload";
-
 type Props = { name: string; maxSize?: number } & ComponentProps<"img">;
 
 export function ImageUpload({
@@ -41,10 +42,7 @@ export function ImageUpload({
       render={({ field: { value, onChange, ...field } }) => {
         return (
           <div
-            className={clsx(
-              "group relative h-32 cursor-pointer overflow-hidden",
-              className,
-            )}
+            className={clsx("group relative h-32 cursor-pointer overflow-hidden", className)}
             onClick={() => ref.current?.click()}
           >
             <Button

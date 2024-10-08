@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Form } from "../../ui/form";
 import { Button } from "../../ui/button";
 import { useRoundById } from "../../hooks/useRounds";
-import type { ApplicationCreated, Round } from "../../api/types";
+import type { ApplicationCreated, Round } from "../../services/types";
 import { useCreateApplication } from "../../hooks/useApplications";
 import { useRoundStrategyAddon } from "../strategies";
 import { useAccount } from "wagmi";
@@ -42,15 +42,14 @@ function ApplicationForm({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(values => {
+        onSubmit={form.handleSubmit((values) => {
           console.log("create application", values);
           create.mutate(values, { onSuccess: onCreated });
         })}
-        className="mx-auto max-w-screen-sm space-y-4">
+        className="mx-auto max-w-screen-sm space-y-4"
+      >
         <div className="flex items-center justify-between">
-          <h3 className="text-2xl font-semibold">
-            Create application for {round.name}
-          </h3>
+          <h3 className="text-2xl font-semibold">Create application for {round.name}</h3>
           <Button type="submit" isLoading={create.isPending || isValidating}>
             Create
           </Button>

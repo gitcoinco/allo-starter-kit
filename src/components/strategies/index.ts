@@ -3,10 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useWalletClient } from "wagmi";
 import type { Address } from "viem";
 import type { TContracts } from "@gitcoin/gitcoin-chain-data";
-import { supportedChains } from "../../api/web3-provider";
-import type { API, Round } from "../../api/types";
-import { useAPI, useStrategies } from "../..";
+import { supportedChains } from "../../services/web3-provider";
+import type { API, Round } from "../../services/types";
 import z from "zod";
+import { useAPI, useStrategies } from "../../services/provider";
 
 // These represent the different function calls in Allo Protocol
 export type StrategyComponentType =
@@ -51,11 +51,11 @@ function getStrategyTypeFromName(strategyName: string, chainId: number) {
 // Helper function to find matching contract from name or address
 function reduceSupportedChains(
   chainId: number,
-  compare: (args: [key: string, address: Address | number]) => boolean
+  compare: (args: [key: string, address: Address | number]) => boolean,
 ) {
   return supportedChains?.reduce((match, chain) => {
     const type = Object.entries(chain.contracts ?? {}).find(
-      ([key, address]) => chain.id === chainId && compare([key, address])
+      ([key, address]) => chain.id === chainId && compare([key, address]),
     );
 
     return type?.[0] || match;
@@ -64,16 +64,12 @@ function reduceSupportedChains(
 
 export function useStrategyType(round?: Round) {
   return useMemo(
-    () =>
-      round && getStrategyTypeFromName(round?.strategyName!, round?.chainId),
-    [round]
+    () => round && getStrategyTypeFromName(round?.strategyName!, round?.chainId),
+    [round],
   );
 }
 
-export function useStrategyAddon(
-  component: StrategyComponentType,
-  strategy?: StrategyExtension
-) {
+export function useStrategyAddon(component: StrategyComponentType, strategy?: StrategyExtension) {
   const api = useAPI();
   const { data: signer } = useWalletClient();
   const addon = strategy?.components?.[component];
@@ -90,10 +86,7 @@ export function useStrategyAddon(
   };
 }
 
-export function useRoundStrategyAddon(
-  component: StrategyComponentType,
-  round?: Round
-) {
+export function useRoundStrategyAddon(component: StrategyComponentType, round?: Round) {
   const strategies = useStrategies();
   const type = useStrategyType(round);
   const strategy = type ? strategies[type] : undefined;
@@ -101,9 +94,6 @@ export function useRoundStrategyAddon(
   return useStrategyAddon(component, strategy);
 }
 
-export function useRoundStrategyAddonCall(
-  component: StrategyComponentType,
-  round?: Round
-) {
+export function useRoundStrategyAddonCall(component: StrategyComponentType, round?: Round) {
   return useRoundStrategyAddon(component, round)?.call;
 }

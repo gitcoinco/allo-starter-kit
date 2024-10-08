@@ -2,12 +2,7 @@
 
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import {
-  Address,
-  encodeAbiParameters,
-  parseAbiParameters,
-  zeroAddress,
-} from "viem";
+import { Address, encodeAbiParameters, parseAbiParameters, zeroAddress } from "viem";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -22,17 +17,11 @@ import {
 import { EthAddressSchema } from "../../../schemas";
 import { Input } from "../../../ui/input";
 import { StrategyCreateSchemaFn } from "..";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../ui/select";
 import { useProjects } from "../../../hooks/useProjects";
-import { Round } from "../../../api/types";
+import { Round } from "../../../services/types";
 
-export const createSchema: StrategyCreateSchemaFn = api =>
+export const createSchema: StrategyCreateSchemaFn = (api) =>
   z
     .object({
       __internal__: z.object({
@@ -48,10 +37,11 @@ export const createSchema: StrategyCreateSchemaFn = api =>
     .transform(async ({ __internal__: { recipientAddress, metadata } }) => {
       const pointer = await api.upload(metadata);
 
-      return encodeAbiParameters(
-        parseAbiParameters("address, address, (uint256, string)"),
-        [zeroAddress, recipientAddress, [BigInt(1), pointer]]
-      );
+      return encodeAbiParameters(parseAbiParameters("address, address, (uint256, string)"), [
+        zeroAddress,
+        recipientAddress,
+        [BigInt(1), pointer],
+      ]);
     });
 
 export function RegisterRecipientForm({ round }: { round: Round }) {
@@ -66,15 +56,12 @@ export function RegisterRecipientForm({ round }: { round: Round }) {
         chainId: { equalTo: chainId },
       },
     },
-    { enabled: Boolean(lowercaseAddress) }
+    { enabled: Boolean(lowercaseAddress) },
   );
 
   useEffect(() => {
     // Initialize with connected wallet address
-    setValue(
-      "strategyData.__internal__.metadata.application.recipient",
-      address
-    );
+    setValue("strategyData.__internal__.metadata.application.recipient", address);
     setValue("strategyData.__internal__.metadata.application.round", round.id);
   }, [address]);
   return (
@@ -92,16 +79,14 @@ export function RegisterRecipientForm({ round }: { round: Round }) {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {projects?.map(project => (
+                {projects?.map((project) => (
                   <SelectItem key={project.id} value={project.anchorAddress}>
                     {project.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <FormDescription>
-              Payouts will be transferred to this project.
-            </FormDescription>
+            <FormDescription>Payouts will be transferred to this project.</FormDescription>
             <FormMessage />
           </FormItem>
         )}

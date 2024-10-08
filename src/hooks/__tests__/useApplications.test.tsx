@@ -1,11 +1,6 @@
 import { describe, test, expect } from "vitest";
 import { mockCreateApplication, renderHook, waitFor } from "../../test-utils";
-import {
-  useApplications,
-  useApplicationById,
-  useCreateApplication,
-} from "../..";
-import { zeroAddress } from "viem";
+import { useApplications, useApplicationById, useCreateApplication } from "../";
 
 describe("Application Hooks", async () => {
   test("useApplications", async () => {
@@ -17,15 +12,11 @@ describe("Application Hooks", async () => {
   });
 
   test("useApplicationById", async () => {
-    const { result } = renderHook(() =>
-      useApplicationById("id", { chainId: 1 }),
-    );
+    const { result } = renderHook(() => useApplicationById("id", { chainId: 1 }));
 
     await waitFor(() => expect(result.current?.isPending).toBe(false));
 
-    expect(result.current.data?.name).toBe(
-      "Blockravers Q1 - Vitalia + Colorado",
-    );
+    expect(result.current.data?.name).toBe("Blockravers Q1 - Vitalia + Colorado");
   });
 
   test("useCreateApplication", async () => {

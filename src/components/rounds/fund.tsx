@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { type Address, formatUnits, parseUnits } from "viem";
 import type { TToken } from "@gitcoin/gitcoin-chain-data";
-import type { QueryOpts, Round } from "../../api/types";
+import type { QueryOpts, Round } from "../../services/types";
 import { useRoundById } from "../../hooks/useRounds";
 import {
   Form,
@@ -18,7 +18,7 @@ import {
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
-import { supportedChains } from "../../api/web3-provider";
+import { supportedChains } from "../../services/web3-provider";
 import { useToken, useTokenBalance } from "../../hooks/useToken";
 import { useToast } from "../../ui/use-toast";
 import { Alert } from "../../ui/alert";
@@ -35,7 +35,7 @@ export function useFundPool() {
   const { toast } = useToast();
   return useMutation({
     mutationFn: async ({ amount }: { amount: number }) =>
-      new Promise(r => {
+      new Promise((r) => {
         setTimeout(() => r({ amount }), 1000);
       }),
     onSuccess: () => toast({ title: "Not implemented yet" }),
@@ -45,34 +45,21 @@ export function useFundPool() {
 export function getNetworkToken(round?: Round) {
   return supportedChains?.reduce<Partial<TToken>>(
     (match, chain) => {
-      const token = (chain.tokens ?? {}).find(token => {
-        return (
-          round?.chainId === chain.id &&
-          token.address === round?.matching?.token
-        );
+      const token = (chain.tokens ?? {}).find((token) => {
+        return round?.chainId === chain.id && token.address === round?.matching?.token;
       });
 
       return token || match;
     },
-    { code: "", decimals: 0, icon: "" }
+    { code: "", decimals: 0, icon: "" },
   );
 }
 
-export function FundRound({
-  id,
-  chainId,
-  opts,
-  autoFocus,
-  onSuccess,
-}: RoundFundProps) {
+export function FundRound({ id, chainId, opts, autoFocus, onSuccess }: RoundFundProps) {
   const { data, isPending } = useRoundById(id, { chainId });
   const fund = useFundPool();
   if (isPending)
-    return (
-      <Alert className="flex h-[172px] items-center justify-center">
-        Loading...
-      </Alert>
-    );
+    return <Alert className="flex h-[172px] items-center justify-center">Loading...</Alert>;
   if (!data) return <div>Round not found</div>;
   console.log(data);
   return (
@@ -85,24 +72,17 @@ export function FundRound({
         token={data?.matching?.token!}
         isLoading={fund.isPending}
         autoFocus={autoFocus}
-        onSubmit={amount => fund.mutate({ amount }, { onSuccess })}
+        onSubmit={(amount) => fund.mutate({ amount }, { onSuccess })}
       />
     </section>
   );
 }
 
-function TokenBalance({
-  address,
-  token,
-}: {
-  address?: Address;
-  token?: Address;
-}) {
+function TokenBalance({ address, token }: { address?: Address; token?: Address }) {
   const { data: balance } = useTokenBalance({ address, token });
   return (
     <>
-      {balance && formatUnits(balance?.value, balance?.decimals).slice(0, 6)}{" "}
-      {balance?.symbol}
+      {balance && formatUnits(balance?.value, balance?.decimals).slice(0, 6)} {balance?.symbol}
     </>
   );
 }
@@ -127,17 +107,13 @@ function FundForm({
   const { data: balance } = useTokenBalance({ address, token });
   console.log("data", data, balance);
 
-  const amountInUints = balance
-    ? parseUnits(form.watch("amount") ?? "0", balance?.decimals)
-    : 0;
+  const amountInUints = balance ? parseUnits(form.watch("amount") ?? "0", balance?.decimals) : 0;
   const canSubmit = amountInUints > 0 && amountInUints <= (balance?.value ?? 0);
 
   console.log({ canSubmit }, amountInUints, balance?.value);
   return (
     <Form {...form}>
-      <form
-        className="space-y-2"
-        onSubmit={form.handleSubmit(v => onSubmit(v.amount))}>
+      <form className="space-y-2" onSubmit={form.handleSubmit((v) => onSubmit(v.amount))}>
         <FormField
           control={form.control}
           name="amount"
@@ -168,7 +144,8 @@ function FundForm({
           isLoading={isLoading}
           disabled={!canSubmit || isLoading}
           className="w-full"
-          type="submit">
+          type="submit"
+        >
           Fund
         </Button>
       </form>

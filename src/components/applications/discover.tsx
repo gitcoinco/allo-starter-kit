@@ -1,6 +1,6 @@
 "use client";
 
-import type { ApplicationsQuery } from "../../api/types";
+import type { ApplicationsQuery } from "../../services/types";
 import { useApplications } from "../../hooks/useApplications";
 import { Grid, type GridProps } from "../../ui/grid";
 import { ApplicationCard } from "./card";
@@ -10,12 +10,5 @@ export function DiscoverApplications({
   ...props
 }: GridProps<ApplicationCard> & { query?: ApplicationsQuery }) {
   const applications = useApplications(query!);
-  return (
-    <Grid
-      component={ApplicationCard}
-      keys={["projectId"]}
-      {...applications}
-      {...props}
-    />
-  );
+  return <Grid component={ApplicationCard} keys={["projectId"]} {...applications} {...props} />;
 }

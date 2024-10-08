@@ -1,6 +1,6 @@
 "use client";
 import { Markdown } from "../../ui/markdown";
-import type { Application, QueryOpts } from "../../api/types";
+import type { Application, QueryOpts } from "../../services/types";
 import { useApplicationById } from "../../hooks/useApplications";
 import { BackgroundImage } from "../../ui/background-image";
 import { ApplicationStatusBadge } from "./status-badge";
@@ -21,12 +21,7 @@ export function ApplicationDetailsWithHook({
   chainId: number;
   opts?: QueryOpts;
 } & PageActions) {
-  return (
-    <ApplicationDetails
-      {...useApplicationById(id, { chainId, roundId })}
-      {...props}
-    />
-  );
+  return <ApplicationDetails {...useApplicationById(id, { chainId, roundId })} {...props} />;
 }
 
 export function ApplicationDetails({

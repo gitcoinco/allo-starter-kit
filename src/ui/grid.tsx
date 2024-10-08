@@ -10,14 +10,10 @@ type Columns = [ColumnValue?, ColumnValue?, ColumnValue?, ColumnValue?];
 export type GridProps<T> = {
   columns?: Columns;
   keys?: string[];
-  renderItem?: (
-    item: T & { key: string },
-    Component: ComponentType<T>,
-  ) => ReactNode;
+  renderItem?: (item: T & { key: string }, Component: ComponentType<T>) => ReactNode;
 };
 
-type Props<T> = UseQueryResult<T[], unknown> &
-  GridProps<T> & { component: ComponentType<T> };
+type Props<T> = UseQueryResult<T[], unknown> & GridProps<T> & { component: ComponentType<T> };
 
 export function Grid<T extends { id: string; isLoading?: boolean }>({
   columns = [1, 1, 2, 3],

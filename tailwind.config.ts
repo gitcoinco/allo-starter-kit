@@ -51,11 +51,9 @@ const red = {
   600: "#ae1700",
 };
 const config: Config = {
+  // prefix: "ui-",
   darkMode: ["class"],
-  content: [
-    "./src/**/*.tsx",
-    "./stories/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.tsx", "./lib/**/*.tsx", "./stories/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     container: {
       center: true,
@@ -132,8 +130,7 @@ const config: Config = {
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },
@@ -141,4 +138,3 @@ const config: Config = {
 };
 
 export default config;
-

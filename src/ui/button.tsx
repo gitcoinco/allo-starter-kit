@@ -12,12 +12,10 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
         accent: "bg-accent text-accent-foreground hover:bg-accent/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         success: "bg-success text-success-foreground hover:bg-success/90",
         outline: "border border-primary bg-background hover:bg-moss-100/20",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -33,7 +31,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -60,7 +58,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconRight: RightIcon,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     const LeftIcon = isLoading ? LoaderIcon : icon || iconLeft;
@@ -70,7 +68,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         disabled={isLoading}
-        {...props}>
+        {...props}
+      >
         <>
           {LeftIcon && (
             <LeftIcon
@@ -81,13 +80,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             />
           )}
           {children}
-          {RightIcon && (
-            <RightIcon className={cn("size-4", { ["ml-2"]: children })} />
-          )}
+          {RightIcon && <RightIcon className={cn("size-4", { ["ml-2"]: children })} />}
         </>
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

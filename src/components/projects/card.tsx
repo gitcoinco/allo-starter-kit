@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
-import type { Project } from "../../api/types";
+import type { Project } from "../../services/types";
 import { BackgroundImage } from "../../ui/background-image";
 import { Card, CardContent } from "../../ui/card";
 import { cn } from "../../lib/utils";
@@ -21,7 +21,8 @@ export function ProjectCard({
     <Card
       className={cn("relative overflow-hidden rounded-3xl shadow-xl", {
         ["animate-pulse"]: isLoading,
-      })}>
+      })}
+    >
       <div className="">
         <BackgroundImage className="h-32 bg-gray-800" src={bannerUrl} />
       </div>

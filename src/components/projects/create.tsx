@@ -15,7 +15,7 @@ import {
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { Textarea } from "../../ui/textarea";
-import type { ProfileCreated, ProjectCreated } from "../../api/types";
+import type { ProfileCreated, ProjectCreated } from "../../services/types";
 import { useCreateProject } from "../../hooks/useProjects";
 
 const baseProjectSchema = z.object({
@@ -25,11 +25,7 @@ const baseProjectSchema = z.object({
   description: z.string().optional(),
 });
 
-export function CreateProject({
-  onCreated,
-}: {
-  onCreated: (project: ProfileCreated) => void;
-}) {
+export function CreateProject({ onCreated }: { onCreated: (project: ProfileCreated) => void }) {
   const schema = baseProjectSchema;
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -43,11 +39,12 @@ export function CreateProject({
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(values => {
+        onSubmit={form.handleSubmit((values) => {
           console.log("create Project", values);
           create.mutate(values, { onSuccess: onCreated });
         })}
-        className="mx-auto max-w-screen-sm space-y-4">
+        className="mx-auto max-w-screen-sm space-y-4"
+      >
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-semibold">Create project</h3>
           <Button type="submit" isLoading={create.isPending}>
@@ -75,11 +72,7 @@ export function CreateProject({
             <FormItem>
               <FormLabel>Project description</FormLabel>
               <FormControl>
-                <Textarea
-                  rows={8}
-                  placeholder="Project description..."
-                  {...field}
-                />
+                <Textarea rows={8} placeholder="Project description..." {...field} />
               </FormControl>
               <FormMessage />
               <FormDescription>Markdown is supported</FormDescription>

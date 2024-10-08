@@ -1,8 +1,8 @@
 "use client";
 import { useWalletClient } from "wagmi";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import type { API, ApplicationInput, ApplicationsQuery } from "../api/types";
-import { useAPI } from "..";
+import type { API, ApplicationInput, ApplicationsQuery } from "../services/types";
+import { useAPI } from "../services/provider";
 
 const defaultQuery: ApplicationsQuery = {
   where: {},
@@ -19,10 +19,7 @@ export function useApplications(query: ApplicationsQuery = defaultQuery) {
 }
 
 type ApplicationByID = Parameters<API["indexer"]["applicationById"]>;
-export function useApplicationById(
-  id: ApplicationByID[0],
-  opts?: ApplicationByID[1],
-) {
+export function useApplicationById(id: ApplicationByID[0], opts?: ApplicationByID[1]) {
   const api = useAPI();
   return useQuery({
     queryKey: ["application", { id, opts }],
@@ -34,8 +31,7 @@ export function useCreateApplication() {
   const api = useAPI();
   const { data: client } = useWalletClient();
   return useMutation({
-    mutationFn: (data: ApplicationInput) =>
-      api.allo.createApplication(data, client!),
+    mutationFn: (data: ApplicationInput) => api.allo.createApplication(data, client!),
     onSuccess: () => {}, // TODO: add toast
     onError: () => {},
   });

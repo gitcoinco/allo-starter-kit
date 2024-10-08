@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAPI } from "../../api/provider";
+import { useAPI } from "../../services/provider";
 import { Button } from "../../ui/button";
 import { useWalletClient } from "wagmi";
 import { PropsWithChildren } from "react";
@@ -30,10 +30,7 @@ export function CreateProfileButton({ children }: PropsWithChildren) {
     mutationFn: async () => {
       const name = "allo-kit-profile";
       const pointer = await api.upload({ name, type: "program" });
-      return api.allo.createProfile(
-        { metadata: { pointer, protocol: BigInt(1) }, name },
-        client!
-      );
+      return api.allo.createProfile({ metadata: { pointer, protocol: BigInt(1) }, name }, client!);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["profile"] }),
   });
@@ -42,10 +39,7 @@ export function CreateProfileButton({ children }: PropsWithChildren) {
   return (
     <div className="flex items-center gap-2">
       <div className="text-sm">You need to create a profile first</div>
-      <Button
-        type="button"
-        isLoading={create.isPending}
-        onClick={() => create.mutate()}>
+      <Button type="button" isLoading={create.isPending} onClick={() => create.mutate()}>
         Create Profile
       </Button>
     </div>
