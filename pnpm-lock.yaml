@@ -16,6 +16,9 @@ importers:
       "@hookform/resolvers":
         specifier: ^3.9.0
         version: 3.9.0(react-hook-form@7.53.0(react@18.3.1))
+      "@radix-ui/react-accordion":
+        specifier: ^1.2.1
+        version: 1.2.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       "@radix-ui/react-avatar":
         specifier: ^1.1.0
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -50,11 +53,17 @@ importers:
         specifier: ^1.2.1
         version: 1.2.2(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@20.16.10)(typescript@5.6.2)))
       '@tanstack/react-query':
 =======
+=======
+      "@tailwindcss/typography":
+        specifier: ^0.5.15
+        version: 0.5.15(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@20.16.10)(typescript@5.6.2)))
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       "@tanstack/react-query":
 >>>>>>> 3351031 (chore: reorganize folders and fix build)
         specifier: ^5.59.0
@@ -66,11 +75,17 @@ importers:
         specifier: ^5.0.6
         version: 5.0.6(graphql@16.9.0)
 <<<<<<< HEAD
+<<<<<<< HEAD
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
 =======
 >>>>>>> 3351031 (chore: reorganize folders and fix build)
+=======
+      class-variance-authority:
+        specifier: 0.7.0
+        version: 0.7.0
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       clsx:
         specifier: 2.1.1
         version: 2.1.1
@@ -105,6 +120,9 @@ importers:
         specifier: ^5.4.0
         version: 5.4.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.3
@@ -114,8 +132,11 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@20.16.10)(typescript@5.6.2)))
+<<<<<<< HEAD
 =======
 >>>>>>> 3351031 (chore: reorganize folders and fix build)
+=======
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       vaul:
         specifier: ^0.9.1
         version: 0.9.9(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -185,6 +206,7 @@ importers:
         specifier: ^0.5.12
         version: 0.5.13
 <<<<<<< HEAD
+<<<<<<< HEAD
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
@@ -196,6 +218,8 @@ importers:
       "@tailwindcss/typography":
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@20.16.10)(typescript@5.6.2)))
+=======
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       "@testing-library/dom":
         specifier: ^10.4.0
         version: 10.4.0
@@ -262,11 +286,14 @@ importers:
         specifier: ^11.10.4
         version: 11.11.0
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       class-variance-authority:
         specifier: 0.7.0
         version: 0.7.0
 >>>>>>> 3351031 (chore: reorganize folders and fix build)
+=======
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       concurrently:
         specifier: ^9.0.1
         version: 9.0.1
@@ -340,6 +367,7 @@ importers:
         specifier: ^8.3.5
         version: 8.3.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       tailwind-merge:
         specifier: ^2.5.2
@@ -351,6 +379,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.13(ts-node@10.9.2(@swc/core@1.7.26(@swc/helpers@0.5.13))(@types/node@20.16.10)(typescript@5.6.2)))
 >>>>>>> 3351031 (chore: reorganize folders and fix build)
+=======
+>>>>>>> 38d9622 (chore: installed shadcdn accordion)
       tsup:
         specifier: ^8.3.0
         version: 8.3.0(@microsoft/api-extractor@7.47.9(@types/node@20.16.10))(@swc/core@1.7.26(@swc/helpers@0.5.13))(jiti@2.3.1)(postcss@8.4.47)(typescript@5.6.2)(yaml@2.5.1)

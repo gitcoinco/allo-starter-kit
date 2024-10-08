@@ -129,6 +129,7 @@
     "@allo-team/allo-v2-sdk": "^1.0.78",
     "@gitcoin/gitcoin-chain-data": "^1.0.26",
     "@hookform/resolvers": "^3.9.0",
+    "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
