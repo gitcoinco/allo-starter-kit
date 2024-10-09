@@ -1,0 +1,38 @@
+name: "Chromatic Deployment"
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [main]
+    paths:
+      - "**/*.mdx"
+      - "**/*.tsx"
+      - "**/*.ts"
+
+jobs:
+  chromatic:
+    name: "Run Chromatic"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile # Install dependencies with lockfile's versions to ensure consistency
+
+      - uses: chromaui/action@v11
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          diagnostic: true
+          exitZeroOnChanges: true
