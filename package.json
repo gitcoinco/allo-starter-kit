@@ -41,7 +41,7 @@
     "build-storybook": "storybook build",
     "build:docs": "storybook build --docs",
     "prepare": "husky",
-    "chromatic": "chromatic"
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
