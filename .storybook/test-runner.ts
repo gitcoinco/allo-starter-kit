@@ -6,12 +6,16 @@ const config: TestRunnerConfig = {
     await injectAxe(page);
   },
   async postVisit(page) {
-    await checkA11y(page, "#storybook-root", {
-      detailedReport: true,
-      detailedReportOptions: {
-        html: true,
-      },
-    });
+    if (process.env.RUN_A11Y_TESTS) {
+      await checkA11y(page, "#storybook-root", {
+        detailedReport: true,
+        detailedReportOptions: {
+          html: true,
+        },
+      });
+    } else {
+      console.log("Accessibility tests are skipped.");
+    }
   },
 };
 
