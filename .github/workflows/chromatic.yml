@@ -1,0 +1,55 @@
+name: "Chromatic Deployment"
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+    branches: [main]
+    paths:
+      - "**/*.mdx"
+      - "**/*.tsx"
+      - "**/*.ts"
+
+concurrency:
+  group: ${{ github.ref }} # This ensures that only one workflow runs per branch
+  cancel-in-progress: true # This cancels any previous runs in the same group
+
+jobs:
+  chromatic:
+    name: "Run Chromatic"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile # Install dependencies with lockfile's versions to ensure consistency
+
+      - name: Cache Build
+        id: cache-build
+        uses: actions/cache@v4
+        with:
+          path: dist
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.ts', '**/*.tsx', '**/*.mdx') }} # Cache key based on OS and file hashes
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Build
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: pnpm build
+
+      - uses: chromaui/action@v11
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          diagnostics: true
+          exitZeroOnChanges: true

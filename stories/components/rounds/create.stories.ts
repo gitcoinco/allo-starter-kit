@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn, userEvent, within } from "@storybook/test";
-import { CreateRound } from "./create";
+import { CreateRound } from "../../../src/components/rounds/create";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

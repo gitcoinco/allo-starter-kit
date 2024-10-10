@@ -2,7 +2,7 @@ import React from "react";
 import type { Preview } from "@storybook/react";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import { initialize, mswLoader } from "msw-storybook-addon";
-import { handlers } from "../src/mocks/handlers";
+import { handlers } from "../stories/mocks/handlers";
 
 initialize();
 
