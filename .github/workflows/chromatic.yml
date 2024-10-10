@@ -1,12 +1,16 @@
 name: "Chromatic Deployment"
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, synchronize, ready_for_review]
     branches: [main]
     paths:
       - "**/*.mdx"
       - "**/*.tsx"
       - "**/*.ts"
+
+concurrency:
+  group: ${{ github.ref }} # This ensures that only one workflow runs per branch
+  cancel-in-progress: true # This cancels any previous runs in the same group
 
 jobs:
   chromatic:
@@ -47,5 +51,5 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          diagnostic: true
+          diagnostics: true
           exitZeroOnChanges: true
