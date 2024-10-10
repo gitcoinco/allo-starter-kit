@@ -1,5 +1,10 @@
 name: "Storybook Tests"
 on: push
+
+concurrency:
+  group: ${{ github.ref }} # This ensures that only one workflow runs per branch
+  cancel-in-progress: true # This cancels any previous runs in the same group
+
 jobs:
   test:
     timeout-minutes: 60
