@@ -64,18 +64,26 @@ const config: Config = {
     },
     extend: {
       colors: {
+        gray,
+        blue,
+        yellow,
+        green,
+        red,
+        moss,
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: 'moss["900"]',
-          foreground: "white",
+          DEFAULT: moss["900"],
+          foreground: white,
+          // DEFAULT: "hsl(var(--primary))",
+          // foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "colors[defaultGray][200]",
-          foreground: "colors[defaultGray][800]",
+          DEFAULT: colors[defaultGray][200],
+          foreground: colors[defaultGray][800],
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -99,8 +107,8 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "`var(--radius)`",
-        md: "`calc(var(--radius) - 2px)`",
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
@@ -108,20 +116,12 @@ const config: Config = {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
       },
       animation: {
