@@ -3,10 +3,7 @@ import { Button } from "./button";
 import { ChevronLeft } from "lucide-react";
 import { cn } from "../lib/utils";
 
-export function BackButton({
-  className,
-  ...props
-}: ComponentProps<typeof Button>) {
+export function BackButton({ className, ...props }: ComponentProps<typeof Button>) {
   return (
     <Button
       variant={"ghost"}

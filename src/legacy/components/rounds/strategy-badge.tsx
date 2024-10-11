@@ -1,10 +1,6 @@
 import { Badge, type BadgeProps } from "../../ui/badge";
 
-export function RoundStrategyBadge({
-  strategyName,
-}: {
-  strategyName?: string;
-}) {
+export function RoundStrategyBadge({ strategyName }: { strategyName?: string }) {
   const [_, strategy, color] =
     Object.entries(strategyMap)
       .map(([key, label], index) => [key, label, colors[index]])
@@ -15,7 +11,8 @@ export function RoundStrategyBadge({
     <Badge
       title={strategyName}
       variant={color as BadgeProps["variant"]}
-      className={"whitespace-nowrap"}>
+      className={"whitespace-nowrap"}
+    >
       {strategy}
     </Badge>
   );
@@ -24,8 +21,7 @@ export function RoundStrategyBadge({
 // Name of strategies
 const strategyMap = {
   "allov1.QF": "Quadratic Funding",
-  "allov2.DonationVotingMerkleDistributionDirectTransferStrategy":
-    "Direct grant",
+  "allov2.DonationVotingMerkleDistributionDirectTransferStrategy": "Direct grant",
   "allov2.DirectGrantsLiteStrategy": "Direct Grant Lite",
   "allov2.QVSimpleStrategy": "Quadratic Voting",
   "allov2.DirectGrantsSimpleStrategy": "Direct Grant",

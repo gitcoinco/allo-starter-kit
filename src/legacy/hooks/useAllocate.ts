@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { Application, Round } from "../services/types";
 import { useRoundStrategyAddon } from "../components/strategies";
+import { Application, Round } from "../services/types";
 import { useRef } from "react";
 
 export function useAllocateState() {

@@ -29,7 +29,7 @@ export function AddToCheckout({ id = "" }) {
     <div className="flex gap-2">
       <button
         // disabled={isPending}
-        className="px-3 py-2 border border-gray-100 rounded"
+        className="rounded border border-gray-100 px-3 py-2"
         // onClick={() => mutate({ id })}
       >
         {isAdded ? "In cart" : "Add to checkout"}

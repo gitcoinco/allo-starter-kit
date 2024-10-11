@@ -4,7 +4,7 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { graphql, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
 
-import { ApiProvider, Web3Provider } from ".";
+import { ApiProvider, Web3Provider } from "..";
 import { mockApplications, mockProjects, mockRound, mockRounds } from "./services/providers/mock";
 
 vi.mock("posthog-js/react", () => {

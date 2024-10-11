@@ -6,9 +6,7 @@ export function EmptyState() {
     <Alert>
       <Info className="size-4" />
       <AlertTitle>No results found!</AlertTitle>
-      <AlertDescription>
-        Couldn&apos;t find any results matching your query
-      </AlertDescription>
+      <AlertDescription>Couldn&apos;t find any results matching your query</AlertDescription>
     </Alert>
   );
 }

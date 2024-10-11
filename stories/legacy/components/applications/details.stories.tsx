@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ApplicationDetailsWithHook } from "../../../src";
-import { application } from "../../mocks/data/applications";
+import { ApplicationDetailsWithHook } from "../../../../src";
+import { application } from "../../data/applications";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

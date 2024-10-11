@@ -16,10 +16,7 @@ export const directGrants: StrategyExtension = {
   name: "Direct Grants Lite",
   type: "directGrants",
   // Deployed strategy contract address for all supported networks
-  contracts: getChains()?.reduce(
-    (acc, x) => ({ ...acc, [x.id]: x.contracts.directGrants }),
-    {},
-  ),
+  contracts: getChains()?.reduce((acc, x) => ({ ...acc, [x.id]: x.contracts.directGrants }), {}),
   components: {
     createRound: {
       createSchema: createDirectGrantsRoundSchema,

@@ -1,4 +1,4 @@
-import { Application } from "../../services/types";
+import { Application } from "../../../src/legacy";
 
 export const application: Application & { roundId: string } = {
   id: "11",

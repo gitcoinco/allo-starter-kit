@@ -17,7 +17,7 @@ const Button = createComponent("button", "base-classes-here rounded p-2", {
 export function createComponent<T extends { variant: Record<string, any> }>(
   tag = "div",
   className = "",
-  config?: Variants<T>
+  config?: Variants<T>,
 ) {
   const variants = cva(className, { ...config });
 
@@ -29,11 +29,11 @@ export function createComponent<T extends { variant: Record<string, any> }>(
       ref,
       className: cn(variants({ variant }), className),
       ...props,
-    })
+    }),
   );
   Component.displayName = "Component";
 
-  return (
-    props: React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof variants>
-  ) => <Component {...props} />;
+  return (props: React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof variants>) => (
+    <Component {...props} />
+  );
 }
