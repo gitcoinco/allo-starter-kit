@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { OverviewPageTitle } from "../../../src/features/checker/pages/OverviewPage/components";
 
 const meta = {
-  title: "Features/Checker/components/OverviewPageTitle",
+  title: "Features/Checker/Components/OverviewPageTitle",
   component: OverviewPageTitle,
 } satisfies Meta;
 
