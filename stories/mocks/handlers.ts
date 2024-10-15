@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw";
 
+// Example for msw handler
 export const taskListHandler = http.get("https://jsonplaceholder.typicode.com/todos", () => {
   return HttpResponse.json([
     { userId: 1, id: 1, title: "Mocked Task 1", completed: false },

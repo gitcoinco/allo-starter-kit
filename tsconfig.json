@@ -19,5 +19,5 @@
     "typeRoots": ["./src"]
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx"],
-  "exclude": ["node_modules", "dist", "**/__tests__/*", "src/test-utils.tsx", "**/*.css"]
+  "exclude": ["node_modules", "dist", "**/__tests__/*", "src/legacy/test-utils.tsx", "**/*.css"]
 }
