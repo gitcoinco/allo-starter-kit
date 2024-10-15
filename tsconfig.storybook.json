@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json", // Extend the main tsconfig
+  "compilerOptions": {
+    "rootDir": "./" // Specify the root directory
+  },
+  "include": ["./stories/**/*.tsx"], // Include only stories for type checking
+  "exclude": ["node_modules", "dist", "**/__tests__/*", "src/legacy/test-utils.tsx", "**/*.css"]
+}
