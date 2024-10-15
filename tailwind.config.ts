@@ -112,7 +112,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        mono: ["Mono", ...fontFamily.sans],
+        ["modern-era"]: ["ModernEra", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

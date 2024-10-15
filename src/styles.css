@@ -2,6 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "ModernEra";
+  font-weight: 400;
+  src:
+    local("ModernEraRegular"),
+    url("/modern-era-regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "ModernEra";
+  font-weight: 500;
+  src:
+    local("ModernEraMedium"),
+    url("/modern-era-medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "ModernEra";
+  font-weight: 600;
+  src:
+    local("ModernEraBold"),
+    url("/modern-era-bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mono";
+  font-weight: 300;
+  src:
+    local("MonoLight"),
+    url("/DMMono-Light.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mono";
+  font-weight: 400;
+  src:
+    local("MonoRegular"),
+    url("/DMMono-Regular.ttf") format("opentype");
+}
+
+@font-face {
+  font-family: "Mono";
+  font-weight: 500;
+  src:
+    local("MonoMedium"),
+    url("/DMMono-Medium.ttf") format("opentype");
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
